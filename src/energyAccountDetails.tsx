@@ -153,6 +153,30 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
             });
     }
 
+    renderAccountDetails() {
+        return <Card
+        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+            <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h4" component="h2">
+                    Account details
+                </Typography>
+                <Typography>
+                Address: {this.props.energyAccount.address}
+                </Typography>
+                <Typography>
+                Account number: {this.props.energyAccount.accountNumber}
+                </Typography>
+                <Button
+                    variant="contained"
+                    sx={{'margin-top': '15px'}}
+                >
+                    Pay bill
+                </Button>    
+            </CardContent>
+        </Card>;
+    }
+
     renderIntervals() {
         const content = !this.state.intervalData
             ? <div>Loading</div>
@@ -262,7 +286,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
                 {/* Chart */}
                 <Grid item xs={12}>
                     <Button
-                        variant="contained"
+                        // variant="contained"
                         onClick={() => this.props.onBack()}
                     >
                         Back
@@ -270,22 +294,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
 
                 </Grid>
                 <Grid item xs={6}>
-                    <Card
-                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                    >
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography gutterBottom variant="h4" component="h2">
-                                Account details
-                            </Typography>
-                            <Typography>
-                            Address: {this.props.energyAccount.address}
-                            </Typography>
-                            <Typography>
-                            Account number: {this.props.energyAccount.accountNumber}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-
+                    {this.renderAccountDetails()}
                 </Grid>
                 <Grid item key='billHistory' xs={6}>
                     {this.renderBillHistory()}
