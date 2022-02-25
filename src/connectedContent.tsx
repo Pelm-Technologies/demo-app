@@ -26,7 +26,6 @@ import { EnergyAccountDetails } from "./energyAccountDetails";
 import { EnergyAccount } from './types'
 
 
-
 type Props = {
     userId: string;
     accessToken: string;
