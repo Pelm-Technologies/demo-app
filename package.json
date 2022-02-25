@@ -17,7 +17,7 @@
     "@types/react-dom": "^17.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-pelm-connect": "^1.0.1",
+    "react-pelm-connect": "^1.0.3",
     "react-scripts": "^5.0.0",
     "recharts": "^2.1.9",
     "styled-components": "^5.3.3",
