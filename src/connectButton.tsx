@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import { Endpoints } from "./Endpoints";
-
 import { Config, useConnect } from "react-pelm-connect";
-
-import { CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT } from "./constants";
 
 import Button from '@mui/material/Button';
 

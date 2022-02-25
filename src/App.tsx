@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import {CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
 
+import { v4 as uuidv4 } from 'uuid';
+
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -30,6 +32,7 @@ import { Config, useConnect } from "react-pelm-connect";
 
 
 type State = {
+
     isLoading: boolean;
     error?: string;
     connectToken?: string;
@@ -37,6 +40,7 @@ type State = {
 }
 
 const theme = createTheme();
+const userId = uuidv4();
 
 export class App extends React.Component<{}, State> {
 
@@ -53,14 +57,14 @@ export class App extends React.Component<{}, State> {
     }
 
     componentDidMount(): void {
-        this.generateConnectToken()
+        this.generateConnectToken(userId)
     }
 
     /*
         We're requeseting the connect_token here for simplicity.
         In an ideal world, you would make this request from your server and then pass the token to your client.
     */
-    generateConnectToken() {
+    generateConnectToken(userId: string) {
         this.setState({ isLoading: true })
 
         const headers = new Headers();
@@ -69,7 +73,8 @@ export class App extends React.Component<{}, State> {
         headers.set('client_secret', CLIENT_SECRET);
 
         const data = new FormData();
-        data.append('user_id', USER_ID)
+        // data.append('user_id', USER_ID)
+        data.append('user_id', userId)
 
         const requestOptions = {
             method: 'POST',
@@ -199,7 +204,7 @@ export class App extends React.Component<{}, State> {
         }
 
         const children = this.state.accessToken
-            ? <ConnectedContent accessToken={this.state.accessToken!} />
+            ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
             : this.renderConnectUtilityMessage()
 
         return <ThemeProvider theme={theme}>

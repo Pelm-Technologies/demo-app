@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';
 
-import {CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {CLIENT_ID, CLIENT_SECRET, ENVIRONMENT} from './constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';

@@ -1,8 +1,6 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
-
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';

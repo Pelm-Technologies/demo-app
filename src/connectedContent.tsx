@@ -26,6 +26,7 @@ import { EnergyAccountDetails } from "./energyAccountDetails";
 import { EnergyAccount } from './types'
 
 type Props = {
+    userId: string;
     accessToken: string;
 }
 
@@ -61,7 +62,7 @@ export class ConnectedContent extends React.Component<Props, State> {
             headers
         };
 
-        const url = 'https://api.pelm.com/users/' + USER_ID + '/accounts'
+        const url = 'https://api.pelm.com/users/' + this.props.userId + '/accounts'
 
         fetch(url, requestOptions)
             .then(response => {
