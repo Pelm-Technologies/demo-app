@@ -210,7 +210,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
                 </Label>
             </YAxis>
             <Tooltip />
-            <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+            <Area type="monotone" dataKey="usage" stroke="#8884d8" fill="#8884d8" />
             <Brush dataKey='name' height={30} stroke="#8884d8" startIndex={this.state.intervalData!.length - 25}/>
             </AreaChart>
         </ResponsiveContainer>
