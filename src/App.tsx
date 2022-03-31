@@ -189,6 +189,18 @@ export class App extends React.Component<{}, State> {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Please connect your utility account to get started.
                     </Typography>
+                    <Typography variant="subtitle1" component="h1" gutterBottom>
+                        If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
+                        <br/>
+                        <br/>
+                        Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
+                        <br/>
+                        username: <code>username_good@gmail.com</code>
+                        <br/>
+                        password: <code>password_good</code>
+                        <br/>
+                        <br/>
+                    </Typography>
                     <ConnectButton config={config} />
                 </Box>
             </Container>
