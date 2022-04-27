@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -51,8 +51,8 @@ export class App extends React.Component<{}, State> {
             isLoading: true,
             error: undefined,
             connectToken: undefined,
-            accessToken: undefined,
-            // accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImV4cCI6MTY0NTc0NzUwMy4wNTgwMDg0LCJ1c2VyIjoiMmQxZGEyMmYtYjhhNi00MTQ3LWI1OGMtMDdlMDIwOGJmOWJmIiwiY2xpZW50X2lkIjoiZmI2M2NhYzAtMGEyNy00YzEwLThkMzUtZmY0NDIzYmZhOGJiIn0.NU9jDHPPoqE7SxsSG8LtZRYjW6HWi_RWGkzxGhUd4D7bSm1LzU1M5c-cvTBwRZhPLsdI7o70j-ZNgJzPSBHIZxDEdvIK254eNk2wSpUrnh9S-BY08WoykSKXjQV9SkK8kszu3CiUkui0WTs0NgWWdI7gVgzk9dFs1vrfqL2A8J-2ycu--oGdVadC9VCjoirh8M6SGTsIvQSj2syQgsvuzf_gGk3taryPywm4LDn4T6cQYcjh5zXdSiyO7rVeEzpzaUenfYxPnPsKfZd3pNua0GSPhym1u9ZIPGYVomaDht4-B3ZPHcdACLPdH_F__1qYvOoyuxaFv98VXzIHWlUnJA'
+            // accessToken: undefined,
+            accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTA1NzAzMzEuMzc2MTIzLCJ1c2VyIjoiNGM3YTNkMDgtMzdjZC00ZTc0LWIwMGYtNzFhM2NiYWZjZjU1IiwiY2xpZW50X2lkIjoiZmI2MGZkOTQtZmZlMi00YWY5LWE1NGEtYzQ3NDc3MGQ0M2Y4In0.ls2Q42MO0bb9ahx1zr9LjVFTkZYgzzbtLgnGXTTym5_JkyR2f8xDLKD6qeVCQiMKDC4RCs_t3N9I_LSN484oyna7Zx-RluhqbwsdZh0ENu50rZy4fzpjSt5zplI2R6W_qFANAnsaD3L4tA6bHX9TvJupNtNweNuOXRR0rTc4q5qAyi1GvR9lLCzxb0mH55f3YWS9I81LM1wBpf4zniyVG0nS9mL1xzKKZw2z3n2xDgpuSv3dZ-ysBzuo6lPD_bg-0qG3OmBwRvOFAHXo31EqXP88NCQ90-D9Fdcx_rEemTkc8hgAn1__TkeFdFQVfkBRstCqnT8OkdC9WJGqWUV7xA'
         }
     }
 
@@ -82,8 +82,9 @@ export class App extends React.Component<{}, State> {
             body: data,
         };
 
-        fetch('https://api.pelm.com/auth/connect-token', requestOptions)
+        // fetch('https://api.pelm.com/auth/connect-token', requestOptions)
         // fetch('http://127.0.0.1:5000/auth/connect-token', requestOptions)
+        fetch(PELM_API_URL + '/auth/connect-token', requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -137,8 +138,9 @@ export class App extends React.Component<{}, State> {
             headers
         };
 
-        fetch('https://api.pelm.com/auth/token', requestOptions)
+        // fetch('https://api.pelm.com/auth/token', requestOptions)
         // fetch('http://127.0.0.1:5000/auth/token', requestOptions)
+        fetch(PELM_API_URL + '/auth/token', requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -207,6 +209,8 @@ export class App extends React.Component<{}, State> {
     }
 
     render(): React.ReactNode {
+        console.log("accessToken: " + this.state.accessToken);
+
         if (this.state.isLoading) {
             return "Loading"
         }

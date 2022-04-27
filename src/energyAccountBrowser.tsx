@@ -43,20 +43,20 @@ export const EnergyAccountBrowser = (props: Props) => {
                 pb: 6,
             }}
             >
-            <Container maxWidth="sm">
-                <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    color="text.primary"
-                    gutterBottom
-                >
-                    Energy accounts
-                </Typography>
-                <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                    Select an energy account to view details
-                </Typography>
-            </Container>
+                <Container maxWidth="sm">
+                    <Typography
+                        component="h1"
+                        variant="h2"
+                        align="center"
+                        color="text.primary"
+                        gutterBottom
+                    >
+                        Energy accounts
+                    </Typography>
+                    <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                        Select an energy account to view details
+                    </Typography>
+                </Container>
             </Box>
             <Container sx={{ py: 8 }} maxWidth="md">
             {/* End hero unit */}
