@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -32,6 +32,7 @@ type Props = {
 }
 
 type State = {
+    isLoading: boolean;
     energyAccounts: EnergyAccount[]
     selectedEnergyAccount?: EnergyAccount;
     selectedEnergyAccountUsageIntervals?: {};
@@ -40,17 +41,31 @@ type State = {
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
+const POLLING_DELAY = 5000;
 
 export class ConnectedContent extends React.Component<Props, State> {
+    interval: NodeJS.Timer | undefined;
+    
     constructor(props: Props) {
         super(props)
         this.state = {
+            isLoading: true,
             energyAccounts: [],
             selectedEnergyAccount: undefined
         }
     }
 
     componentDidMount() {
+        this.fetchEnergyAccounts()
+        this.interval = setInterval(this.fetchEnergyAccounts, POLLING_DELAY)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval!);
+    }
+
+    fetchEnergyAccounts = () => {
+        console.log("laowiejawef");
         const accessToken = this.props.accessToken
         const headers = new Headers();
         headers.set('Environment', ENVIRONMENT);
@@ -63,7 +78,7 @@ export class ConnectedContent extends React.Component<Props, State> {
             headers
         };
 
-        const url = 'https://api.pelm.com/users/' + this.props.userId + '/accounts'
+        const url = PELM_API_URL + '/accounts'
 
         fetch(url, requestOptions)
             .then(response => {
@@ -90,7 +105,9 @@ export class ConnectedContent extends React.Component<Props, State> {
 
                 this.setState({
                     energyAccounts,
+                    isLoading: false
                 })
+                clearInterval(this.interval!);
             })
             .catch((error: Error) => {
                 try {
@@ -117,7 +134,35 @@ export class ConnectedContent extends React.Component<Props, State> {
         })
     }
 
+    renderLoadingContent() {
+        return <Box
+        sx={{
+            bgcolor: 'background.paper',
+            pt: 8,
+            pb: 6,
+        }}
+        >
+            <Container maxWidth="sm">
+                <Typography
+                    variant="h4"
+                    align="center"
+                    color="text.primary"
+                    gutterBottom
+                >
+                    Loading accounts
+                </Typography>
+                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                    This may take a few seconds.
+                </Typography>
+            </Container>
+        </Box>
+    }
+
     render() {
+        if (this.state.isLoading) {
+            return this.renderLoadingContent()
+        }
+
         return this.state.selectedEnergyAccount
             ? <EnergyAccountDetails 
             energyAccount={this.state.selectedEnergyAccount!} 
@@ -125,22 +170,6 @@ export class ConnectedContent extends React.Component<Props, State> {
             onBack={this.clearSelectedEnergyAccount}
             />
             : <EnergyAccountBrowser energyAccounts={this.state.energyAccounts} onEnergyAccountSelect={this.onEnergyAccountSelect}/>
-
-        // return <ThemeProvider theme={theme}>
-        //     <CssBaseline />
-        //     <AppBar position="relative">
-        //         <Toolbar>
-        //         <Typography variant="h6" color="inherit" noWrap>
-        //             Album layout
-        //         </Typography>
-        //         </Toolbar>
-        //     </AppBar>
-        //     <main>
-        //         {children}
-                
-                
-        //     </main>
-        // </ThemeProvider>
     }
 
 }

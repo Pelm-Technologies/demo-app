@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';
 
-import {CLIENT_ID, CLIENT_SECRET, ENVIRONMENT} from './constants'
+import {CLIENT_ID, CLIENT_SECRET, ENVIRONMENT, PELM_API_URL} from './constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -38,8 +38,10 @@ type State = {
 }
 
 const theme = createTheme();
+const POLLING_DELAY = 5000;
 
 export class EnergyAccountDetails extends React.Component<Props, State> {
+    interval: NodeJS.Timer | undefined;
 
     constructor(props: Props) {
         super(props)
@@ -50,8 +52,25 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this.fetchIntervals()
-        this.fetchBills()
+        this.fetchData()
+        this.interval = setInterval(this.fetchData, POLLING_DELAY)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval!);
+    }
+
+    fetchData = () => {
+        if (this.state.intervalData && this.state.billsData) {
+            clearInterval(this.interval!);
+        }
+
+        if (!this.state.intervalData) {
+            this.fetchIntervals()
+        }
+        if (!this.state.billsData) {
+            this.fetchBills()
+        }
     }
 
 
@@ -72,10 +91,10 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
             headers
         };
 
-        const url = 'https://api.pelm.com/accounts/' 
-            + this.props.energyAccount.id 
-            + '/intervals' 
+        const url = PELM_API_URL
+            + '/intervals?'
             + new URLSearchParams({
+                account_id: this.props.energyAccount.id,
                 ...(startTimeStamp ? {'startTimeStamp': startTimeStamp} : null),
                 ...(endTimeStamp ? {'endTimeStamp': endTimeStamp} : null)
             })
@@ -125,7 +144,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
             headers
         };
 
-        const url = 'https://api.pelm.com/accounts/' 
+        const url = PELM_API_URL + '/accounts/'
             + this.props.energyAccount.id 
             + '/bills'
 
@@ -179,7 +198,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
 
     renderIntervals() {
         const content = !this.state.intervalData
-            ? <div>Loading</div>
+            ? this.renderLoadingContent("intervals")
 
         : <ResponsiveContainer width="100%" height="100%">
             <AreaChart
@@ -227,7 +246,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
 
     renderBillHistory() {
         const content = !this.state.billsData
-            ? <div>Loading</div>
+            ? this.renderLoadingContent("bills")
             : <Grid container spacing={1}>
             {this.state.billsData!.map((bill: any) => (
                 <Grid item key={bill['id']} xs={12}>
@@ -269,6 +288,30 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
                 {content}
             </CardContent>
         </Card>
+    }
+
+    renderLoadingContent(dataType: string) {
+        return <Box
+        sx={{
+            bgcolor: 'background.paper',
+            pt: 8,
+            pb: 6,
+        }}
+        >
+            <Container maxWidth="sm">
+                <Typography
+                    variant="h6"
+                    align="center"
+                    color="text.primary"
+                    gutterBottom
+                >
+                    Loading {dataType}
+                </Typography>
+                <Typography variant="subtitle1" align="center" color="text.secondary" paragraph>
+                    This may take a few minutes if you just connected your utility account for the first time.
+                </Typography>
+            </Container>
+        </Box>
     }
 
     render() {
