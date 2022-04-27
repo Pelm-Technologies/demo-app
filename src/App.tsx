@@ -51,8 +51,8 @@ export class App extends React.Component<{}, State> {
             isLoading: true,
             error: undefined,
             connectToken: undefined,
-            // accessToken: undefined,
-            accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTA1NzAzMzEuMzc2MTIzLCJ1c2VyIjoiNGM3YTNkMDgtMzdjZC00ZTc0LWIwMGYtNzFhM2NiYWZjZjU1IiwiY2xpZW50X2lkIjoiZmI2MGZkOTQtZmZlMi00YWY5LWE1NGEtYzQ3NDc3MGQ0M2Y4In0.ls2Q42MO0bb9ahx1zr9LjVFTkZYgzzbtLgnGXTTym5_JkyR2f8xDLKD6qeVCQiMKDC4RCs_t3N9I_LSN484oyna7Zx-RluhqbwsdZh0ENu50rZy4fzpjSt5zplI2R6W_qFANAnsaD3L4tA6bHX9TvJupNtNweNuOXRR0rTc4q5qAyi1GvR9lLCzxb0mH55f3YWS9I81LM1wBpf4zniyVG0nS9mL1xzKKZw2z3n2xDgpuSv3dZ-ysBzuo6lPD_bg-0qG3OmBwRvOFAHXo31EqXP88NCQ90-D9Fdcx_rEemTkc8hgAn1__TkeFdFQVfkBRstCqnT8OkdC9WJGqWUV7xA'
+            accessToken: undefined,
+            // accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTEwMjQ3MTguMTU3OTQ2LCJ1c2VyIjoiYmNhN2Y4ZWQtYzg2Ny00NzRkLTkxY2EtYTJhYmRhYzYxMzE5IiwiY2xpZW50X2lkIjoiZmI2MGZkOTQtZmZlMi00YWY5LWE1NGEtYzQ3NDc3MGQ0M2Y4In0.1bzAvrum9T2fDIesTwWGXKyRH7j6-jBePyhyBV_Bfa3QcmEPKakK0Uat6MTvGUSoxC3yp4uBe8lO5kjfh8AurMmW1FTYJ3uvsrGUGmnFX5rsu7_reX6ZKjraOEYo2sBpBtgl8cou4PfolQvllanMVPU48NR8-y6mv7DlHHW8u_Dp-oRGfxnkbWRzBtctQqAjiY33CNFt8XhvdJULDq5hWDka2UrSJ-8WN01jRRzPvt3WYcIwHnjRqP6_nPyQbmewRpIqlEveNa_lAkxnN8YTXtT7D53_vnelXGDBtnVJBIazpatjIPeYhQcfyRsbOGmQHN48wjeFYSuwK6KupvBSFg'
         }
     }
 
@@ -82,8 +82,6 @@ export class App extends React.Component<{}, State> {
             body: data,
         };
 
-        // fetch('https://api.pelm.com/auth/connect-token', requestOptions)
-        // fetch('http://127.0.0.1:5000/auth/connect-token', requestOptions)
         fetch(PELM_API_URL + '/auth/connect-token', requestOptions)
             .then(response => {
                 if (response.ok) {
@@ -138,8 +136,6 @@ export class App extends React.Component<{}, State> {
             headers
         };
 
-        // fetch('https://api.pelm.com/auth/token', requestOptions)
-        // fetch('http://127.0.0.1:5000/auth/token', requestOptions)
         fetch(PELM_API_URL + '/auth/token', requestOptions)
             .then(response => {
                 if (response.ok) {
@@ -209,8 +205,6 @@ export class App extends React.Component<{}, State> {
     }
 
     render(): React.ReactNode {
-        console.log("accessToken: " + this.state.accessToken);
-
         if (this.state.isLoading) {
             return "Loading"
         }

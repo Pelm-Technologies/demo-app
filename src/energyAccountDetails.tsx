@@ -91,9 +91,7 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
             headers
         };
 
-        // const url = 'https://api.pelm.com/accounts/' 
         const url = PELM_API_URL
-            // + this.props.energyAccount.id 
             + '/intervals?'
             + new URLSearchParams({
                 account_id: this.props.energyAccount.id,
@@ -146,7 +144,6 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
             headers
         };
 
-        // const url = 'https://api.pelm.com/accounts/' 
         const url = PELM_API_URL + '/accounts/'
             + this.props.energyAccount.id 
             + '/bills'
