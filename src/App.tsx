@@ -193,9 +193,9 @@ export class App extends React.Component<{}, State> {
                         <br/>
                         Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
                         <br/>
-                        username: <code>username_good@gmail.com</code>
+                        username: <code>user@pelm.com</code>
                         <br/>
-                        password: <code>password_good</code>
+                        password: <code>password</code>
                         <br/>
                         <br/>
                     </Typography>
