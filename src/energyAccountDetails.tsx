@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';
 
-import {CLIENT_ID, CLIENT_SECRET, ENVIRONMENT, PELM_API_URL} from './constants'
+import {PELM_CLIENT_ID, PELM_SECRET, ENVIRONMENT, PELM_API_URL} from './constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -83,8 +83,8 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
         const headers = new Headers();
         headers.set('Environment', ENVIRONMENT);
         headers.set('Authorization', 'Bearer ' + accessToken);
-        headers.set('client_id', CLIENT_ID);
-        headers.set('client_secret', CLIENT_SECRET);
+        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        headers.set('Pelm-Secret', PELM_SECRET);
 
         const requestOptions = {
             method: 'GET',
@@ -136,8 +136,8 @@ export class EnergyAccountDetails extends React.Component<Props, State> {
         const headers = new Headers();
         headers.set('Environment', ENVIRONMENT);
         headers.set('Authorization', 'Bearer ' + accessToken);
-        headers.set('client_id', CLIENT_ID);
-        headers.set('client_secret', CLIENT_SECRET);
+        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        headers.set('Pelm-Secret', PELM_SECRET);
 
         const requestOptions = {
             method: 'GET',
