@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {PELM_API_URL, CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from './constants'
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -69,8 +69,8 @@ export class App extends React.Component<{}, State> {
 
         const headers = new Headers();
         headers.set('Environment', ENVIRONMENT);
-        headers.set('client_id', CLIENT_ID);
-        headers.set('client_secret', CLIENT_SECRET);
+        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        headers.set('Pelm-Secret', PELM_SECRET);
 
         const data = new FormData();
         // data.append('user_id', USER_ID)
@@ -123,8 +123,8 @@ export class App extends React.Component<{}, State> {
         const headers = new Headers();
 
         headers.set('Environment', ENVIRONMENT);
-        headers.set('client_id', CLIENT_ID);
-        headers.set('client_secret', CLIENT_SECRET);
+        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        headers.set('Pelm-Secret', PELM_SECRET);
 
         const data = new FormData();
         data.append('grant_type', 'code')

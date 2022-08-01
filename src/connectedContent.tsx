@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {PELM_API_URL, CLIENT_ID, CLIENT_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from './constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -70,8 +70,8 @@ export class ConnectedContent extends React.Component<Props, State> {
         const headers = new Headers();
         headers.set('Environment', ENVIRONMENT);
         headers.set('Authorization', 'Bearer ' + accessToken);
-        headers.set('client_id', CLIENT_ID);
-        headers.set('client_secret', CLIENT_SECRET);
+        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        headers.set('Pelm-Secret', PELM_SECRET);
 
         const requestOptions = {
             method: 'GET',
