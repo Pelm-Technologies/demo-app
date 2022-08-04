@@ -27,7 +27,8 @@ import { EnergyAccountBrowser } from "./energyAccountBrowser";
 import { EnergyAccountDetails } from "./energyAccountDetails";
 
 import { ConnectButton } from './connectButton'
-import { ConnectedContent } from "./connectedContent";
+// import { ConnectedContent } from "./connectedContent";
+import { ConnectedContent } from "./connectedContent2";
 import { Config, useConnect } from "react-pelm-connect";
 
 
@@ -51,8 +52,8 @@ export class App extends React.Component<{}, State> {
             isLoading: true,
             error: undefined,
             connectToken: undefined,
-            accessToken: undefined,
-            // accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTEwMjQ3MTguMTU3OTQ2LCJ1c2VyIjoiYmNhN2Y4ZWQtYzg2Ny00NzRkLTkxY2EtYTJhYmRhYzYxMzE5IiwiY2xpZW50X2lkIjoiZmI2MGZkOTQtZmZlMi00YWY5LWE1NGEtYzQ3NDc3MGQ0M2Y4In0.1bzAvrum9T2fDIesTwWGXKyRH7j6-jBePyhyBV_Bfa3QcmEPKakK0Uat6MTvGUSoxC3yp4uBe8lO5kjfh8AurMmW1FTYJ3uvsrGUGmnFX5rsu7_reX6ZKjraOEYo2sBpBtgl8cou4PfolQvllanMVPU48NR8-y6mv7DlHHW8u_Dp-oRGfxnkbWRzBtctQqAjiY33CNFt8XhvdJULDq5hWDka2UrSJ-8WN01jRRzPvt3WYcIwHnjRqP6_nPyQbmewRpIqlEveNa_lAkxnN8YTXtT7D53_vnelXGDBtnVJBIazpatjIPeYhQcfyRsbOGmQHN48wjeFYSuwK6KupvBSFg'
+            // accessToken: undefined,
+            accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
         }
     }
 
@@ -214,7 +215,8 @@ export class App extends React.Component<{}, State> {
         }
 
         const children = this.state.accessToken
-            ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
+            // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
+            ? <ConnectedContent accessToken={this.state.accessToken!}/>
             : this.renderConnectUtilityMessage()
 
         return <ThemeProvider theme={theme}>
