@@ -53,7 +53,8 @@ const Outer = styled.div`
 `
 
 const Container = styled.div`
-    width: 800px;
+    width: 1000px;
+    min-height: 1000px;
 `
 
 export class ConnectedContent extends React.Component<Props, State> {
@@ -371,12 +372,12 @@ export class ConnectedContent extends React.Component<Props, State> {
                     <br />
                     {/* {this.renderIntervalsEndpoints()} */}
                     <IntervalsInfo accessToken={this.props.accessToken} />
-                    <br />
+                    {/* <br />
                     <br />
                     {this.renderAccountBillsEndpoint()}
                     <br />
                     <br />
-                    {this.renderBillDetailsEndpoint()}
+                    {this.renderBillDetailsEndpoint()} */}
                 </Container>
             </Outer>
         )

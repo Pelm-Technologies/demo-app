@@ -34,9 +34,10 @@ type Props = {
     onSendRequestClick: () => void;
 
     requestInfoChild: React.ReactChild;
+    responseInfoChild: React.ReactChild;
+    prettyViewChild?: React.ReactChild;
 
     data?: any;
-    prettyViewChild?: React.ReactChild;
 }
 
 type State = {
@@ -94,6 +95,7 @@ export class Endpoint extends React.Component<Props, State> {
         return <pre>
             <code>
                 {JSON.stringify(this.props.data, null, '\t')}
+                {/* {JSON.stringify(this.props.data, null, 2)} */}
             </code>
         </pre>;
     }
@@ -109,39 +111,43 @@ export class Endpoint extends React.Component<Props, State> {
 
         return (
             <div>
-                {/* This is the response: */}
-                {/* <div>
-                    <pre>
-                        {data}
-                    </pre>
-                </div> */}
-                <ToggleButtonGroup
-                    value={this.state.view}
-                    exclusive
-                    onChange={this.onViewChange}
-                    aria-label="text alignment"
-                >
-                    <ToggleButton value="pretty" aria-label="left aligned">
-                        Pretty view
-                    </ToggleButton>
-                    <ToggleButton value="data" aria-label="centered">
-                        Data view
-                    </ToggleButton>
-                </ToggleButtonGroup>
-                <Card
-                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                >
+                <Card sx={{ 
+                    // height: '100%', 
+                    // display: 'flex', 
+                    // flexDirection: 'column' 
+                    marginTop: '12px',
+                }}>
                     <CardContent sx={{ flexGrow: 1 }}>
                         <div style={{display: 'flex'}}>
-                            <div style={{width: '500px'}}>
-                                This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif
-                            </div>
+                            <Box sx={{
+                                width: 350, height: 500
+                            }}>
+                                {/* This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif */}
+                                {this.props.responseInfoChild}
+                            </Box>
                             <Box sx={{
                                 width: 500,
                                 height: 500,
                                 overflowY: 'scroll'
                             }}>
-                                {content}
+                                <Box>
+                                    <ToggleButtonGroup
+                                        value={this.state.view}
+                                        size="small"
+                                        exclusive
+                                        onChange={this.onViewChange}
+                                        aria-label="text alignment"
+                                    >
+                                        <ToggleButton value="pretty" aria-label="left aligned">
+                                            Pretty view
+                                        </ToggleButton>
+                                        <ToggleButton value="data" aria-label="centered">
+                                            Data view
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                    {content}
+                                </Box>
+                                
                             </Box>
                         </div>
                     </CardContent>
@@ -157,8 +163,6 @@ export class Endpoint extends React.Component<Props, State> {
                     {this.props.title}
                 </Typography>
                 {this.renderRequestInfo()}
-                {/* {this.props.requestInfoChild}
-                <button onClick={this.props.onSendRequestClick}>Submit</button> */}
                 {this.maybeRenderResponseInfo()}
             </div>
         )

@@ -138,6 +138,24 @@ export class AccountsInfo extends React.Component<Props, State> {
         </div>
     }
 
+    renderResponseInfoChild() {
+        return this.renderSuccessResponseInfoChild()
+    }
+
+    renderSuccessResponseInfoChild() {
+        return <Box>
+            You've successfully fetched this User's accounts.
+            <br/>
+            <br/>
+            <a href="https://docs.pelm.com/reference/get_accounts" target="blank">View docs</a>
+            <br/>
+            <br/>
+            Explore some other endpoints.
+
+
+        </Box>
+    }
+
     render() {
         // return this.renderAccountsEndpoint()
         let data;
@@ -151,6 +169,7 @@ export class AccountsInfo extends React.Component<Props, State> {
         return <Endpoint
             title={'GET /accounts'}
             requestInfoChild={this.renderRequestInfoChild()}
+            responseInfoChild={this.renderResponseInfoChild()}
             onSendRequestClick={this.getData}
             data={data}
             prettyViewChild={prettyViewChild}
