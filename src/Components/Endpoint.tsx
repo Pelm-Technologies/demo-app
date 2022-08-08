@@ -31,6 +31,9 @@ type View = 'pretty' | 'data'
 type Props = {
     // accessToken: string;
     sendRequest: () => void;
+
+    requestInfoChild: React.ReactChild;
+
     data?: any;
     prettyViewChild?: React.ReactChild;
 }
@@ -133,9 +136,21 @@ export class Endpoint extends React.Component<Props, State> {
                             <div style={{width: '500px'}}>
                                 This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif
                             </div>
-                            <div style={{width: '500px'}}>
+                            {/* <div style={{width: '500px'}}>
                                 {content}
-                            </div>
+                            </div> */}
+                            <Box sx={{
+                                width: 500,
+                                height: 500,
+                                overflowY: 'scroll'
+                                // backgroundColor: 'primary.dark',
+                                // '&:hover': {
+                                //     backgroundColor: 'primary.main',
+                                //     opacity: [0.9, 0.8, 0.7],
+                                // },
+                            }}>
+                                {content}
+                            </Box>
                         </div>
                     </CardContent>
                 </Card>
@@ -146,7 +161,8 @@ export class Endpoint extends React.Component<Props, State> {
     renderAccountsEndpoint() {
         return (
             <div>
-                <div>Click this button to make a GET request to <code>/accounts</code></div>
+                {/* <div>Click this button to make a GET request to <code>/accounts</code></div> */}
+                {this.props.requestInfoChild}
                 {/* <button onClick={this.fetchAccounts}>Submit</button> */}
                 <button onClick={this.props.sendRequest}>Submit</button>
                 {this.maybeRenderAccountsResponse()}
