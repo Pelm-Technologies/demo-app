@@ -29,8 +29,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 type View = 'pretty' | 'data'
 
 type Props = {
-    // accessToken: string;
-    sendRequest: () => void;
+    title: string;
+
+    onSendRequestClick: () => void;
 
     requestInfoChild: React.ReactChild;
 
@@ -56,8 +57,6 @@ export class Endpoint extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            // accountsData: undefined,
-            // accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
             view: 'pretty',
         }
     }
@@ -68,40 +67,41 @@ export class Endpoint extends React.Component<Props, State> {
         }
     }
 
-    // renderPrettyView() {
-    //     return <Grid container spacing={1}>
-    //         {this.state.accountsData.map((account: any) => (
-    //             <Grid item key={account.id} xs={12}>
-    //                 <Card
-    //                     sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-    //                 >
-    //                     <CardContent sx={{ flexGrow: 1 }}>
-    //                         <Typography gutterBottom variant="h5" component="h2">
-    //                             {account.address}
-    //                         </Typography>
-    //                         <Typography>
-    //                             Account number: {account.account_number}
-    //                         </Typography>
-    //                     </CardContent>
-    //                 </Card>
-    //             </Grid>
-    //         ))}
-    //     </Grid>;
-    // }
+    renderRequestInfo() {
+        return <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between'
+        }}>
+            <Box sx={{
+                width: 600
+            }}>
+                {this.props.requestInfoChild}
+            </Box>
+            <Box>
+                <Button 
+                    variant="outlined"
+                    onClick={this.props.onSendRequestClick}
+                >
+                    Send Request
+                </Button>
+            </Box>
 
-    renderDataView() {
-        return <div>
-            {JSON.stringify(this.props.data)}
-        </div>;
+        </Box>
+
     }
 
-    maybeRenderAccountsResponse() {
+    renderDataView() {
+        return <pre>
+            <code>
+                {JSON.stringify(this.props.data, null, '\t')}
+            </code>
+        </pre>;
+    }
+
+    maybeRenderResponseInfo() {
         if (!this.props.data) {
             return null;
         }
-
-        // const data = JSON.stringify(this.state.accountsData)
-        // const data = '[ { "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": [ "GAS", "ELECTRIC" ], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": [ "ELECTRIC" ], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" } ]';
 
         const content = this.state.view == 'pretty'
             ? this.props.prettyViewChild
@@ -136,18 +136,10 @@ export class Endpoint extends React.Component<Props, State> {
                             <div style={{width: '500px'}}>
                                 This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif
                             </div>
-                            {/* <div style={{width: '500px'}}>
-                                {content}
-                            </div> */}
                             <Box sx={{
                                 width: 500,
                                 height: 500,
                                 overflowY: 'scroll'
-                                // backgroundColor: 'primary.dark',
-                                // '&:hover': {
-                                //     backgroundColor: 'primary.main',
-                                //     opacity: [0.9, 0.8, 0.7],
-                                // },
                             }}>
                                 {content}
                             </Box>
@@ -158,20 +150,17 @@ export class Endpoint extends React.Component<Props, State> {
         )
     }
 
-    renderAccountsEndpoint() {
+    render() {
         return (
             <div>
-                {/* <div>Click this button to make a GET request to <code>/accounts</code></div> */}
-                {this.props.requestInfoChild}
-                {/* <button onClick={this.fetchAccounts}>Submit</button> */}
-                <button onClick={this.props.sendRequest}>Submit</button>
-                {this.maybeRenderAccountsResponse()}
+                <Typography variant="h3" gutterBottom component="div">
+                    {this.props.title}
+                </Typography>
+                {this.renderRequestInfo()}
+                {/* {this.props.requestInfoChild}
+                <button onClick={this.props.onSendRequestClick}>Submit</button> */}
+                {this.maybeRenderResponseInfo()}
             </div>
         )
     }
-
-    render() {
-        return this.renderAccountsEndpoint()
-    }
-
 }

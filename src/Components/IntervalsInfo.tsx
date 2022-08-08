@@ -90,28 +90,20 @@ export class IntervalsInfo extends React.Component<Props, State> {
 
         const url = 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
 
-        fetch(url, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
-                }
-            })
-            .then((data) => {
-                this.setState({
-                    response: data
-                })
-            })
-            .catch((error: Error) => {
-                try {
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
+        const response = await fetch(url, requestOptions);
+        const data = await response.json();
+        if (data.error != null) {
+        //   setError(data.error);
+        //   setIsLoading(false);
+            console.log("There was an error");
+            console.log(data.error)
+            return;
+        }
 
-                } catch (e) {
-                    console.log("an error occurred")
-                }
-            });
+        console.log("data");
+        console.log(data);
+
+        this.setState({response: data});
     }
 
     renderPrettyView() {
@@ -223,8 +215,9 @@ export class IntervalsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
+            title={'Get intervals'}
             requestInfoChild={this.renderRequestInfoChild()}
-            sendRequest={this.getData}
+            onSendRequestClick={this.getData}
             data={data}
             prettyViewChild={prettyViewChild}
         />

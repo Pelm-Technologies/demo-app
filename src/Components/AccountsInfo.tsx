@@ -55,8 +55,8 @@ export class AccountsInfo extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            accountsData: undefined,
-            // accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
+            // accountsData: undefined,
+            accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
         }
     }
 
@@ -124,7 +124,18 @@ export class AccountsInfo extends React.Component<Props, State> {
     }
 
     renderRequestInfoChild() {
-        return <div>Click this button to make a GET request to <code>/accounts</code></div>;
+        // return <div>Click this button to make a GET request to <code>/accounts</code></div>;
+
+        return <div>
+            Click the "Send Request" button to make a GET request to <code>/accounts</code>.
+
+            <br/>
+            <br/>
+            The Account object corresponds to an account under a utility login. If a user has a residential home, an investment home, and a vacation home all managed under the same utility login, these would correspond to three different Pelm Account objects.
+
+
+
+        </div>
     }
 
     render() {
@@ -138,8 +149,9 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
+            title={'GET /accounts'}
             requestInfoChild={this.renderRequestInfoChild()}
-            sendRequest={this.getData}
+            onSendRequestClick={this.getData}
             data={data}
             prettyViewChild={prettyViewChild}
         />
