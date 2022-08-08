@@ -20,6 +20,12 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 // import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -209,45 +215,108 @@ export class IntervalsInfo extends React.Component<Props, State> {
     }
 
     renderRequestInfoChild() {
-        return (
-            <div>
-                <div>Click this button to make a GET request to <code>/intervals</code></div>
-                <input
-                    id="accountId"
-                    name="accoundId"
-                    type="text"
-                    value={this.state.accountId}
-                    onChange={this.onAccountIdInputChange}
-                    placeholder="Enter Account Id"
-                />
-                <input
-                    id="startDate"
-                    name="startDate"
-                    type="text"
-                    value={this.state.startDate}
-                    onChange={this.onStartDateInputChange}
-                    placeholder="Enter Start Date"
-                />
-                <input
-                    id="endDate"
-                    name="endDate"
-                    type="text"
-                    value={this.state.endDate}
-                    onChange={this.onEndDateInputChange}
-                    placeholder="Enter End Date"
-                />
-                <select onChange={this.onTypeInputChange}>
-                    <option value="ELECTRIC">ELECTRIC</option>
-                    <option value="GAS">GAS</option>
-                </select>
-                {/* <button onClick={this.fetchIntervals}>Submit</button> */}
-                {/* {this.maybeRenderIntervalsResponse()} */}
-            </div>
-        )
+        // return (
+        //     <div>
+        //         <div>Click this button to make a GET request to <code>/intervals</code></div>
+        //         <input
+        //             id="accountId"
+        //             name="accoundId"
+        //             type="text"
+        //             value={this.state.accountId}
+        //             onChange={this.onAccountIdInputChange}
+        //             placeholder="Enter Account Id"
+        //         />
+        //         <input
+        //             id="startDate"
+        //             name="startDate"
+        //             type="text"
+        //             value={this.state.startDate}
+        //             onChange={this.onStartDateInputChange}
+        //             placeholder="Enter Start Date"
+        //         />
+        //         <input
+        //             id="endDate"
+        //             name="endDate"
+        //             type="text"
+        //             value={this.state.endDate}
+        //             onChange={this.onEndDateInputChange}
+        //             placeholder="Enter End Date"
+        //         />
+        //         <select onChange={this.onTypeInputChange}>
+        //             <option value="ELECTRIC">ELECTRIC</option>
+        //             <option value="GAS">GAS</option>
+        //         </select>
+        //         {/* <button onClick={this.fetchIntervals}>Submit</button> */}
+        //         {/* {this.maybeRenderIntervalsResponse()} */}
+        //     </div>
+        // )
+
+        return <Box>
+            {this.renderInputs()}
+
+            <Box>
+                <br/>
+                Input values into the required fields and then click the "SEND REQUEST" button to make a GET request to <code>/intervals</code>
+                <br/>
+                <br/>
+                The <code>account_id</code> field is the only required field. This field specifies the Account object to return intervals for. The <code>account_id</code> is returned in the <code>/accounts</code> response.
+                <br/>
+                <br/>
+            </Box>
+
+        </Box>
+    }
+
+    renderInputs() {
+        return <Box>
+            <TextField 
+                required
+                label="account_id"
+                variant="outlined"  
+                value={this.state.accountId}
+                onChange={this.onAccountIdInputChange}
+                placeholder="Enter Account Id"
+            />
+            <TextField 
+                label="start_date"
+                variant="outlined"  
+                value={this.state.startDate}
+                onChange={this.onStartDateInputChange}
+                placeholder="Enter Start Date"
+            />
+            <TextField 
+                label="end_date"
+                variant="outlined"  
+                value={this.state.endDate}
+                onChange={this.onEndDateInputChange}
+                placeholder="Enter End Date"
+            />
+            <FormControl >
+                <InputLabel id="demo-simple-select-label">type</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.type}
+                    label="type"
+                    onChange={this.onTypeInputChange}
+                >
+                <MenuItem value="ELECTRIC">ELECTRIC</MenuItem>
+                <MenuItem value="GAS">GAS</MenuItem>
+                </Select>
+            </FormControl>
+        </Box>
     }
 
     renderResponseInfoChild() {
-        return <div>This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif</div>
+        return <Box>
+            You've successfully fetched the specified Account's usage intervals!
+            <br/>
+            <br/>
+            <a href="https://docs.pelm.com/reference/get_intervals" target="blank">View docs</a>
+            <br/>
+            <br/>
+            Explore some other endpoints.
+        </Box>
     }
 
     render() {

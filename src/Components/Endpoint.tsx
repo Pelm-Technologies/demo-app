@@ -74,7 +74,7 @@ export class Endpoint extends React.Component<Props, State> {
             justifyContent: 'space-between'
         }}>
             <Box sx={{
-                width: 600
+                width: 800
             }}>
                 {this.props.requestInfoChild}
             </Box>
@@ -120,16 +120,13 @@ export class Endpoint extends React.Component<Props, State> {
                     <CardContent sx={{ flexGrow: 1 }}>
                         <div style={{display: 'flex'}}>
                             <Box sx={{
-                                width: 350, height: 500
+                                width: 350, 
+                                height: 500
                             }}>
                                 {/* This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif */}
                                 {this.props.responseInfoChild}
                             </Box>
-                            <Box sx={{
-                                width: 500,
-                                height: 500,
-                                overflowY: 'scroll'
-                            }}>
+                            <Box>
                                 <Box>
                                     <ToggleButtonGroup
                                         value={this.state.view}
@@ -145,9 +142,14 @@ export class Endpoint extends React.Component<Props, State> {
                                             Data view
                                         </ToggleButton>
                                     </ToggleButtonGroup>
-                                    {content}
+                                    <Box sx={{
+                                        width: 650,
+                                        height: 500,
+                                        overflowY: 'scroll'
+                                    }}>
+                                        {content}
+                                    </Box>
                                 </Box>
-                                
                             </Box>
                         </div>
                     </CardContent>

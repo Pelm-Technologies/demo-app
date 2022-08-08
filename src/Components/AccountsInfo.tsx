@@ -144,15 +144,13 @@ export class AccountsInfo extends React.Component<Props, State> {
 
     renderSuccessResponseInfoChild() {
         return <Box>
-            You've successfully fetched this User's accounts.
+            You've successfully fetched this User's accounts!
             <br/>
             <br/>
             <a href="https://docs.pelm.com/reference/get_accounts" target="blank">View docs</a>
             <br/>
             <br/>
             Explore some other endpoints.
-
-
         </Box>
     }
 
