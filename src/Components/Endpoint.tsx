@@ -17,6 +17,9 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 // import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -29,6 +32,8 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 type View = 'pretty' | 'data'
 
 type Props = {
+    isLoading: boolean;
+
     title: string;
 
     onSendRequestClick: () => void;
@@ -68,7 +73,7 @@ export class Endpoint extends React.Component<Props, State> {
         }
     }
 
-    renderRequestInfo() {
+    renderRequestSection() {
         return <Box sx={{
             display: 'flex',
             justifyContent: 'space-between'
@@ -82,6 +87,7 @@ export class Endpoint extends React.Component<Props, State> {
                 <Button 
                     variant="outlined"
                     onClick={this.props.onSendRequestClick}
+                    disabled={this.props.isLoading}
                 >
                     Send Request
                 </Button>
@@ -100,63 +106,75 @@ export class Endpoint extends React.Component<Props, State> {
         </pre>;
     }
 
-    maybeRenderResponseInfo() {
+    maybeRenderResponseSection() {
         if (!this.props.data) {
             return null;
         }
 
-        const content = this.state.view == 'pretty'
-            ? this.props.prettyViewChild
-            : this.renderDataView();
+        const content = this.props.isLoading
+            ? this.renderLoadingIndicator()
+            : this.renderResponseInfo()
 
         return (
             <div>
-                <Card sx={{ 
-                    // height: '100%', 
-                    // display: 'flex', 
-                    // flexDirection: 'column' 
+                <Card sx={{
                     marginTop: '12px',
                 }}>
                     <CardContent sx={{ flexGrow: 1 }}>
-                        <div style={{display: 'flex'}}>
-                            <Box sx={{
-                                width: 350, 
-                                height: 500
-                            }}>
-                                {/* This is the description blasjdofaiwje aoiwefoiaaiowef wefoiwejofwoif */}
-                                {this.props.responseInfoChild}
-                            </Box>
-                            <Box>
-                                <Box>
-                                    <ToggleButtonGroup
-                                        value={this.state.view}
-                                        size="small"
-                                        exclusive
-                                        onChange={this.onViewChange}
-                                        aria-label="text alignment"
-                                    >
-                                        <ToggleButton value="pretty" aria-label="left aligned">
-                                            Pretty view
-                                        </ToggleButton>
-                                        <ToggleButton value="data" aria-label="centered">
-                                            Data view
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                    <Box sx={{
-                                        width: 650,
-                                        height: 500,
-                                        overflowY: 'scroll'
-                                    }}>
-                                        {content}
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </div>
+                        {content}
                     </CardContent>
                 </Card>
             </div>
         )
     }
+
+    renderLoadingIndicator() {
+        return <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+        </Box>;
+    }
+
+    renderResponseInfo() {
+        const dataContent = this.state.view == 'pretty'
+            ? this.props.prettyViewChild
+            : this.renderDataView();
+
+        return <div style={{display: 'flex'}}>
+            <Box sx={{
+                width: 350, 
+                height: 500
+            }}>
+                {this.props.responseInfoChild}
+            </Box>
+            <Box>
+                <Box>
+                    <ToggleButtonGroup
+                        value={this.state.view}
+                        size="small"
+                        exclusive
+                        onChange={this.onViewChange}
+                        aria-label="text alignment"
+                    >
+                        <ToggleButton value="pretty" aria-label="left aligned">
+                            Pretty view
+                        </ToggleButton>
+                        <ToggleButton value="data" aria-label="centered">
+                            Data view
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                    <Box sx={{
+                        width: 650,
+                        height: 500,
+                        overflowY: 'scroll'
+                    }}>
+                        {dataContent}
+                    </Box>
+                </Box>
+            </Box>
+        </div>
+    }
+    
+    
 
     render() {
         return (
@@ -164,8 +182,8 @@ export class Endpoint extends React.Component<Props, State> {
                 <Typography variant="h3" gutterBottom component="div">
                     {this.props.title}
                 </Typography>
-                {this.renderRequestInfo()}
-                {this.maybeRenderResponseInfo()}
+                {this.renderRequestSection()}
+                {this.maybeRenderResponseSection()}
             </div>
         )
     }

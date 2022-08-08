@@ -37,6 +37,7 @@ type Props = {
 }
 
 type State = {
+    isLoading: boolean;
     accountsData?: any;
 }
 
@@ -55,6 +56,7 @@ export class AccountsInfo extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
+            isLoading: false,
             // accountsData: undefined,
             accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
         }
@@ -63,6 +65,7 @@ export class AccountsInfo extends React.Component<Props, State> {
 
     getData = async () => {
         // setIsLoading(true);
+        this.setState({isLoading: true});
 
         const headers = new Headers({
             'Authorization': 'Bearer ' + this.props.accessToken,
@@ -86,7 +89,10 @@ export class AccountsInfo extends React.Component<Props, State> {
         console.log("data");
         console.log(data);
 
-        this.setState({accountsData: data});
+        this.setState({
+            isLoading: false,
+            accountsData: data
+        });
 
         // setTransformedData(props.transformData(data)); // transform data into proper format for each individual product
         // if (data.pdf != null) {
@@ -165,6 +171,7 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
+            isLoading={this.state.isLoading}
             title={'GET /accounts'}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
