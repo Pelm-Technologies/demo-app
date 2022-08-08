@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from 'styled-components';
 
 import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../constants'
+import { requestHeaders } from "../Helpers/FetchHelpers";
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -29,6 +30,8 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { EnergyAccount } from '../types'
 
 import { Endpoint } from './Endpoint'
+
+import fetchToCurl from 'fetch-to-curl';
 
 type View = 'pretty' | 'data'
 
@@ -62,21 +65,42 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
     }
 
+    requestUrl() {
+        return 'https://api.pelm.com/accounts'
+    }
+
+    requestOptions(isExample: boolean) {
+        // const headers = new Headers({
+        //     'Authorization': 'Bearer ' + this.props.accessToken,
+        //     'Pelm-Client-Id': PELM_CLIENT_ID,
+        //     'Pelm-Secret': PELM_SECRET
+        // });
+
+        const headers = requestHeaders(isExample, this.props.accessToken)
+
+        return {
+            method: 'GET',
+            headers
+        };
+    }
 
     getData = async () => {
         // setIsLoading(true);
         this.setState({isLoading: true});
 
-        const headers = new Headers({
-            'Authorization': 'Bearer ' + this.props.accessToken,
-            'Pelm-Client-Id': PELM_CLIENT_ID,
-            'Pelm-Secret': PELM_SECRET
-        });
-        const requestOptions = {
-            method: 'GET',
-            headers
-        };
-        const response = await fetch('https://api.pelm.com/accounts', requestOptions);
+        // const headers = new Headers({
+        //     'Authorization': 'Bearer ' + this.props.accessToken,
+        //     'Pelm-Client-Id': PELM_CLIENT_ID,
+        //     'Pelm-Secret': PELM_SECRET
+        // });
+        // const requestOptions = {
+        //     method: 'GET',
+        //     headers
+        // };
+        
+        // const url = 'https://api.pelm.com/accounts'
+
+        const response = await fetch(this.requestUrl(), this.requestOptions(false));
         const data = await response.json();
         if (data.error != null) {
         //   setError(data.error);
@@ -101,6 +125,10 @@ export class AccountsInfo extends React.Component<Props, State> {
         // setShowTable(true);
         // setIsLoading(false);
     };
+
+    getCurl() {
+        return fetchToCurl(this.requestUrl(), this.requestOptions(true));
+    }
 
     renderPrettyView() {
         return <Grid container spacing={1}>
@@ -160,6 +188,10 @@ export class AccountsInfo extends React.Component<Props, State> {
         </Box>
     }
 
+    renderCurl() {
+
+    }
+
     render() {
         // return this.renderAccountsEndpoint()
         let data;
@@ -173,6 +205,7 @@ export class AccountsInfo extends React.Component<Props, State> {
         return <Endpoint
             isLoading={this.state.isLoading}
             title={'GET /accounts'}
+            curl={this.getCurl()}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
             onSendRequestClick={this.getData}

@@ -35,6 +35,7 @@ type Props = {
     isLoading: boolean;
 
     title: string;
+    curl?: string;
 
     onSendRequestClick: () => void;
 
@@ -46,7 +47,8 @@ type Props = {
 }
 
 type State = {
-    view: View;
+    dataView: View;
+    shouldShouldCurl: boolean;
 }
 
 const Outer = styled.div`
@@ -63,17 +65,30 @@ export class Endpoint extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            view: 'pretty',
+            dataView: 'pretty',
+            shouldShouldCurl: false,
         }
     }
 
     onViewChange = (event: any, view: View) => {
         if (view !== null) {
-            this.setState({view});
+            this.setState({dataView: view});
         }
     }
 
+    onCurlDisplayChange = (event: any) => {
+        this.setState({shouldShouldCurl: !this.state.shouldShouldCurl})
+    }
+
     renderRequestSection() {
+        const showCurlButtonText = this.state.shouldShouldCurl
+            ? 'HIDE CURL'
+            : 'SHOW CURL'
+
+        const curlContent = this.state.shouldShouldCurl
+            ? <code><br/>{this.props.curl}</code>
+            : null
+
         return <Box sx={{
             display: 'flex',
             justifyContent: 'space-between'
@@ -81,7 +96,11 @@ export class Endpoint extends React.Component<Props, State> {
             <Box sx={{
                 width: 800
             }}>
-                {this.props.requestInfoChild}
+                {/* {this.props.requestInfoChild} */}
+                <Box>
+                    {this.props.requestInfoChild}
+                    {curlContent}
+                </Box>
             </Box>
             <Box>
                 <Button 
@@ -90,6 +109,14 @@ export class Endpoint extends React.Component<Props, State> {
                     disabled={this.props.isLoading}
                 >
                     Send Request
+                </Button>
+                <Button 
+                    variant="outlined"
+                    // onClick={this.props.onSendRequestClick}
+                    onClick={this.onCurlDisplayChange}
+                    color="secondary"
+                >
+                    {showCurlButtonText}
                 </Button>
             </Box>
 
@@ -135,7 +162,7 @@ export class Endpoint extends React.Component<Props, State> {
     }
 
     renderResponseInfo() {
-        const dataContent = this.state.view == 'pretty'
+        const dataContent = this.state.dataView == 'pretty'
             ? this.props.prettyViewChild
             : this.renderDataView();
 
@@ -149,7 +176,7 @@ export class Endpoint extends React.Component<Props, State> {
             <Box>
                 <Box>
                     <ToggleButtonGroup
-                        value={this.state.view}
+                        value={this.state.dataView}
                         size="small"
                         exclusive
                         onChange={this.onViewChange}
