@@ -211,6 +211,7 @@ export class AccountsInfo extends React.Component<Props, State> {
             onSendRequestClick={this.getData}
             data={data}
             prettyViewChild={prettyViewChild}
+            defaultExpanded={true}
         />
     }
 

@@ -338,7 +338,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
 
         return <Endpoint
             isLoading={this.state.isLoading}
-            title={'Get intervals'}
+            title={'GET /intervals'}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
             onSendRequestClick={this.getData}
