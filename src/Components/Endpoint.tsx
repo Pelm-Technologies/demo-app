@@ -37,6 +37,7 @@ type View = 'pretty' | 'data'
 
 type Props = {
     isLoading: boolean;
+    // error?: string;
 
     title: string;
     curl?: string;
@@ -74,6 +75,17 @@ export class Endpoint extends React.Component<Props, State> {
             shouldShouldCurl: false,
         }
     }
+
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.prettyViewChild !== this.props.prettyViewChild) {
+            console.log("asshole")
+
+            if (!this.props.prettyViewChild) {
+                console.log("gorilla!")
+                this.setState({dataView: 'data'})
+            }
+        }
+      }
 
     onViewChange = (event: any, view: View) => {
         if (view !== null) {
@@ -173,21 +185,32 @@ export class Endpoint extends React.Component<Props, State> {
     }
 
     renderResponseInfo() {
-        const dataContent = this.state.dataView == 'pretty'
+        const isError = ('error_code' in this.props.data);
+
+        const toggleButtonValue = isError
+            ? 'data'
+            : this.state.dataView
+
+        const dataContent = toggleButtonValue == 'pretty'
             ? this.props.prettyViewChild
             : this.renderDataView();
+
+
+        const responseInfoChild = isError
+            ? this.renderErrorResponseInfo()
+            : this.props.responseInfoChild
 
         return <div style={{display: 'flex'}}>
             <Box sx={{
                 width: 350, 
                 height: 500
             }}>
-                {this.props.responseInfoChild}
+                {responseInfoChild}
             </Box>
             <Box>
                 <Box>
                     <ToggleButtonGroup
-                        value={this.state.dataView}
+                        value={toggleButtonValue}
                         size="small"
                         exclusive
                         onChange={this.onViewChange}
@@ -211,20 +234,33 @@ export class Endpoint extends React.Component<Props, State> {
             </Box>
         </div>
     }
+
+    renderErrorResponseInfo() {
+        const errorCode = this.props.data!.error_code
+
+        let message: string;
+        switch (errorCode) {
+            case 'parameter_invalid':
+                message = "One or more parameters are invalid. The error_message should provide more context."
+                break;
+            case 'parameter_missing':
+                message = "One or more required parameters are missing. View the API docs to see which parameters are required for each request."
+                break;
+            case 'data_unavailable':
+                message = "The data for this User is not yet available. It usually takes a few minutes to sync data after a utility login is connected for the first time. It usually takes a few seconds to sync Accounts and a few minutes to sync Intervals."
+                break;
+            default:
+                message = "An error occured while handling this request."
+        }
+
+        return <Box>
+            {message}
+        </Box>
+    }
     
     
 
     render() {
-        // return (
-        //     <div>
-        //         <Typography variant="h3" gutterBottom component="div">
-        //             {this.props.title}
-        //         </Typography>
-        //         {this.renderRequestSection()}
-        //         {this.maybeRenderResponseSection()}
-        //     </div>
-        // )
-
         return <Accordion
             defaultExpanded={this.props.defaultExpanded}
         >
