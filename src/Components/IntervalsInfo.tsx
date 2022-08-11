@@ -5,6 +5,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { LineChart, Line, Label } from 'recharts';
 
 import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../constants'
+import { requestHeaders } from "../Helpers/FetchHelpers";
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -38,6 +39,8 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { EnergyAccount } from '../types'
 
 import { Endpoint } from './Endpoint'
+
+import fetchToCurl from 'fetch-to-curl';
 
 type View = 'pretty' | 'data'
 
@@ -81,20 +84,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
         }
     }
 
-    getData = async () => {
-        this.setState({isLoading: true});
-
-        const headers = new Headers({
-            'Authorization': 'Bearer ' + this.props.accessToken,
-            'Pelm-Client-Id': PELM_CLIENT_ID,
-            'Pelm-Secret': PELM_SECRET
-        });
-
-        const requestOptions = {
-            method: 'GET',
-            headers
-        };
-
+    requestUrl() {
         const params = {
             account_id: this.state.accountId,
             type: this.state.type,
@@ -102,9 +92,48 @@ export class IntervalsInfo extends React.Component<Props, State> {
             ...(this.state.endDate && { end_date: this.state.endDate })
         }
 
-        const url = 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
+        return 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
+    }
 
-        const response = await fetch(url, requestOptions);
+    requestOptions(isExample: boolean) {
+        // const headers = new Headers({
+        //     'Authorization': 'Bearer ' + this.props.accessToken,
+        //     'Pelm-Client-Id': PELM_CLIENT_ID,
+        //     'Pelm-Secret': PELM_SECRET
+        // });
+
+        const headers = requestHeaders(isExample, this.props.accessToken)
+
+        return {
+            method: 'GET',
+            headers
+        };
+    }
+
+    getData = async () => {
+        this.setState({isLoading: true});
+
+        // const headers = new Headers({
+        //     'Authorization': 'Bearer ' + this.props.accessToken,
+        //     'Pelm-Client-Id': PELM_CLIENT_ID,
+        //     'Pelm-Secret': PELM_SECRET
+        // });
+
+        // const requestOptions = {
+        //     method: 'GET',
+        //     headers
+        // };
+
+        // const params = {
+        //     account_id: this.state.accountId,
+        //     type: this.state.type,
+        //     ...(this.state.startDate && { start_date: this.state.startDate }),
+        //     ...(this.state.endDate && { end_date: this.state.endDate })
+        // }
+
+        // const url = 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
+
+        const response = await fetch(this.requestUrl(), this.requestOptions(false));
 
         const data = await response.json();
 
@@ -148,6 +177,10 @@ export class IntervalsInfo extends React.Component<Props, State> {
         // console.log(text)
 
         // this.setState({ response: '' });
+    }
+
+    getCurl() {
+        return fetchToCurl(this.requestUrl(), this.requestOptions(true));
     }
 
     renderPrettyView() {
@@ -371,6 +404,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
             isLoading={this.state.isLoading}
             // errorCode={this.state.errorCode}
             title={'GET /intervals'}
+            curl={this.getCurl()}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
             onSendRequestClick={this.getData}
