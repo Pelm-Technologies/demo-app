@@ -162,7 +162,7 @@ export class AccountsInfo extends React.Component<Props, State> {
                                 Account number: {account.account_number}
                             </Typography>
                             <Typography>
-                                Avalailable meter types: {account.available_meter_types}
+                                Avalailable meter types: {account.available_meter_types.join(", ")}
                             </Typography>
                             <Button 
                                 variant="outlined"
