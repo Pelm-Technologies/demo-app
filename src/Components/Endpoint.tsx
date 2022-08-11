@@ -8,6 +8,7 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 // import CameraIcon from '@mui/icons-material/PhotoCamera';
 import Card from '@mui/material/Card';
+import Paper from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -22,6 +23,9 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import { CodeBlock, dracula } from "react-code-blocks";
+
 
 
 // import Container from '@mui/material/Container';
@@ -147,13 +151,22 @@ export class Endpoint extends React.Component<Props, State> {
 
     }
 
+    renderPrettyView() {
+        return this.props.prettyViewChild
+        // return <Paper
+        //     variant="outlined"    
+        // >
+        //     {this.props.prettyViewChild}
+        // </Paper>
+    }
+
     renderDataView() {
-        return <pre>
-            <code>
-                {JSON.stringify(this.props.data, null, '\t')}
-                {/* {JSON.stringify(this.props.data, null, 2)} */}
-            </code>
-        </pre>;
+        return <CodeBlock
+            text={JSON.stringify(this.props.data, null, '\t')}
+            language="json"
+            showLineNumbers={true}
+            theme={dracula}
+        />
     }
 
     maybeRenderResponseSection() {
@@ -192,7 +205,7 @@ export class Endpoint extends React.Component<Props, State> {
             : this.state.dataView
 
         const dataContent = toggleButtonValue == 'pretty'
-            ? this.props.prettyViewChild
+            ? this.renderPrettyView()
             : this.renderDataView();
 
 
@@ -210,7 +223,7 @@ export class Endpoint extends React.Component<Props, State> {
             <Box sx={{
                 marginLeft: '16px'
             }}>
-                <Box>
+                {/* <Box> */}
                     <ToggleButtonGroup
                         value={toggleButtonValue}
                         size="small"
@@ -232,7 +245,7 @@ export class Endpoint extends React.Component<Props, State> {
                     }}>
                         {dataContent}
                     </Box>
-                </Box>
+                {/* </Box> */}
             </Box>
         </div>
     }

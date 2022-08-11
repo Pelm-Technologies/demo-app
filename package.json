@@ -20,6 +20,7 @@
     "@types/react-dom": "^17.0.11",
     "fetch-to-curl": "^0.5.2",
     "react": "^17.0.2",
+    "react-code-blocks": "^0.0.9-0",
     "react-dom": "^17.0.2",
     "react-pelm-connect": "^1.0.3",
     "react-scripts": "^5.0.1",
