@@ -28,6 +28,7 @@ import { EnergyAccount } from './types'
 
 import { AccountsInfo } from './Components/AccountsInfo'
 import { IntervalsInfo } from './Components/IntervalsInfo'
+import { BillsInfo } from './Components/BillsInfo'
 
 type Props = {
     accessToken: string;
@@ -371,19 +372,30 @@ export class ConnectedContent extends React.Component<Props, State> {
         return (
             <Outer>
                 <Container>
-                    <br />
-                    {/* {this.renderAccountsEndpoint()} */}
+                    <br/>
+                    <Box>
+                        {"[placeholder] access_token info"}
+                    </Box>
+                    <br/><br/>
                     <AccountsInfo 
                         accessToken={this.props.accessToken}
                         onSelectAccount={this.onSelectAccount}
                     />
-                    <br />
-                    <br />
-                    {/* {this.renderIntervalsEndpoints()} */}
+                    <br/><br/>
                     <IntervalsInfo 
                         accessToken={this.props.accessToken} 
                         selectedAccount={this.state.selectedAccount}
                     />
+                    <br/><br/>
+                    <BillsInfo
+                        accessToken={this.props.accessToken} 
+                        selectedAccount={this.state.selectedAccount}
+                    />
+                    <br/><br/>
+                    <Box>
+                        {"[placeholder] more info and link to guides"}
+                    </Box>
+
                     {/* <br />
                     <br />
                     {this.renderAccountBillsEndpoint()}
