@@ -207,7 +207,9 @@ export class Endpoint extends React.Component<Props, State> {
             }}>
                 {responseInfoChild}
             </Box>
-            <Box>
+            <Box sx={{
+                marginLeft: '16px'
+            }}>
                 <Box>
                     <ToggleButtonGroup
                         value={toggleButtonValue}

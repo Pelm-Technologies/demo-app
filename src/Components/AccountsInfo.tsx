@@ -37,6 +37,7 @@ type View = 'pretty' | 'data'
 
 type Props = {
     accessToken: string;
+    onSelectAccount: (account: any) => void;
 }
 
 type State = {
@@ -60,9 +61,20 @@ export class AccountsInfo extends React.Component<Props, State> {
         super(props)
         this.state = {
             isLoading: false,
-            accountsData: undefined,
-            // accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
+            // accountsData: undefined,
+            accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
         }
+    }
+
+    // onSelectAccount = (event: { target: any; }) => {
+    //     const target = event.target;
+    //     const value = target.value;
+
+    //     this.props.onSelectAccount(value);
+    // }
+
+    onSelectAccount = (account: any) => () => {
+        this.props.onSelectAccount(account)
     }
 
     requestUrl() {
@@ -131,6 +143,8 @@ export class AccountsInfo extends React.Component<Props, State> {
     }
 
     renderPrettyView() {
+        console.log(this.state.accountsData)
+
         return <Grid container spacing={1}>
             {this.state.accountsData.map((account: any) => (
                 <Grid item key={account.id} xs={12}>
@@ -142,8 +156,22 @@ export class AccountsInfo extends React.Component<Props, State> {
                                 {account.address}
                             </Typography>
                             <Typography>
+                                Pelm id: {account.id}
+                            </Typography>
+                            <Typography>
                                 Account number: {account.account_number}
                             </Typography>
+                            <Typography>
+                                Avalailable meter types: {account.available_meter_types}
+                            </Typography>
+                            <Button 
+                                variant="outlined"
+                                onClick={this.onSelectAccount(account)}
+                                value={account}
+                                sx={{marginTop: '8px'}}
+                            >
+                                SELECT
+                            </Button>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -178,13 +206,12 @@ export class AccountsInfo extends React.Component<Props, State> {
 
     renderSuccessResponseInfoChild() {
         return <Box>
-            You've successfully fetched this User's accounts!
-            <br/>
-            <br/>
+            You've successfully fetched this User's Accounts!
+            <br/><br/>
+            You can now query usage intervals or bills for a specific account by specifying the <code>account_id</code> in requests. 
+            Clicking the "SELECT" button in the pretty view will pre-populate that Account's id in other requests.
+            <br/><br/>
             <a href="https://docs.pelm.com/reference/get_accounts" target="blank">View docs</a>
-            <br/>
-            <br/>
-            Explore some other endpoints.
         </Box>
     }
 

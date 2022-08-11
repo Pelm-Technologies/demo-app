@@ -34,6 +34,7 @@ type Props = {
 }
 
 type State = {
+    selectedAccount?: any;
     accountsData?: any;
     intervalData?: any;
     billsData?: any;
@@ -61,6 +62,7 @@ export class ConnectedContent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
+            // selected
             // accountsData: undefined,
             accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
             intervalData: undefined,
@@ -73,6 +75,10 @@ export class ConnectedContent extends React.Component<Props, State> {
             billsAccountIdInput: "",
             billIdInput: "",
         }
+    }
+
+    onSelectAccount = (account: any) => {
+        this.setState({selectedAccount: account})
     }
 
     fetchAccounts = () => {
@@ -367,11 +373,17 @@ export class ConnectedContent extends React.Component<Props, State> {
                 <Container>
                     <br />
                     {/* {this.renderAccountsEndpoint()} */}
-                    <AccountsInfo accessToken={this.props.accessToken}/>
+                    <AccountsInfo 
+                        accessToken={this.props.accessToken}
+                        onSelectAccount={this.onSelectAccount}
+                    />
                     <br />
                     <br />
                     {/* {this.renderIntervalsEndpoints()} */}
-                    <IntervalsInfo accessToken={this.props.accessToken} />
+                    <IntervalsInfo 
+                        accessToken={this.props.accessToken} 
+                        selectedAccount={this.state.selectedAccount}
+                    />
                     {/* <br />
                     <br />
                     {this.renderAccountBillsEndpoint()}
