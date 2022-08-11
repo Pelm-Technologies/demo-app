@@ -367,6 +367,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
                 value={this.state.startDate}
                 onChange={this.onStartDateInputChange}
                 placeholder="Enter Start Date"
+                sx={{marginLeft: '4px'}}
             />
             <TextField 
                 label="end_date"
@@ -374,8 +375,11 @@ export class IntervalsInfo extends React.Component<Props, State> {
                 value={this.state.endDate}
                 onChange={this.onEndDateInputChange}
                 placeholder="Enter End Date"
+                sx={{marginLeft: '4px'}}
             />
-            <FormControl >
+            <FormControl 
+                sx={{marginLeft: '4px'}}
+            >
                 <InputLabel id="demo-simple-select-label">type</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"

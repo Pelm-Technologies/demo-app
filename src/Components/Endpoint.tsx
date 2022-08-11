@@ -24,7 +24,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { CodeBlock, dracula } from "react-code-blocks";
+import { CopyBlock, dracula } from "react-code-blocks";
 
 
 
@@ -112,43 +112,61 @@ export class Endpoint extends React.Component<Props, State> {
             ? 'HIDE CURL'
             : 'SHOW CURL'
 
-        const curlContent = this.state.shouldShouldCurl
-            ? <code><br/>{this.props.curl}</code>
-            : null
-
-        return <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between'
-        }}>
+        return <Box>
             <Box sx={{
-                width: 800
+                display: 'flex',
+                justifyContent: 'space-between'
             }}>
-                {/* {this.props.requestInfoChild} */}
-                <Box>
-                    {this.props.requestInfoChild}
-                    {curlContent}
+                <Box sx={{
+                    width: 800
+                }}>
+                    {/* {this.props.requestInfoChild} */}
+                    <Box>
+                        {this.props.requestInfoChild}
+                        {/* {this.maybeRenderCurlContent()} */}
+                    </Box>
                 </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    <Button 
+                        variant="outlined"
+                        onClick={this.props.onSendRequestClick}
+                        disabled={this.props.isLoading}
+                    >
+                        Send Request
+                    </Button>
+                    <Button 
+                        variant="outlined"
+                        // onClick={this.props.onSendRequestClick}
+                        onClick={this.onCurlDisplayChange}
+                        color="secondary"
+                        sx={{marginTop: '8px'}}
+                    >
+                        {showCurlButtonText}
+                    </Button>
+                </Box>
+
             </Box>
-            <Box>
-                <Button 
-                    variant="outlined"
-                    onClick={this.props.onSendRequestClick}
-                    disabled={this.props.isLoading}
-                >
-                    Send Request
-                </Button>
-                <Button 
-                    variant="outlined"
-                    // onClick={this.props.onSendRequestClick}
-                    onClick={this.onCurlDisplayChange}
-                    color="secondary"
-                >
-                    {showCurlButtonText}
-                </Button>
-            </Box>
+            {this.maybeRenderCurlContent()}
 
         </Box>
+        
 
+    }
+
+    maybeRenderCurlContent() {
+        return this.state.shouldShouldCurl
+            ? <Box sx={{marginTop: '16px'}}>
+                <CopyBlock
+                    text={this.props.curl}
+                    language="curl"
+                    showLineNumbers={false}
+                    theme={dracula}
+                />
+            </Box>
+            : null
     }
 
     renderPrettyView() {
@@ -161,7 +179,7 @@ export class Endpoint extends React.Component<Props, State> {
     }
 
     renderDataView() {
-        return <CodeBlock
+        return <CopyBlock
             text={JSON.stringify(this.props.data, null, '\t')}
             language="json"
             showLineNumbers={true}
