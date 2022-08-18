@@ -44,6 +44,8 @@ import fetchToCurl from 'fetch-to-curl';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import {FlowStep} from "./Components/FlowStep"
+
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
@@ -227,9 +229,9 @@ export class App extends React.Component<{}, State> {
         // }
         return <Container>
                 <Box sx={{ my: 4 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>
+                    {/* <Typography variant="h4" component="h1" gutterBottom>
                         Connect your utility login
-                    </Typography>
+                    </Typography> */}
 
                     <div>
                         {this.renderConnectTokenPanel()}
@@ -313,66 +315,85 @@ export class App extends React.Component<{}, State> {
         const snippet = this.state.toggleButtonView == 'request'
             ? fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
             : response
-        
 
-        return <Accordion expanded={this.state.expandedPanel == 'CONNECT_TOKEN'} onChange={this.expandPanel('CONNECT_TOKEN')}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2bh-content"
-                id="panel2bh-header"
+        const children = <Box>
+            <Typography variant="subtitle1" component="h1" gutterBottom>
+                Click this button to generate a connect_token.
+            </Typography>
+            <Button 
+                variant="outlined"
+                onClick={this.generateConnectToken}
+                color="primary"
             >
-                <Typography sx={{ width: '33%', flexShrink: 0 }}>Connect Token</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{
-                display: 'flex',
-                justifyContent: 'space-between'
-            }}>
-                <Box width={'500px'}>
-                    <Typography variant="subtitle1" component="h1" gutterBottom>
-                        Click this button to generate a connect_token.
-                    </Typography>
-                    <Button 
-                        variant="outlined"
-                        onClick={this.generateConnectToken}
-                        color="primary"
-                    >
-                        Create connect token
-                    </Button>
+                Create connect token
+            </Button>
+        </Box>
 
-                </Box>
+        return <FlowStep
+            title="1. Create Connect Token"
+            request={fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)}
+            response={response}
+            children={children}
+        />
+
+        // return <Accordion expanded={this.state.expandedPanel == 'CONNECT_TOKEN'} onChange={this.expandPanel('CONNECT_TOKEN')}>
+        //     <AccordionSummary
+        //         expandIcon={<ExpandMoreIcon />}
+        //         aria-controls="panel2bh-content"
+        //         id="panel2bh-header"
+        //     >
+        //         <Typography sx={{ width: '33%', flexShrink: 0 }}>Connect Token</Typography>
+        //     </AccordionSummary>
+        //     <AccordionDetails sx={{
+        //         display: 'flex',
+        //         justifyContent: 'space-between'
+        //     }}>
+        //         {/* <Box width={'500px'}>
+        //             <Typography variant="subtitle1" component="h1" gutterBottom>
+        //                 Click this button to generate a connect_token.
+        //             </Typography>
+        //             <Button 
+        //                 variant="outlined"
+        //                 onClick={this.generateConnectToken}
+        //                 color="primary"
+        //             >
+        //                 Create connect token
+        //             </Button>
+
+        //         </Box>
                 
-                <Box width={'500px'}>
-                    <ToggleButtonGroup
-                        value={this.state.toggleButtonView}
-                        size="small"
-                        exclusive
-                        onChange={this.onViewChange}
-                        aria-label="text alignment"
-                    >
-                        <ToggleButton value="request" aria-label="left aligned">
-                            Request
-                        </ToggleButton>
-                        <ToggleButton value="response" aria-label="centered">
-                            Response
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                    <Box sx={{
-                        width: 650,
-                        height: 500,
-                        overflowY: 'scroll'
-                    }}>
-                        <CopyBlock
-                            text={snippet}
-                            language="curl"
-                            showLineNumbers={false}
-                            theme={dracula}
-                            wrapLines
-                        />
-                    </Box>
-                </Box>
+        //         <Box width={'500px'}>
+        //             <ToggleButtonGroup
+        //                 value={this.state.toggleButtonView}
+        //                 size="small"
+        //                 exclusive
+        //                 onChange={this.onViewChange}
+        //                 aria-label="text alignment"
+        //             >
+        //                 <ToggleButton value="request" aria-label="left aligned">
+        //                     Request
+        //                 </ToggleButton>
+        //                 <ToggleButton value="response" aria-label="centered">
+        //                     Response
+        //                 </ToggleButton>
+        //             </ToggleButtonGroup>
+        //             <Box sx={{
+        //                 width: 650,
+        //                 height: 500,
+        //                 overflowY: 'scroll'
+        //             }}>
+        //                 <CopyBlock
+        //                     text={snippet}
+        //                     language="curl"
+        //                     showLineNumbers={false}
+        //                     theme={dracula}
+        //                     wrapLines
+        //                 />
+        //             </Box>
+        //         </Box> */}
                 
-            </AccordionDetails>
-        </Accordion>
+        //     </AccordionDetails>
+        // </Accordion>
     }
 
     renderConnectUtilityPanel() {
