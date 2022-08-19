@@ -45,6 +45,9 @@ type Props = {
     // error?: string;
 
     title: string;
+    description?: React.ReactChild;
+
+    // TODO: make this an element
     request: string;
     response: string;
 
@@ -105,16 +108,18 @@ export class FlowStep extends React.Component<Props, State> {
             <Typography variant="h4" component="h1" gutterBottom>
                 {this.props.title}
             </Typography>
+            {this.props.description}
             <Box sx={{
                 display: 'flex',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                width: '800px',
+                minHeight: '500px'
             }}>
-                <Box width={'500px'}>
+                <Box width={'400px'}>
                     {this.props.children}
-
                 </Box>
                 
-                <Box width={'500px'}>
+                <Box width={'400px'}>
                     <ToggleButtonGroup
                         value={this.state.view}
                         size="small"
@@ -130,8 +135,8 @@ export class FlowStep extends React.Component<Props, State> {
                         </ToggleButton>
                     </ToggleButtonGroup>
                     <Box sx={{
-                        width: 650,
-                        height: 500,
+                        // width: 650,
+                        // height: 500,
                         overflowY: 'scroll'
                     }}>
                         {/* <CopyBlock

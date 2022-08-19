@@ -55,6 +55,8 @@ type State = {
     expandedPanel: PanelName;
     toggleButtonView: ToggleButtonView;
 
+    userId: string;
+
     pelmClientIdInputValue?: string;
     pelmSecretInputValue?: string;
 
@@ -76,6 +78,8 @@ export class App extends React.Component<{}, State> {
         this.state = {
             toggleButtonView: 'request',
             expandedPanel: 'CONNECT_TOKEN',
+            userId: uuidv4(),
+
             isLoading: true,
             error: undefined,
             connectToken: undefined,
@@ -102,6 +106,14 @@ export class App extends React.Component<{}, State> {
         }
     }
 
+    onUserIdInputChange = (event: { target: any; }) => {
+        const target = event.target;
+        const value = target.value;
+        this.setState({
+            userId: value
+        })
+    }
+
     /*
         We're requeseting the connect_token here for simplicity.
         In an ideal world, you would make this request from your server and then pass the token to your client.
@@ -117,7 +129,7 @@ export class App extends React.Component<{}, State> {
 
         const data = new FormData();
         // data.append('user_id', USER_ID)
-        data.append('user_id', userId)
+        data.append('user_id', this.state.userId)
 
         const requestOptions = {
             method: 'POST',
@@ -268,37 +280,13 @@ export class App extends React.Component<{}, State> {
     // TODO: poop
     renderConnectTokenPanel() {
 
-        const successChildren = this.state.connectToken
-            ? <div>
-                <Typography variant="body1" component="p" gutterBottom>
-                    connect_token: {this.state.connectToken}
-                </Typography>
-                <Button 
-                    variant="contained"
-                    onClick={this.expandPanel('CONNECT_UTILITY')}
-                    color="primary"
-                >
-                    Continue
-                </Button>
-            </div>
-            : null;
-
-        // TODO: show curl
-
-        // const headers = requestHeaders(isExample, this.props.accessToken)
-
-        // const requestOptions = {
-        //     method: 'GET',
-        //     headers
-        // };
-
         const headers = new Headers({
             'Pelm-Client-Id': PELM_CLIENT_ID,
             'Pelm-Secret': PELM_SECRET
         });
 
         const body = new FormData();
-        body.append('user_id', userId)
+        body.append('user_id', this.state.userId)
 
         const requestOptions = {
             method: 'POST',
@@ -316,84 +304,48 @@ export class App extends React.Component<{}, State> {
             ? fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
             : response
 
+        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
+            The first step of initializing Connect is creating a <code>connect_token</code>. 
+            We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
+            <br/>
+            <br/>
+            The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
+            We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
+            <br/>
+            <br/>
+        </Typography>
+
         const children = <Box>
-            <Typography variant="subtitle1" component="h1" gutterBottom>
-                Click this button to generate a connect_token.
-            </Typography>
+            <TextField 
+                label="user_id"
+                variant="outlined"  
+                value={this.state.userId}
+                onChange={this.onUserIdInputChange}
+                // placeholder="Enter Pelm-Client-Id"
+                // sx={{marginLeft: '4px'}}
+                fullWidth
+            />
+            
             <Button 
                 variant="outlined"
                 onClick={this.generateConnectToken}
                 color="primary"
+                sx={{marginTop: '8px'}}
             >
                 Create connect token
             </Button>
+            {/* <br/>
+            <br/> */}
+            
         </Box>
 
         return <FlowStep
             title="1. Create Connect Token"
+            description={description}
             request={fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)}
             response={response}
             children={children}
         />
-
-        // return <Accordion expanded={this.state.expandedPanel == 'CONNECT_TOKEN'} onChange={this.expandPanel('CONNECT_TOKEN')}>
-        //     <AccordionSummary
-        //         expandIcon={<ExpandMoreIcon />}
-        //         aria-controls="panel2bh-content"
-        //         id="panel2bh-header"
-        //     >
-        //         <Typography sx={{ width: '33%', flexShrink: 0 }}>Connect Token</Typography>
-        //     </AccordionSummary>
-        //     <AccordionDetails sx={{
-        //         display: 'flex',
-        //         justifyContent: 'space-between'
-        //     }}>
-        //         {/* <Box width={'500px'}>
-        //             <Typography variant="subtitle1" component="h1" gutterBottom>
-        //                 Click this button to generate a connect_token.
-        //             </Typography>
-        //             <Button 
-        //                 variant="outlined"
-        //                 onClick={this.generateConnectToken}
-        //                 color="primary"
-        //             >
-        //                 Create connect token
-        //             </Button>
-
-        //         </Box>
-                
-        //         <Box width={'500px'}>
-        //             <ToggleButtonGroup
-        //                 value={this.state.toggleButtonView}
-        //                 size="small"
-        //                 exclusive
-        //                 onChange={this.onViewChange}
-        //                 aria-label="text alignment"
-        //             >
-        //                 <ToggleButton value="request" aria-label="left aligned">
-        //                     Request
-        //                 </ToggleButton>
-        //                 <ToggleButton value="response" aria-label="centered">
-        //                     Response
-        //                 </ToggleButton>
-        //             </ToggleButtonGroup>
-        //             <Box sx={{
-        //                 width: 650,
-        //                 height: 500,
-        //                 overflowY: 'scroll'
-        //             }}>
-        //                 <CopyBlock
-        //                     text={snippet}
-        //                     language="curl"
-        //                     showLineNumbers={false}
-        //                     theme={dracula}
-        //                     wrapLines
-        //                 />
-        //             </Box>
-        //         </Box> */}
-                
-        //     </AccordionDetails>
-        // </Accordion>
     }
 
     renderConnectUtilityPanel() {
@@ -420,26 +372,27 @@ export class App extends React.Component<{}, State> {
             : null;
 
         // TODO: show curl
-        
 
-        return <Accordion expanded={this.state.expandedPanel == 'CONNECT_UTILITY'} onChange={this.expandPanel('CONNECT_UTILITY')}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3bh-content"
-                id="panel3bh-header"
-            >
-                <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                    Connect Utility
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography variant="body1" component="p" gutterBottom>
-                    Click button to connect
-                </Typography>
-                <ConnectButton config={config} />
-                {successChildren}
-            </AccordionDetails>
-        </Accordion>
+        const children = <Box>
+            Now that you've generated a connect_token, you can initialize Connect to connect your Utility.
+            You can either use the sandbox credentials or your own blaoiwejf oiweoif jwoief.
+            <Typography variant="body1" component="p" gutterBottom>
+                Click button to connect
+            </Typography>
+            <ConnectButton config={config} />
+        </Box>
+
+        const response = this.state.authorizationCode
+            ? this.state.authorizationCode
+            : 'Please connect your Utility to view authorizationCode'
+
+        return <FlowStep
+            title="2. Connect your Utility"
+            request={'TODO: add react code / javascript code for creating initializing Connect'}
+            response={response}
+            children={children}
+        />
+    
     }
 
     renderAccessTokenPanel() {
@@ -458,27 +411,24 @@ export class App extends React.Component<{}, State> {
             </div>
             : null;
 
-        // TODO: show curl
-        
-        return <Accordion expanded={this.state.expandedPanel == 'ACCESS_TOKEN'} onChange={this.expandPanel('ACCESS_TOKEN')}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel4bh-content"
-                id="panel4bh-header"
-            >
-                <Typography sx={{ width: '33%', flexShrink: 0 }}>Access Token</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Button 
-                    variant="outlined"
-                    onClick={this.generateAccessToken}
-                    color="primary"
-                >
-                    Create access_token
-                </Button>
-                {successChildren}
-            </AccordionDetails>
-        </Accordion>
+        const children = <Button 
+            variant="outlined"
+            onClick={this.generateAccessToken}
+            color="primary"
+        >
+            Create access_token
+        </Button>
+
+        const response = this.state.accessToken
+            ? this.state.accessToken
+            : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
+
+        return <FlowStep
+            title="3. Create Access Token"
+            request={'TODO: add curl for generating access_token'}
+            response={response}
+            children={children}
+        />
     }
 
     render(): React.ReactNode {
