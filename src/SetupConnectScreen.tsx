@@ -378,12 +378,26 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
         // TODO: show curl
 
+        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
+            Now that you've generated a connect_token, you can initialize Connect to connect your Utility credentials. Click the "CONNECT YOUR UTILITY" button below to open the Connect flow.
+            <br/>
+            <br/>
+            If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
+            <br/>
+            <br/>
+            Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
+            <br/>
+            username: <code>user@pelm.com</code>
+            <br/>
+            password: <code>password</code>
+            <br/>
+            <br/>
+            {/* Or you can click "SKIP CONNECT FLOW" button to simulate going through the Connect Flow as the Sandbox User.
+            <br/>
+            <br/> */}
+        </Typography>
+
         const children = <Box>
-            Now that you've generated a connect_token, you can initialize Connect to connect your Utility.
-            You can either use the sandbox credentials or your own blaoiwejf oiweoif jwoief.
-            <Typography variant="body1" component="p" gutterBottom>
-                Click button to connect
-            </Typography>
             <ConnectButton config={config} />
         </Box>
 
@@ -393,6 +407,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
         return <FlowStep
             title="2. Connect your Utility"
+            description={description}
             request={'TODO: add react code / javascript code for creating initializing Connect'}
             response={response}
             children={children}
@@ -416,13 +431,33 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             </div>
             : null;
 
-        const children = <Button 
-            variant="outlined"
-            onClick={this.generateAccessToken}
-            color="primary"
-        >
-            Create access_token
-        </Button>
+        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
+            Upon successfully completing the Connect flow, you're onSuccess callback is called with the generated <code>authorization_code</code>.
+            This code can be used to generate an <code>access_token</code> via <a href='https://docs.pelm.com/reference/post_auth-token-1' target='_blank'>POST /auth/token</a>.
+        </Typography>
+
+        const children = <Box>
+            <TextField 
+                label="authorization_code"
+                variant="outlined"  
+                value={
+                    this.state.authorizationCode
+                        ? this.state.authorizationCode
+                        : 'missing_authorization_code'
+                }
+                disabled
+                fullWidth
+            />
+            
+            <Button 
+                variant="outlined"
+                onClick={this.generateAccessToken}
+                color="primary"
+            >
+                Create access_token
+            </Button>
+            
+        </Box>
 
         const response = this.state.accessToken
             ? this.state.accessToken
@@ -430,6 +465,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
         return <FlowStep
             title="3. Create Access Token"
+            description={description}
             request={'TODO: add curl for generating access_token'}
             response={response}
             children={children}
@@ -441,13 +477,16 @@ export class SetupConnectScreen extends React.Component<Props, State> {
     }
 
     renderSuccessPanel() {
+        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
+            You've successfully created an access_token, which allows you to fetch data for the User you just created.
+            <br/>
+            <br/>
+            Click the "CONTINUE" button below to continue to the next page, where you can begin making requests.
+        </Typography>
+
         const children = <Box>
-            You've successfully created an access_token, which you can use to fetch data for the User you just connected.
-            <Typography variant="body1" component="p" gutterBottom>
-                Click button to connect
-            </Typography>
             <Button 
-                variant="outlined"
+                variant="contained"
                 onClick={this.onContinue}
                 color="primary"
             >
@@ -461,6 +500,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
         return <FlowStep
             title="4. Start making requests"
+            description={description}
             request={'TODO: add curl for generating access_token'}
             response={response}
             children={children}
