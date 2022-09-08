@@ -36,6 +36,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ConnectButton } from './connectButton'
 // import { ConnectedContent } from "./connectedContent";
 import { ConnectedContent } from "./connectedContent2";
+import { SetupConnectScreen } from "./SetupConnectScreen";
 import { Config, useConnect } from "react-pelm-connect";
 
 import { CopyBlock, dracula } from "react-code-blocks";
@@ -98,6 +99,10 @@ export class App extends React.Component<{}, State> {
 
     setSandboxAccessToken = () => {
         this.setState({accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'})
+    }
+
+    setAccessToken = (accessToken: string) => {
+        this.setState({accessToken})
     }
 
     onViewChange = (event: any, toggleButtonView: ToggleButtonView) => {
@@ -232,205 +237,6 @@ export class App extends React.Component<{}, State> {
         console.log("exit")
     }
 
-    renderConnectUtilityMessage() {
-        // const config: Config = {
-        //     connectToken: this.state.connectToken!,
-        //     onSuccess: this.onSuccess,
-        //     onExit: this.onExit,
-        //     environment: ENVIRONMENT,
-        // }
-        return <Container>
-                <Box sx={{ my: 4 }}>
-                    {/* <Typography variant="h4" component="h1" gutterBottom>
-                        Connect your utility login
-                    </Typography> */}
-
-                    <div>
-                        {this.renderConnectTokenPanel()}
-                        {this.renderConnectUtilityPanel()}
-                        {this.renderAccessTokenPanel()}
-                    </div>
-
-                    {/* <TextField 
-                        label="Pelm-Client-Id"
-                        variant="outlined"  
-                        value={this.state.pelmClientIdInputValue}
-                        // onChange={this.onStartDateInputChange}
-                        placeholder="Enter Pelm-Client-Id"
-                        sx={{marginLeft: '4px'}}
-                    />
-                    <TextField 
-                        label="Pelm-Secret"
-                        variant="outlined"  
-                        value={this.state.pelmSecretInputValue}
-                        // onChange={this.onEndDateInputChange}
-                        placeholder="Enter Pelm-Secret"
-                        sx={{marginLeft: '4px'}}
-                    />
-
-                    <Typography variant="subtitle1" component="h1" gutterBottom>
-                        Follow the steps below to walk through the flow of creating a new 
-                    </Typography> */}
-                    
-                    
-                </Box>
-            </Container>
-    }
-
-    // TODO: poop
-    renderConnectTokenPanel() {
-
-        const headers = new Headers({
-            'Pelm-Client-Id': PELM_CLIENT_ID,
-            'Pelm-Secret': PELM_SECRET
-        });
-
-        const body = new FormData();
-        body.append('user_id', this.state.userId)
-
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body,
-        };
-
-        // const curl = fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
-
-        const response = this.state.connectToken
-            ? this.state.connectToken
-            : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
-
-        const snippet = this.state.toggleButtonView == 'request'
-            ? fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
-            : response
-
-        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            The first step of initializing Connect is creating a <code>connect_token</code>. 
-            We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
-            <br/>
-            <br/>
-            The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
-            We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
-            <br/>
-            <br/>
-        </Typography>
-
-        const children = <Box>
-            <TextField 
-                label="user_id"
-                variant="outlined"  
-                value={this.state.userId}
-                onChange={this.onUserIdInputChange}
-                // placeholder="Enter Pelm-Client-Id"
-                // sx={{marginLeft: '4px'}}
-                fullWidth
-            />
-            
-            <Button 
-                variant="outlined"
-                onClick={this.generateConnectToken}
-                color="primary"
-                sx={{marginTop: '8px'}}
-            >
-                Create connect token
-            </Button>
-            {/* <br/>
-            <br/> */}
-            
-        </Box>
-
-        return <FlowStep
-            title="1. Create Connect Token"
-            description={description}
-            request={fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)}
-            response={response}
-            children={children}
-        />
-    }
-
-    renderConnectUtilityPanel() {
-        const config: Config = {
-            connectToken: this.state.connectToken!,
-            onSuccess: this.onSuccess,
-            onExit: this.onExit,
-            environment: ENVIRONMENT,
-        }
-
-        const successChildren = this.state.authorizationCode
-            ? <div>
-                <Typography variant="body1" component="p" gutterBottom>
-                    Success! Here is the auth_code: {this.state.authorizationCode}
-                </Typography>
-                <Button 
-                    variant="contained"
-                    onClick={this.expandPanel('ACCESS_TOKEN')}
-                    color="primary"
-                >
-                    Continue
-                </Button>
-            </div>
-            : null;
-
-        // TODO: show curl
-
-        const children = <Box>
-            Now that you've generated a connect_token, you can initialize Connect to connect your Utility.
-            You can either use the sandbox credentials or your own blaoiwejf oiweoif jwoief.
-            <Typography variant="body1" component="p" gutterBottom>
-                Click button to connect
-            </Typography>
-            <ConnectButton config={config} />
-        </Box>
-
-        const response = this.state.authorizationCode
-            ? this.state.authorizationCode
-            : 'Please connect your Utility to view authorizationCode'
-
-        return <FlowStep
-            title="2. Connect your Utility"
-            request={'TODO: add react code / javascript code for creating initializing Connect'}
-            response={response}
-            children={children}
-        />
-    
-    }
-
-    renderAccessTokenPanel() {
-        const successChildren = this.state.connectToken
-            ? <div>
-                <Typography variant="body1" component="p" gutterBottom>
-                    Success! Here is the access_token: {this.state.accessToken}
-                </Typography>
-                {/* <Button 
-                    variant="contained"
-                    onClick={this.expandPanel(3)}
-                    color="primary"
-                >
-                    Continue
-                </Button> */}
-            </div>
-            : null;
-
-        const children = <Button 
-            variant="outlined"
-            onClick={this.generateAccessToken}
-            color="primary"
-        >
-            Create access_token
-        </Button>
-
-        const response = this.state.accessToken
-            ? this.state.accessToken
-            : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
-
-        return <FlowStep
-            title="3. Create Access Token"
-            request={'TODO: add curl for generating access_token'}
-            response={response}
-            children={children}
-        />
-    }
-
     render(): React.ReactNode {
         // if (this.state.isLoading) {
         //     return "Loading"
@@ -443,7 +249,8 @@ export class App extends React.Component<{}, State> {
         const children = this.state.accessToken
             // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
             ? <ConnectedContent accessToken={this.state.accessToken!}/>
-            : this.renderConnectUtilityMessage()
+            // : this.renderConnectUtilityMessage()
+            : <SetupConnectScreen setAccessToken={this.setAccessToken}/>
 
         return <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -456,11 +263,7 @@ export class App extends React.Component<{}, State> {
             </AppBar>
             <main>
                 {children}
-                
-                
             </main>
         </ThemeProvider>
-
-        
     }
 }
