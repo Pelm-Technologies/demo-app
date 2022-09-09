@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from '../constants'
+import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 'src/constants'
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -34,6 +34,7 @@ import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
 
 import { ConnectTokenStep } from "src/Components/SetupConnectScreen/ConnectTokenStep";
+import { ConnectUtilityStep } from "src/Components/SetupConnectScreen/ConnectUtilityStep";
 
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
@@ -100,6 +101,10 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
     setConnectToken = (connectToken: string) => {
         this.setState({connectToken})
+    }
+
+    setAuthorizationCode = (authorizationCode: string) => {
+        this.setState({authorizationCode})
     }
 
     setSandboxAccessToken = () => {
@@ -419,8 +424,16 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <Container>
             <Box sx={{ my: 4 }}>
                 <div>
-                    <ConnectTokenStep connectToken={this.state.connectToken} setConnectToken={this.setConnectToken}/>
-                    {this.renderConnectUtilityPanel()}
+                    <ConnectTokenStep 
+                        connectToken={this.state.connectToken} 
+                        setConnectToken={this.setConnectToken}
+                    />
+                    <ConnectUtilityStep 
+                        connectToken={this.state.connectToken!}  
+                        authorizationCode={this.state.authorizationCode}
+                        setAuthorizationCode={this.setAuthorizationCode}
+                    />
+                    {/* {this.renderConnectUtilityPanel()} */}
                     {this.renderAccessTokenPanel()}
                     {this.renderSuccessPanel()}
                 </div>
