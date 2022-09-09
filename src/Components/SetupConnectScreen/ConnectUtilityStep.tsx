@@ -41,7 +41,7 @@ type ToggleButtonView = 'request' | 'response'
 
 type Props = {
     // setAccessToken: (accessToken: string) => void;
-    connectToken: string;
+    connectToken?: string;
     authorizationCode?: string;
     setAuthorizationCode: (authorizationCode: string) => void;
 }
@@ -82,7 +82,7 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
 
     render(): React.ReactNode {
         const config: Config = {
-            connectToken: this.props.connectToken,
+            connectToken: this.props.connectToken!,
             onSuccess: this.onSuccess,
             onExit: this.onExit,
             environment: ENVIRONMENT,
