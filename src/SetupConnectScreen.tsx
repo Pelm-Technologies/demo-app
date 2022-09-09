@@ -516,15 +516,15 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             </Button>
         </Box>
 
-        const response = this.state.accessToken
-            ? this.state.accessToken
-            : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
+        // const response = this.state.accessToken
+        //     ? this.state.accessToken
+        //     : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
 
         return <FlowStep
             title="4. Start making requests"
             description={description}
-            request={'TODO: add curl for generating access_token'}
-            response={response}
+            request={''}
+            response={''}
             children={children}
         />
     }
