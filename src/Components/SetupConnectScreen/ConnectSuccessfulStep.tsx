@@ -33,6 +33,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
+import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
 
 type Props = {
     accessToken?: string;
@@ -79,7 +80,7 @@ export class ConnectSuccessfulStep extends React.Component<Props, State> {
         //     ? this.state.accessToken
         //     : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
 
-        return <FlowStep
+        return <SetupStep
             title="4. Start making requests"
             description={description}
             request={''}

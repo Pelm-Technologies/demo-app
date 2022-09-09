@@ -41,6 +41,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
+import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
@@ -190,7 +191,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             
         </Box>
 
-        return <FlowStep
+        return <SetupStep
             title="1. Create Connect Token"
             description={description}
             request={this.createConnectTokenCurl()}
