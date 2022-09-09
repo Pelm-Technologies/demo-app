@@ -35,6 +35,8 @@ import { Config, useConnect } from "react-pelm-connect";
 
 import { ConnectTokenStep } from "src/Components/SetupConnectScreen/ConnectTokenStep";
 import { ConnectUtilityStep } from "src/Components/SetupConnectScreen/ConnectUtilityStep";
+import { AccessTokenStep } from "src/Components/SetupConnectScreen/AccessTokenStep";
+import { ConnectSuccessfulStep } from "src/Components/SetupConnectScreen/ConnectSuccessfulStep";
 
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
@@ -43,13 +45,13 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
-import { AccessTokenStep } from "src/Components/SetupConnectScreen/AccessTokenStep";
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
-    setAccessToken: (accessToken: string) => void;
+    // setAccessToken: (accessToken: string) => void;
+    onContinueToRequestDataScreen: (accessToken: string) => void;
 }
 
 type State = {
@@ -87,8 +89,8 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             isLoading: true,
             error: undefined,
             connectToken: undefined,
-            accessToken: undefined,
-            // accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
+            // accessToken: undefined,
+            accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
         }
     }
 
@@ -188,38 +190,8 @@ export class SetupConnectScreen extends React.Component<Props, State> {
     }
 
     onContinue = () => {
-        this.props.setAccessToken(this.state.accessToken!)
-    }
-
-    renderSuccessPanel() {
-        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            You've successfully created an access_token, which allows you to fetch data for the User you just created.
-            <br/>
-            <br/>
-            Click the "CONTINUE" button below to continue to the next page, where you can begin making requests.
-        </Typography>
-
-        const children = <Box>
-            <Button 
-                variant="contained"
-                onClick={this.onContinue}
-                color="primary"
-            >
-                Continue
-            </Button>
-        </Box>
-
-        // const response = this.state.accessToken
-        //     ? this.state.accessToken
-        //     : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
-
-        return <FlowStep
-            title="4. Start making requests"
-            description={description}
-            request={''}
-            response={''}
-            children={children}
-        />
+        // this.props.setAccessToken(this.state.accessToken!)
+        this.props.onContinueToRequestDataScreen(this.state.accessToken!)
     }
 
     render(): React.ReactNode {
@@ -240,7 +212,10 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                         accessToken={this.state.accessToken}
                         setAccessToken={this.setAccessToken}
                     />
-                    {this.renderSuccessPanel()}
+                    <ConnectSuccessfulStep
+                        accessToken={this.state.accessToken}
+                        onContinue={this.onContinue}
+                    />
                 </div>
             </Box>
         </Container>

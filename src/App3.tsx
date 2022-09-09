@@ -153,7 +153,10 @@ export class App extends React.Component<{}, State> {
                 onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
             />
         } else if (currentStep === 'setup_connect') {
-            children = <SetupConnectScreen setAccessToken={this.setAccessToken}/>
+            children = <SetupConnectScreen 
+                // setAccessToken={this.setAccessToken}
+                onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
+            />
         } else {
             children = <ConnectedContent accessToken={this.state.accessToken!}/>
         }
