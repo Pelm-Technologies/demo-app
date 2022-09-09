@@ -119,30 +119,46 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         })
     }
 
-    /*
-        We're requeseting the connect_token here for simplicity.
-        In an ideal world, you would make this request from your server and then pass the token to your client.
-    */
-    // generateConnectToken(userId: string) {
-    generateConnectToken = () => {
-        this.setState({ isLoading: true })
-
+    headers(): Headers {
         const headers = new Headers();
-        headers.set('Environment', ENVIRONMENT);
         headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
         headers.set('Pelm-Secret', PELM_SECRET);
+        headers.set('Content-Type', 'application/x-www-form-urlencoded');
+        return headers;
+    }
 
-        const data = new FormData();
-        // data.append('user_id', USER_ID)
-        data.append('user_id', this.state.userId)
+    createConnectTokenRequestUrl() {
+        return PELM_API_URL + '/auth/connect-token';
+    }
 
+    createConnectTokenRequestOptions() {
+        const headers = this.headers();
+        const data = new URLSearchParams({
+            user_id: this.state.userId
+        }).toString();
         const requestOptions = {
             method: 'POST',
             headers,
             body: data,
         };
+        return requestOptions;
+    }
 
-        fetch(PELM_API_URL + '/auth/connect-token', requestOptions)
+    createConnectTokenCurl() {
+        const curl = fetchToCurl(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions());
+        console.log("curl: " + curl)
+
+        return curl
+    }
+
+    /*
+        We're requeseting the connect_token here for simplicity.
+        In an ideal world, you would make this request from your server and then pass the token to your client.
+    */
+    // generateConnectToken(userId: string) {
+    createConnectToken = () => {
+        this.setState({ isLoading: true })
+        fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -170,6 +186,32 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             });
     }
 
+    createAccessTokenRequestUrl() {
+        return PELM_API_URL + '/auth/token';
+    }
+
+    createAccessTokenRequestOptions() {
+        const headers = this.headers();
+        const code = this.state.authorizationCode
+            ? this.state.authorizationCode
+            : 'AUTHORIZATION_CODE'
+        const data = new URLSearchParams({
+            grant_type: 'code',
+            code
+        }).toString();
+        const requestOptions = {
+            method: 'POST',
+            headers,
+            body: data,
+        };
+        return requestOptions;
+    }
+
+    createAccessTokenCurl() {
+        return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions());
+    }
+    
+
     /*
         We're requeseting the access_token here for simplicity.
         In an ideal world, you would pass this authorizationCode to your server, which would then:
@@ -178,26 +220,27 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         3. use the access_token to make requests for a given user's energy data
     */
     // generateAccessToken(authorizationCode: string) {
-    generateAccessToken = () => {
+    createAccessToken = () => {
         this.setState({ isLoading: true })
 
-        const headers = new Headers();
+        // const headers = new Headers();
 
-        headers.set('Environment', ENVIRONMENT);
-        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        headers.set('Pelm-Secret', PELM_SECRET);
+        // headers.set('Environment', ENVIRONMENT);
+        // headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
+        // headers.set('Pelm-Secret', PELM_SECRET);
 
-        const data = new FormData();
-        data.append('grant_type', 'code')
-        data.append('code', this.state.authorizationCode!)
+        // const data = new FormData();
+        // data.append('grant_type', 'code')
+        // data.append('code', this.state.authorizationCode!)
 
-        const requestOptions = {
-            method: 'POST',
-            body: data,
-            headers
-        };
+        // const requestOptions = {
+        //     method: 'POST',
+        //     body: data,
+        //     headers
+        // };
 
-        fetch(PELM_API_URL + '/auth/token', requestOptions)
+        // fetch(PELM_API_URL + '/auth/token', requestOptions)
+        fetch(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions())
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -284,30 +327,9 @@ export class SetupConnectScreen extends React.Component<Props, State> {
 
     // TODO: poop
     renderConnectTokenPanel() {
-
-        const headers = new Headers({
-            'Pelm-Client-Id': PELM_CLIENT_ID,
-            'Pelm-Secret': PELM_SECRET
-        });
-
-        const body = new FormData();
-        body.append('user_id', this.state.userId)
-
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body,
-        };
-
-        // const curl = fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
-
         const response = this.state.connectToken
             ? this.state.connectToken
             : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
-
-        const snippet = this.state.toggleButtonView == 'request'
-            ? fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)
-            : response
 
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
             The first step of initializing Connect is creating a <code>connect_token</code>. 
@@ -332,8 +354,8 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             />
             
             <Button 
-                variant="outlined"
-                onClick={this.generateConnectToken}
+                variant="contained"
+                onClick={this.createConnectToken}
                 color="primary"
                 sx={{marginTop: '8px'}}
             >
@@ -347,7 +369,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <FlowStep
             title="1. Create Connect Token"
             description={description}
-            request={fetchToCurl('https://api.pelm.com/auth/connect-token', requestOptions)}
+            request={this.createConnectTokenCurl()}
             response={response}
             children={children}
         />
@@ -450,8 +472,8 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             />
             
             <Button 
-                variant="outlined"
-                onClick={this.generateAccessToken}
+                variant="contained"
+                onClick={this.createAccessToken}
                 color="primary"
             >
                 Create access_token
@@ -466,7 +488,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <FlowStep
             title="3. Create Access Token"
             description={description}
-            request={'TODO: add curl for generating access_token'}
+            request={this.createAccessTokenCurl()}
             response={response}
             children={children}
         />
