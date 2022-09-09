@@ -16,9 +16,11 @@ export const ConnectButton = (props: Props) => {
 
     return (
             <Button
-                variant="contained"
+                variant="outlined"
                 onClick={() => open()}
                 disabled={!ready}
+                sx={{marginLeft: '8px'}}
+                color="secondary"
             >
                 Connect your utility
 

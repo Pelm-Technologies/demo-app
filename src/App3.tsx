@@ -35,6 +35,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ConnectButton } from './connectButton'
 // import { ConnectedContent } from "./connectedContent";
+import { WelcomeScreen } from "./WelcomeScreen";
 import { ConnectedContent } from "./connectedContent2";
 import { SetupConnectScreen } from "./SetupConnectScreen";
 import { Config, useConnect } from "react-pelm-connect";
@@ -49,8 +50,12 @@ import {FlowStep} from "./Components/FlowStep"
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
+type Step = 'welcome' | 'setup_connect' | 'request_data'
+
 
 type State = {
+    currentStep: Step;
+
     // pelmClientId: string;
     // pelmSecret: string;
     expandedPanel: PanelName;
@@ -77,6 +82,7 @@ export class App extends React.Component<{}, State> {
         super({})
 
         this.state = {
+            currentStep: 'welcome',
             toggleButtonView: 'request',
             expandedPanel: 'CONNECT_TOKEN',
             userId: uuidv4(),
@@ -87,6 +93,19 @@ export class App extends React.Component<{}, State> {
             accessToken: undefined,
             // accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
         }
+    }
+
+    onContinueToSetupConnectScreen = () => {
+        this.setState({
+            currentStep: 'setup_connect'
+        })
+    }
+
+    onContinueToRequestDataScreen = (accessToken: string) => {
+        this.setState({
+            accessToken,
+            currentStep: 'request_data'
+        })
     }
 
     // componentDidMount(): void {
@@ -119,124 +138,6 @@ export class App extends React.Component<{}, State> {
         })
     }
 
-    /*
-        We're requeseting the connect_token here for simplicity.
-        In an ideal world, you would make this request from your server and then pass the token to your client.
-    */
-    // generateConnectToken(userId: string) {
-    generateConnectToken = () => {
-        this.setState({ isLoading: true })
-
-        const headers = new Headers();
-        headers.set('Environment', ENVIRONMENT);
-        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        headers.set('Pelm-Secret', PELM_SECRET);
-
-        const data = new FormData();
-        // data.append('user_id', USER_ID)
-        data.append('user_id', this.state.userId)
-
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body: data,
-        };
-
-        fetch(PELM_API_URL + '/auth/connect-token', requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
-                }
-            })
-            .then((data) => {
-                this.setState({
-                    isLoading: false,
-                    connectToken: data['connect_token']
-                })
-            })
-            .catch((error: Error) => {
-                try {
-                    this.setState({
-                        isLoading: false,
-                        error: error.message
-                    })
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
-                } catch(e) {
-                    console.log("an error occurred")
-                }
-            });
-    }
-
-    /*
-        We're requeseting the access_token here for simplicity.
-        In an ideal world, you would pass this authorizationCode to your server, which would then:
-        1. use the authorizationCode to get an access_token and refresh_token
-        2. save the access_token and refresh_token to your db
-        3. use the access_token to make requests for a given user's energy data
-    */
-    // generateAccessToken(authorizationCode: string) {
-    generateAccessToken = () => {
-        this.setState({ isLoading: true })
-
-        const headers = new Headers();
-
-        headers.set('Environment', ENVIRONMENT);
-        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        headers.set('Pelm-Secret', PELM_SECRET);
-
-        const data = new FormData();
-        data.append('grant_type', 'code')
-        data.append('code', this.state.authorizationCode!)
-
-        const requestOptions = {
-            method: 'POST',
-            body: data,
-            headers
-        };
-
-        fetch(PELM_API_URL + '/auth/token', requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
-                }
-            })
-            .then((data) => {
-                console.log("access_token")
-                console.log(data['access_token'])
-
-                this.setState({
-                    isLoading: false,
-                    accessToken: data['access_token']
-                })
-            })
-            .catch((error: Error) => {
-                try {
-                    this.setState({
-                        isLoading: false,
-                        error: error.message
-                    })
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
-                } catch(e) {
-                    console.log("an error occurred")
-                }
-            });
-    }
-
-    onSuccess = (authorizationCode: string) => {
-        // this.generateAccessToken(authorizationCode)
-        this.setState({authorizationCode})
-    }
-
-    onExit = () => {
-        console.log("exit")
-    }
-
     render(): React.ReactNode {
         // if (this.state.isLoading) {
         //     return "Loading"
@@ -246,11 +147,26 @@ export class App extends React.Component<{}, State> {
         //     return "Error: " + this.state.error
         // }
 
-        const children = this.state.accessToken
-            // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
-            ? <ConnectedContent accessToken={this.state.accessToken!}/>
-            // : this.renderConnectUtilityMessage()
-            : <SetupConnectScreen setAccessToken={this.setAccessToken}/>
+        let children: React.ReactChild;
+
+        const currentStep = this.state.currentStep;
+
+        if (currentStep === 'welcome') {
+            children = <WelcomeScreen 
+                onContinueToSetupConnectScreen={this.onContinueToSetupConnectScreen}
+                onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
+            />
+        } else if (currentStep === 'setup_connect') {
+            children = <SetupConnectScreen setAccessToken={this.setAccessToken}/>
+        } else {
+            children = <ConnectedContent accessToken={this.state.accessToken!}/>
+        }
+
+        // const children = this.state.accessToken
+        //     // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
+        //     ? <ConnectedContent accessToken={this.state.accessToken!}/>
+        //     // : this.renderConnectUtilityMessage()
+        //     : <SetupConnectScreen setAccessToken={this.setAccessToken}/>
 
         return <ThemeProvider theme={theme}>
             <CssBaseline />
