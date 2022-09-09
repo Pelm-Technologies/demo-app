@@ -78,7 +78,7 @@ export class App extends React.Component<{}, State> {
         super({})
 
         this.state = {
-            currentStep: 'welcome',
+            currentStep: 'setup_connect',
             toggleButtonView: 'request',
             expandedPanel: 'CONNECT_TOKEN',
             userId: uuidv4(),

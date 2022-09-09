@@ -33,6 +33,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
 
+import { ConnectTokenStep } from "src/Components/SetupConnectScreen/ConnectTokenStep";
+
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
 
@@ -528,7 +530,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <Container>
             <Box sx={{ my: 4 }}>
                 <div>
-                    {this.renderConnectTokenPanel()}
+                    <ConnectTokenStep />
                     {this.renderConnectUtilityPanel()}
                     {this.renderAccessTokenPanel()}
                     {this.renderSuccessPanel()}
