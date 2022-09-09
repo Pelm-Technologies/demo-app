@@ -98,6 +98,10 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         this.setState({expandedPanel})
     }
 
+    setConnectToken = (connectToken: string) => {
+        this.setState({connectToken})
+    }
+
     setSandboxAccessToken = () => {
         this.setState({accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'})
     }
@@ -122,65 +126,6 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         headers.set('Pelm-Secret', PELM_SECRET);
         headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return headers;
-    }
-
-    createConnectTokenRequestUrl() {
-        return PELM_API_URL + '/auth/connect-token';
-    }
-
-    createConnectTokenRequestOptions() {
-        const headers = this.headers();
-        const data = new URLSearchParams({
-            user_id: this.state.userId
-        }).toString();
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body: data,
-        };
-        return requestOptions;
-    }
-
-    createConnectTokenCurl() {
-        const curl = fetchToCurl(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions());
-        console.log("curl: " + curl)
-
-        return curl
-    }
-
-    /*
-        We're requeseting the connect_token here for simplicity.
-        In an ideal world, you would make this request from your server and then pass the token to your client.
-    */
-    // generateConnectToken(userId: string) {
-    createConnectToken = () => {
-        this.setState({ isLoading: true })
-        fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
-                }
-            })
-            .then((data) => {
-                this.setState({
-                    isLoading: false,
-                    connectToken: data['connect_token']
-                })
-            })
-            .catch((error: Error) => {
-                try {
-                    this.setState({
-                        isLoading: false,
-                        error: error.message
-                    })
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
-                } catch(e) {
-                    console.log("an error occurred")
-                }
-            });
     }
 
     createAccessTokenRequestUrl() {
@@ -290,12 +235,6 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                         Connect your utility login
                     </Typography> */}
 
-                    <div>
-                        {this.renderConnectTokenPanel()}
-                        {this.renderConnectUtilityPanel()}
-                        {this.renderAccessTokenPanel()}
-                    </div>
-
                     {/* <TextField 
                         label="Pelm-Client-Id"
                         variant="outlined"  
@@ -320,56 +259,6 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                     
                 </Box>
             </Container>
-    }
-
-    // TODO: poop
-    renderConnectTokenPanel() {
-        const response = this.state.connectToken
-            ? this.state.connectToken
-            : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
-
-        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            The first step of initializing Connect is creating a <code>connect_token</code>. 
-            We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
-            <br/>
-            <br/>
-            The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
-            We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
-            <br/>
-            <br/>
-        </Typography>
-
-        const children = <Box>
-            <TextField 
-                label="user_id"
-                variant="outlined"  
-                value={this.state.userId}
-                onChange={this.onUserIdInputChange}
-                // placeholder="Enter Pelm-Client-Id"
-                // sx={{marginLeft: '4px'}}
-                fullWidth
-            />
-            
-            <Button 
-                variant="contained"
-                onClick={this.createConnectToken}
-                color="primary"
-                sx={{marginTop: '8px'}}
-            >
-                Create connect token
-            </Button>
-            {/* <br/>
-            <br/> */}
-            
-        </Box>
-
-        return <FlowStep
-            title="1. Create Connect Token"
-            description={description}
-            request={this.createConnectTokenCurl()}
-            response={response}
-            children={children}
-        />
     }
 
     renderConnectUtilityPanel() {
@@ -530,7 +419,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <Container>
             <Box sx={{ my: 4 }}>
                 <div>
-                    <ConnectTokenStep />
+                    <ConnectTokenStep connectToken={this.state.connectToken} setConnectToken={this.setConnectToken}/>
                     {this.renderConnectUtilityPanel()}
                     {this.renderAccessTokenPanel()}
                     {this.renderSuccessPanel()}

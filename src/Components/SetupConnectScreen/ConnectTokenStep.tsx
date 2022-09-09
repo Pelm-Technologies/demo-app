@@ -46,6 +46,8 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    connectToken?: string;
+    setConnectToken: (connectToken: string) => void;
 }
 
 type State = {
@@ -62,7 +64,7 @@ type State = {
     isLoading: boolean;
 
     error?: string;
-    connectToken?: string;
+    // connectToken?: string;
     authorizationCode?: string;
     accessToken?: string;
 }
@@ -84,7 +86,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             isLoading: false,
 
             error: undefined,
-            connectToken: undefined,
+            // connectToken: undefined,
             // accessToken: undefined,
             accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
         }
@@ -148,8 +150,9 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             .then((data) => {
                 this.setState({
                     isLoading: false,
-                    connectToken: data['connect_token']
+                    // connectToken: data['connect_token']
                 })
+                this.props.setConnectToken(data['connect_token'])
             })
             .catch((error: Error) => {
                 try {
@@ -166,8 +169,8 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     }
 
     render(): React.ReactNode {
-        const response = this.state.connectToken
-            ? this.state.connectToken
+        const response = this.props.connectToken
+            ? this.props.connectToken
             : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
 
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
