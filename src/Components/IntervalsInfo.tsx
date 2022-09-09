@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';
 
-import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../constants'
-import { requestHeaders } from "../Helpers/FetchHelpers";
+import { requestHeaders } from "src/Helpers/FetchHelpers";
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -30,15 +29,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 // import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { EnergyAccountBrowser } from "../energyAccountBrowser";
-import { EnergyAccountDetails } from "../energyAccountDetails";
-
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { EnergyAccount } from '../types'
-
-import { Endpoint } from './Endpoint'
+import { Endpoint } from 'src/Components/Endpoint'
 
 import fetchToCurl from 'fetch-to-curl';
 

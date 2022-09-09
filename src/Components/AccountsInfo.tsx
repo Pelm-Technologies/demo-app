@@ -18,18 +18,8 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { EnergyAccountBrowser } from "../energyAccountBrowser";
-import { EnergyAccountDetails } from "../energyAccountDetails";
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import { EnergyAccount } from '../types'
-
-import { Endpoint } from './Endpoint'
+import { Endpoint } from 'src/Components/Endpoint'
 
 import fetchToCurl from 'fetch-to-curl';
 

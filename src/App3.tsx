@@ -33,11 +33,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { ConnectButton } from './connectButton'
-// import { ConnectedContent } from "./connectedContent";
-import { WelcomeScreen } from "./WelcomeScreen";
-import { ConnectedContent } from "./connectedContent2";
-import { SetupConnectScreen } from "./SetupConnectScreen";
+import { WelcomeScreen } from "src/WelcomeScreen";
+import { ConnectedContent } from "src/connectedContent2";
+import { SetupConnectScreen } from "src/SetupConnectScreen";
 import { Config, useConnect } from "react-pelm-connect";
 
 import { CopyBlock, dracula } from "react-code-blocks";
@@ -45,8 +43,6 @@ import fetchToCurl from 'fetch-to-curl';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import {FlowStep} from "./Components/FlowStep"
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'

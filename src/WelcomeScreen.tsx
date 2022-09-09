@@ -23,9 +23,6 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { EnergyAccountBrowser } from "./energyAccountBrowser";
-import { EnergyAccountDetails } from "./energyAccountDetails";
-
 import TextField from '@mui/material/TextField';
 
 import Accordion from '@mui/material/Accordion';
@@ -33,9 +30,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { ConnectButton } from './connectButton'
-// import { ConnectedContent } from "./connectedContent";
-import { ConnectedContent } from "./connectedContent2";
+import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
 
 import { CopyBlock, dracula } from "react-code-blocks";
@@ -44,7 +39,6 @@ import fetchToCurl from 'fetch-to-curl';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import {FlowStep} from "./Components/FlowStep"
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'

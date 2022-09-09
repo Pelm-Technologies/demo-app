@@ -20,15 +20,10 @@ import Typography from '@mui/material/Typography';
 // import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { EnergyAccountBrowser } from "./energyAccountBrowser";
-import { EnergyAccountDetails } from "./energyAccountDetails";
 
-import { EnergyAccount } from './types'
-
-
-import { AccountsInfo } from './Components/AccountsInfo'
-import { IntervalsInfo } from './Components/IntervalsInfo'
-import { BillsInfo } from './Components/BillsInfo'
+import { AccountsInfo } from 'src/Components/AccountsInfo'
+import { IntervalsInfo } from 'src/Components/IntervalsInfo'
+import { BillsInfo } from 'src/Components/BillsInfo'
 
 type Props = {
     accessToken: string;
