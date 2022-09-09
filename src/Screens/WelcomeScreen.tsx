@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from '../constants'
 
 import { v4 as uuidv4 } from 'uuid';
 

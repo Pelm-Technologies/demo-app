@@ -28,7 +28,7 @@ import { EnergyAccountDetails } from "./energyAccountDetails";
 
 import { ConnectButton } from './connectButton'
 // import { ConnectedContent } from "./connectedContent";
-import { ConnectedContent } from "./connectedContent2";
+import { ConnectedContent } from "./Screens/connectedContent2";
 import { Config, useConnect } from "react-pelm-connect";
 
 

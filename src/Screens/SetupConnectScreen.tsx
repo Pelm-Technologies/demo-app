@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from './constants'
+import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from '../constants'
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -39,7 +39,7 @@ import fetchToCurl from 'fetch-to-curl';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import {FlowStep} from "./Components/FlowStep"
+import {FlowStep} from "src/Components/FlowStep"
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'

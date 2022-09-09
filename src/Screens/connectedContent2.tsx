@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from './constants'
+import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../constants'
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -21,9 +21,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { AccountsInfo } from 'src/Components/AccountsInfo'
-import { IntervalsInfo } from 'src/Components/IntervalsInfo'
-import { BillsInfo } from 'src/Components/BillsInfo'
+import { AccountsInfo } from 'src/Components/RequestDataScreen/AccountsInfo'
+import { IntervalsInfo } from 'src/Components/RequestDataScreen/IntervalsInfo'
+import { BillsInfo } from 'src/Components/RequestDataScreen/BillsInfo'
 
 type Props = {
     accessToken: string;

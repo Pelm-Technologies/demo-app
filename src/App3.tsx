@@ -33,9 +33,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { WelcomeScreen } from "src/WelcomeScreen";
-import { ConnectedContent } from "src/connectedContent2";
-import { SetupConnectScreen } from "src/SetupConnectScreen";
+import { WelcomeScreen } from "src/Screens/WelcomeScreen";
+import { ConnectedContent } from "src/Screens/connectedContent2";
+import { SetupConnectScreen } from "src/Screens/SetupConnectScreen";
 import { Config, useConnect } from "react-pelm-connect";
 
 import { CopyBlock, dracula } from "react-code-blocks";

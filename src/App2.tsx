@@ -35,7 +35,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ConnectButton } from './connectButton'
 // import { ConnectedContent } from "./connectedContent";
-import { ConnectedContent } from "./connectedContent2";
+import { ConnectedContent } from "./Screens/connectedContent2";
 import { Config, useConnect } from "react-pelm-connect";
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
