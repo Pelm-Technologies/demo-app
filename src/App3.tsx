@@ -52,6 +52,9 @@ type Step = 'welcome' | 'setup_connect' | 'request_data'
 type State = {
     currentStep: Step;
 
+    clientId: string;
+    secret: string;
+
     // pelmClientId: string;
     // pelmSecret: string;
     expandedPanel: PanelName;
@@ -78,6 +81,9 @@ export class App extends React.Component<{}, State> {
         super({})
 
         this.state = {
+            clientId: PELM_CLIENT_ID,
+            secret: PELM_SECRET,
+
             currentStep: 'setup_connect',
             toggleButtonView: 'request',
             expandedPanel: 'CONNECT_TOKEN',
@@ -110,6 +116,14 @@ export class App extends React.Component<{}, State> {
 
     expandPanel = (expandedPanel: PanelName) => () => {
         this.setState({expandedPanel})
+    }
+
+    setClientId = (clientId: string) => {
+        this.setState({clientId})
+    }
+
+    setSecret = (secret: string) => {
+        this.setState({secret})
     }
 
     setSandboxAccessToken = () => {
@@ -153,9 +167,15 @@ export class App extends React.Component<{}, State> {
                 onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
             />
         } else if (currentStep === 'setup_connect') {
+
+            // TODO: instead of passing clientId, secret, token, maybe pass headers or a requestHelper
             children = <SetupConnectScreen 
+                clientId={this.state.clientId}
+                secret={this.state.secret}
                 // setAccessToken={this.setAccessToken}
                 onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
+                setClientId={this.setClientId}
+                setSecret={this.setSecret}
             />
         } else {
             children = <ConnectedContent accessToken={this.state.accessToken!}/>

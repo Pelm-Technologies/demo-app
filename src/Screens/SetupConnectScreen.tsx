@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
 
+import { ClientCredentialsStep } from "src/Components/SetupConnectScreen/ClientCredentialsStep";
 import { ConnectTokenStep } from "src/Components/SetupConnectScreen/ConnectTokenStep";
 import { ConnectUtilityStep } from "src/Components/SetupConnectScreen/ConnectUtilityStep";
 import { AccessTokenStep } from "src/Components/SetupConnectScreen/AccessTokenStep";
@@ -50,8 +51,13 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    clientId: string;
+    secret: string;
+
     // setAccessToken: (accessToken: string) => void;
     onContinueToRequestDataScreen: (accessToken: string) => void;
+    setClientId: (clientId: string) => void;
+    setSecret: (secret: string) => void;
 }
 
 type State = {
@@ -62,8 +68,8 @@ type State = {
 
     userId: string;
 
-    pelmClientIdInputValue?: string;
-    pelmSecretInputValue?: string;
+    // pelmClientIdInputValue?: string;
+    // pelmSecretInputValue?: string;
 
     isLoading: boolean;
     error?: string;
@@ -198,6 +204,10 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         return <Container>
             <Box sx={{ my: 4 }}>
                 <div>
+                    <ClientCredentialsStep 
+                        setClientId={this.props.setClientId}
+                        setSecret={this.props.setSecret}
+                    />
                     <ConnectTokenStep 
                         connectToken={this.state.connectToken} 
                         setConnectToken={this.setConnectToken}
