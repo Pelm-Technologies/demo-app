@@ -115,4 +115,68 @@ export class FetchHelper {
 
     }
 
+    createAccessTokenRequestUrl() {
+        return PELM_API_URL + '/auth/token';
+    }
+
+    createAccessTokenRequestOptions(authorizationCode: string, isExample?: boolean) {
+        const headers = this.baseHeaders(isExample);
+        headers.set('Content-Type', 'application/x-www-form-urlencoded');
+
+        const data = new URLSearchParams({
+            grant_type: 'code',
+            code: authorizationCode
+        }).toString();
+        const requestOptions = {
+            method: 'POST',
+            headers,
+            body: data,
+        };
+        return requestOptions;
+    }
+
+    createAccessTokenCurl(authorizationCode?: string) {
+        const code = authorizationCode
+            ? authorizationCode
+            : '<AUTHORIZATION_CODE>'
+
+        return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions(code, this.shouldUseExampleCurls));
+    }
+
+    async createAccessToken(authorizationCode: string): Promise<any> {
+        const url = this.createAccessTokenRequestUrl()
+        const requestOptions = this.createAccessTokenRequestOptions(authorizationCode)
+        // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
+        return fetch(url, requestOptions)
+            .then(response => {
+                return response.json()
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => { throw new Error(text) })
+                }
+            })
+            // .then((data) => {
+            //     this.setState({
+            //         isLoading: false,
+            //         // connectToken: data['connect_token']
+            //     })
+            //     this.props.setConnectToken(data['connect_token'])
+            // })
+            // .catch((error: Error) => {
+            //     try {
+            //         this.setState({
+            //             isLoading: false,
+            //             error: error.message
+            //         })
+            //         const errorObject = JSON.parse(error.message);
+            //         console.log(errorObject)
+            //     } catch(e) {
+            //         console.log("an error occurred")
+            //     }
+
+        // return {}
+
+    }
+
 }

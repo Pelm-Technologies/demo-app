@@ -35,7 +35,10 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
 
+import { FetchHelper } from 'src/FetchHelper'
+
 type Props = {
+    fetchHelper: FetchHelper;
     clientId: string;
     secret: string;
     authorizationCode?: string;
@@ -60,99 +63,23 @@ export class AccessTokenStep extends React.Component<Props, State> {
         }
     }
 
-    headers(): Headers {
-        const headers = new Headers();
-        headers.set('Pelm-Client-Id', this.props.clientId);
-        headers.set('Pelm-Secret', this.props.secret);
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
-        return headers;
-    }
-
-    createAccessTokenRequestUrl() {
-        return PELM_API_URL + '/auth/token';
-    }
-
-    createAccessTokenRequestOptions() {
-        const headers = this.headers();
-        const code = this.props.authorizationCode
-            ? this.props.authorizationCode
-            : 'AUTHORIZATION_CODE'
-        const data = new URLSearchParams({
-            grant_type: 'code',
-            code
-        }).toString();
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body: data,
-        };
-        return requestOptions;
-    }
-
-    createAccessTokenCurl() {
-        return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions());
-    }
-    
-
-    /*
-        We're requeseting the access_token here for simplicity.
-        In an ideal world, you would pass this authorizationCode to your server, which would then:
-        1. use the authorizationCode to get an access_token and refresh_token
-        2. save the access_token and refresh_token to your db
-        3. use the access_token to make requests for a given user's energy data
-    */
-    // generateAccessToken(authorizationCode: string) {
     createAccessToken = () => {
         this.setState({ isLoading: true })
+        this.props.fetchHelper.createAccessToken(this.props.authorizationCode!)
+            .then(response_body => {
+                this.setState({ isLoading: false})
 
-        // const headers = new Headers();
+                if (response_body.hasOwnProperty('access_token')) {
+                    this.props.setAccessToken(response_body['access_token'])
+                }
 
-        // headers.set('Environment', ENVIRONMENT);
-        // headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        // headers.set('Pelm-Secret', PELM_SECRET);
-
-        // const data = new FormData();
-        // data.append('grant_type', 'code')
-        // data.append('code', this.state.authorizationCode!)
-
-        // const requestOptions = {
-        //     method: 'POST',
-        //     body: data,
-        //     headers
-        // };
-
-        // fetch(PELM_API_URL + '/auth/token', requestOptions)
-        fetch(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions())
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
+                if (response_body.hasOwnProperty('error_code')) {
+                    // TODO: display errors in snippet thing
+                    console.log("error")
+                    console.log(response_body)
                 }
             })
-            .then((data) => {
-                console.log("access_token")
-                console.log(data['access_token'])
-
-                this.setState({
-                    isLoading: false
-                })
-                this.props.setAccessToken(data['access_token'])
-            })
-            .catch((error: Error) => {
-                try {
-                    this.setState({
-                        isLoading: false,
-                        error: error.message
-                    })
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
-                } catch(e) {
-                    console.log("an error occurred")
-                }
-            });
     }
-
 
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
@@ -191,7 +118,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
         return <SetupStep
             title="3. Create Access Token"
             description={description}
-            request={this.createAccessTokenCurl()}
+            request={this.props.fetchHelper.createAccessTokenCurl(this.props.authorizationCode)}
             response={response}
             children={children}
         />

@@ -229,6 +229,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                         setAuthorizationCode={this.setAuthorizationCode}
                     />
                     <AccessTokenStep 
+                        fetchHelper={this.props.fetchHelper}
                         clientId={this.props.clientId}
                         secret={this.props.secret}
                         authorizationCode={this.state.authorizationCode}
