@@ -22,11 +22,13 @@ import Typography from '@mui/material/Typography';
 import { Endpoint } from 'src/Components/Endpoint'
 
 import fetchToCurl from 'fetch-to-curl';
+import { FetchHelper } from "src/FetchHelper";
 
 type View = 'pretty' | 'data'
 
 type Props = {
-    accessToken: string;
+    fetchHelper: FetchHelper;
+    // accessToken: string;
     onSelectAccount: (account: any) => void;
 }
 
@@ -66,69 +68,27 @@ export class AccountsInfo extends React.Component<Props, State> {
         this.props.onSelectAccount(account)
     }
 
-    requestUrl() {
-        return 'https://api.pelm.com/accounts'
-    }
+    getAccounts = () => {
+        this.setState({ isLoading: true })
+        this.props.fetchHelper.getAccounts()
+            .then(response_body => {
+                this.setState({ isLoading: false})
 
-    requestOptions(isExample: boolean) {
-        // const headers = new Headers({
-        //     'Authorization': 'Bearer ' + this.props.accessToken,
-        //     'Pelm-Client-Id': PELM_CLIENT_ID,
-        //     'Pelm-Secret': PELM_SECRET
-        // });
+                // if (response_body.hasOwnProperty('access_token')) {
+                //     this.props.setAccessToken(response_body['access_token'])
+                // }
 
-        const headers = requestHeaders(isExample, this.props.accessToken)
-
-        return {
-            method: 'GET',
-            headers
-        };
-    }
-
-    getData = async () => {
-        // setIsLoading(true);
-        this.setState({isLoading: true});
-
-        // const headers = new Headers({
-        //     'Authorization': 'Bearer ' + this.props.accessToken,
-        //     'Pelm-Client-Id': PELM_CLIENT_ID,
-        //     'Pelm-Secret': PELM_SECRET
-        // });
-        // const requestOptions = {
-        //     method: 'GET',
-        //     headers
-        // };
-        
-        // const url = 'https://api.pelm.com/accounts'
-
-        const response = await fetch(this.requestUrl(), this.requestOptions(false));
-        const data = await response.json();
-        if (data.error != null) {
-        //   setError(data.error);
-        //   setIsLoading(false);
-            console.log("There was an error");
-            console.log(data.error)
-            return;
-        }
-
-        console.log("data");
-        console.log(data);
-
-        this.setState({
-            isLoading: false,
-            accountsData: data
-        });
-
-        // setTransformedData(props.transformData(data)); // transform data into proper format for each individual product
-        // if (data.pdf != null) {
-        //   setPdf(data.pdf);
-        // }
-        // setShowTable(true);
-        // setIsLoading(false);
-    };
-
-    getCurl() {
-        return fetchToCurl(this.requestUrl(), this.requestOptions(true));
+                if (response_body.hasOwnProperty('error_code')) {
+                    // TODO: display errors in snippet thing
+                    console.log("error")
+                    console.log(response_body)
+                } else {
+                    this.setState({
+                        isLoading: false,
+                        accountsData: response_body
+                    });
+                }
+            })
     }
 
     renderPrettyView() {
@@ -221,10 +181,12 @@ export class AccountsInfo extends React.Component<Props, State> {
         return <Endpoint
             isLoading={this.state.isLoading}
             title={'GET /accounts'}
-            curl={this.getCurl()}
+            // curl={this.getCurl()}
+            curl={this.props.fetchHelper.getAccountsCurl()}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
-            onSendRequestClick={this.getData}
+            // onSendRequestClick={this.getData}
+            onSendRequestClick={this.getAccounts}
             data={data}
             prettyViewChild={prettyViewChild}
             defaultExpanded={true}

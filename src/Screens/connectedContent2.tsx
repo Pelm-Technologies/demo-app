@@ -25,7 +25,10 @@ import { AccountsInfo } from 'src/Components/RequestDataScreen/AccountsInfo'
 import { IntervalsInfo } from 'src/Components/RequestDataScreen/IntervalsInfo'
 import { BillsInfo } from 'src/Components/RequestDataScreen/BillsInfo'
 
+import { FetchHelper } from "src/FetchHelper";
+
 type Props = {
+    fetchHelper: FetchHelper;
     accessToken: string;
 }
 
@@ -88,7 +91,8 @@ export class ConnectedContent extends React.Component<Props, State> {
                     </Box>
                     <br/><br/>
                     <AccountsInfo 
-                        accessToken={this.props.accessToken}
+                        // accessToken={this.props.accessToken}
+                        fetchHelper={this.props.fetchHelper}
                         onSelectAccount={this.onSelectAccount}
                     />
                     <br/><br/>

@@ -93,7 +93,10 @@ export class App extends React.Component<{}, State> {
             clientId: PELM_CLIENT_ID,
             secret: PELM_SECRET,
 
-            currentStep: 'setup_connect',
+            // currentStep: 'setup_connect',
+            currentStep: 'request_data',
+
+
             toggleButtonView: 'request',
             expandedPanel: 'CONNECT_TOKEN',
             userId: uuidv4(),
@@ -113,10 +116,12 @@ export class App extends React.Component<{}, State> {
     }
 
     onContinueToRequestDataScreen = (accessToken: string) => {
+        this.setAccessToken(accessToken)
         this.setState({
             accessToken,
             currentStep: 'request_data'
         })
+        // this.setState({currentStep: 'request_data'})
     }
 
     // componentDidMount(): void {
@@ -136,19 +141,16 @@ export class App extends React.Component<{}, State> {
     }
 
     setClientCredentials = (clientId: string, secret: string) => {
-        // this.setState({
-        //     clientId,
-        //     secret
-        // })
-
-        // const updatedFetchHelper = {
-        //     ...this.state.fetchHelper,
-        //     clientId,
-        //     secret
-        // }
-
         const clonedFetchHelper = this.state.fetchHelper.clone()
         clonedFetchHelper.setClientCredentials(clientId, secret)
+        this.setState({
+            fetchHelper: clonedFetchHelper
+        })
+    }
+
+    setAccessToken = (accessToken: string) => {
+        const clonedFetchHelper = this.state.fetchHelper.clone()
+        clonedFetchHelper.setAccessToken(accessToken)
         this.setState({
             fetchHelper: clonedFetchHelper
         })
@@ -158,9 +160,9 @@ export class App extends React.Component<{}, State> {
         this.setState({accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'})
     }
 
-    setAccessToken = (accessToken: string) => {
-        this.setState({accessToken})
-    }
+    // setAccessToken = (accessToken: string) => {
+    //     this.setState({accessToken})
+    // }
 
     onViewChange = (event: any, toggleButtonView: ToggleButtonView) => {
         if (toggleButtonView !== null) {
@@ -211,7 +213,10 @@ export class App extends React.Component<{}, State> {
                 setClientCredentials={this.setClientCredentials}
             />
         } else {
-            children = <ConnectedContent accessToken={this.state.accessToken!}/>
+            children = <ConnectedContent 
+                fetchHelper={this.state.fetchHelper}
+                accessToken={this.state.accessToken!}
+            />
         }
 
         // const children = this.state.accessToken

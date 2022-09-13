@@ -229,10 +229,12 @@ export class App extends React.Component<{}, State> {
             return "Error: " + this.state.error
         }
 
-        const children = this.state.accessToken
-            // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
-            ? <ConnectedContent accessToken={this.state.accessToken!}/>
-            : this.renderConnectUtilityMessage()
+        // const children = this.state.accessToken
+        //     // ? <ConnectedContent accessToken={this.state.accessToken!} userId={userId}/>
+        //     ? <ConnectedContent accessToken={this.state.accessToken!}/>
+        //     : this.renderConnectUtilityMessage()
+
+        const children = this.renderConnectUtilityMessage()
 
         return <ThemeProvider theme={theme}>
             <CssBaseline />
