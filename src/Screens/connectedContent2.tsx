@@ -91,14 +91,12 @@ export class ConnectedContent extends React.Component<Props, State> {
                     </Box>
                     <br/><br/>
                     <AccountsInfo 
-                        // accessToken={this.props.accessToken}
                         fetchHelper={this.props.fetchHelper}
                         onSelectAccount={this.onSelectAccount}
                     />
                     <br/><br/>
                     <IntervalsInfo 
                         fetchHelper={this.props.fetchHelper}
-                        accessToken={this.props.accessToken} 
                         selectedAccount={this.state.selectedAccount}
                     />
                     <br/><br/>

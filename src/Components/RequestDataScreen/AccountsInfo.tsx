@@ -28,7 +28,6 @@ type View = 'pretty' | 'data'
 
 type Props = {
     fetchHelper: FetchHelper;
-    // accessToken: string;
     onSelectAccount: (account: any) => void;
 }
 

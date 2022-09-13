@@ -40,8 +40,6 @@ import { FetchHelper } from "src/FetchHelper";
 
 type Props = {
     fetchHelper: FetchHelper;
-    accessToken: string;
-
     selectedAccount?: any;
 }
 
