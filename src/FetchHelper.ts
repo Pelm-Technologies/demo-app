@@ -15,7 +15,7 @@ export class FetchHelper {
         this.secret = PELM_SECRET
 
 
-        // this.accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
+        this.accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
     }
 
     // We must clone this object whenever we need to update any fields so that we trigger a re-render.
@@ -170,22 +170,13 @@ export class FetchHelper {
             })
     }
 
+    // GET /accounts
     getAccountsRequestUrl() {
         return  PELM_API_URL + '/accounts'
     }
 
     getAccountsRequestOptions(isExample?: boolean) {
-        // const headers = new Headers({
-        //     'Authorization': 'Bearer ' + this.props.accessToken,
-        //     'Pelm-Client-Id': PELM_CLIENT_ID,
-        //     'Pelm-Secret': PELM_SECRET
-        // });
-
-        // const headers = requestHeaders(isExample, this.props.accessToken)
-        // const headers = requestHeaders(isExample, this.props.fetchHelper.accessToken!)
-
         const headers = this.headersWithAuthorization(isExample)
-
         return {
             method: 'GET',
             headers
@@ -199,6 +190,42 @@ export class FetchHelper {
     async getAccounts(): Promise<any> {
         const url = this.getAccountsRequestUrl()
         const requestOptions = this.getAccountsRequestOptions()
+        // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
+        return fetch(url, requestOptions)
+            .then(response => {
+                return response.json()
+            })
+    }
+
+    // GET /intervals
+    getIntervalsRequestUrl(accountId: string, type: string, startDate?: string, endDate?: string) {
+        const params = {
+            account_id: accountId,
+            type: type,
+            ...(startDate && { start_date: startDate }),
+            ...(endDate && { end_date: endDate })
+        }
+
+        // return 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
+
+        return `${PELM_API_URL}/intervals?` + new URLSearchParams(params);
+    }
+
+    getIntervalsRequestOptions(isExample?: boolean) {
+        const headers = this.headersWithAuthorization(isExample)
+        return {
+            method: 'GET',
+            headers
+        };
+    }
+
+    getIntervalsCurl(accountId: string, type: string, startDate?: string, endDate?: string) {
+        return fetchToCurl(this.getIntervalsRequestUrl(accountId, type, startDate, endDate), this.getIntervalsRequestOptions(this.shouldUseExampleCurls));
+    }
+
+    async getIntervals(accountId: string, type: string, startDate?: string, endDate?: string): Promise<any> {
+        const url = this.getIntervalsRequestUrl(accountId, type, startDate, endDate)
+        const requestOptions = this.getIntervalsRequestOptions()
         // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
         return fetch(url, requestOptions)
             .then(response => {

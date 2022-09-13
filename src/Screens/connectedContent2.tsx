@@ -97,6 +97,7 @@ export class ConnectedContent extends React.Component<Props, State> {
                     />
                     <br/><br/>
                     <IntervalsInfo 
+                        fetchHelper={this.props.fetchHelper}
                         accessToken={this.props.accessToken} 
                         selectedAccount={this.state.selectedAccount}
                     />
