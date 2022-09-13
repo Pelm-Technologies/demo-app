@@ -39,6 +39,8 @@ import { ConnectUtilityStep } from "src/Components/SetupConnectScreen/ConnectUti
 import { AccessTokenStep } from "src/Components/SetupConnectScreen/AccessTokenStep";
 import { ConnectSuccessfulStep } from "src/Components/SetupConnectScreen/ConnectSuccessfulStep";
 
+import { FetchHelper } from "src/FetchHelper";
+
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
 
@@ -51,6 +53,7 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    fetchHelper: FetchHelper;
     clientId: string;
     secret: string;
 
@@ -206,11 +209,13 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             <Box sx={{ my: 4 }}>
                 <div>
                     <ClientCredentialsStep 
+                        fetchHelper={this.props.fetchHelper}
                         // setClientId={this.props.setClientId}
                         // setSecret={this.props.setSecret}
                         setClientCredentials={this.props.setClientCredentials}
                     />
                     <ConnectTokenStep 
+                        fetchHelper={this.props.fetchHelper}
                         clientId={this.props.clientId}
                         secret={this.props.secret}
                         connectToken={this.state.connectToken} 

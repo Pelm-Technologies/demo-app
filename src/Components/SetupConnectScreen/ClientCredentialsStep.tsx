@@ -43,10 +43,14 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
 
+import { FetchHelper } from 'src/FetchHelper'
+
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    fetchHelper: FetchHelper;
+
     // connectToken?: string;
     // setConnectToken: (connectToken: string) => void;
     // clientId?: string;
@@ -107,6 +111,7 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
         // this.props.setClientId(this.state.clientId!)
         // this.props.setSecret(this.state.secret!)
         this.props.setClientCredentials(this.state.clientId!, this.state.secret!);
+        // this.props.fetchHelper.setClientCredentials(this.state.clientId!, this.state.secret!);
     }
 
     render(): React.ReactNode {

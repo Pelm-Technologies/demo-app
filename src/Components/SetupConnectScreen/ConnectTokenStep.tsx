@@ -43,10 +43,13 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
 
+import { FetchHelper } from 'src/FetchHelper'
+
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    fetchHelper: FetchHelper;
     clientId: string;
     secret: string;
     connectToken?: string;
@@ -87,8 +90,10 @@ export class ConnectTokenStep extends React.Component<Props, State> {
         const headers = new Headers();
         // headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
         // headers.set('Pelm-Secret', PELM_SECRET);
-        headers.set('Pelm-Client-Id', this.props.clientId);
-        headers.set('Pelm-Secret', this.props.secret);
+        // headers.set('Pelm-Client-Id', this.props.clientId);
+        // headers.set('Pelm-Secret', this.props.secret);
+        headers.set('Pelm-Client-Id', this.props.fetchHelper.clientId);
+        headers.set('Pelm-Secret', this.props.fetchHelper.secret);
         headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return headers;
     }

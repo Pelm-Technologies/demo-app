@@ -38,6 +38,8 @@ import { ConnectedContent } from "src/Screens/connectedContent2";
 import { SetupConnectScreen } from "src/Screens/SetupConnectScreen";
 import { Config, useConnect } from "react-pelm-connect";
 
+import { FetchHelper } from "src/FetchHelper";
+
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
 
@@ -50,6 +52,8 @@ type Step = 'welcome' | 'setup_connect' | 'request_data'
 
 
 type State = {
+    fetchHelper: FetchHelper;
+
     currentStep: Step;
 
     clientId: string;
@@ -76,11 +80,16 @@ const theme = createTheme();
 const userId = uuidv4();
 
 export class App extends React.Component<{}, State> {
+    // fetchHelper: FetchHelper;
 
     constructor() {
         super({})
 
+        // this.fetchHelper = new FetchHelper();
+
         this.state = {
+            fetchHelper: new FetchHelper(),
+
             clientId: PELM_CLIENT_ID,
             secret: PELM_SECRET,
 
@@ -127,9 +136,21 @@ export class App extends React.Component<{}, State> {
     }
 
     setClientCredentials = (clientId: string, secret: string) => {
+        // this.setState({
+        //     clientId,
+        //     secret
+        // })
+
+        // const updatedFetchHelper = {
+        //     ...this.state.fetchHelper,
+        //     clientId,
+        //     secret
+        // }
+
+        const clonedFetchHelper = this.state.fetchHelper.clone()
+        clonedFetchHelper.setClientCredentials(clientId, secret)
         this.setState({
-            clientId,
-            secret
+            fetchHelper: clonedFetchHelper
         })
     }
 
@@ -156,6 +177,9 @@ export class App extends React.Component<{}, State> {
     }
 
     render(): React.ReactNode {
+        console.log("render called")
+        console.log(this.state.fetchHelper)
+
         // if (this.state.isLoading) {
         //     return "Loading"
         // }
@@ -177,6 +201,7 @@ export class App extends React.Component<{}, State> {
 
             // TODO: instead of passing clientId, secret, token, maybe pass headers or a requestHelper
             children = <SetupConnectScreen 
+                fetchHelper={this.state.fetchHelper}
                 clientId={this.state.clientId}
                 secret={this.state.secret}
                 // setAccessToken={this.setAccessToken}
