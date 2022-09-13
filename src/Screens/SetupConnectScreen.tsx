@@ -56,8 +56,9 @@ type Props = {
 
     // setAccessToken: (accessToken: string) => void;
     onContinueToRequestDataScreen: (accessToken: string) => void;
-    setClientId: (clientId: string) => void;
-    setSecret: (secret: string) => void;
+    // setClientId: (clientId: string) => void;
+    // setSecret: (secret: string) => void;
+    setClientCredentials: (clientId: string, secret: string) => void;
 }
 
 type State = {
@@ -205,19 +206,26 @@ export class SetupConnectScreen extends React.Component<Props, State> {
             <Box sx={{ my: 4 }}>
                 <div>
                     <ClientCredentialsStep 
-                        setClientId={this.props.setClientId}
-                        setSecret={this.props.setSecret}
+                        // setClientId={this.props.setClientId}
+                        // setSecret={this.props.setSecret}
+                        setClientCredentials={this.props.setClientCredentials}
                     />
                     <ConnectTokenStep 
+                        clientId={this.props.clientId}
+                        secret={this.props.secret}
                         connectToken={this.state.connectToken} 
                         setConnectToken={this.setConnectToken}
                     />
                     <ConnectUtilityStep 
+                        clientId={this.props.clientId}
+                        secret={this.props.secret}
                         connectToken={this.state.connectToken!}  
                         authorizationCode={this.state.authorizationCode}
                         setAuthorizationCode={this.setAuthorizationCode}
                     />
                     <AccessTokenStep 
+                        clientId={this.props.clientId}
+                        secret={this.props.secret}
                         authorizationCode={this.state.authorizationCode}
                         accessToken={this.state.accessToken}
                         setAccessToken={this.setAccessToken}

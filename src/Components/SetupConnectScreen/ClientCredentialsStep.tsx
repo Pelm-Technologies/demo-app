@@ -53,8 +53,9 @@ type Props = {
     // onClientIdChange: (clientId: string) => void;
     // secret?: string;
     // onSecretChange: (secret: string) => void;
-    setClientId: (clientId: string) => void;
-    setSecret: (secret: string) => void;
+    // setClientId: (clientId: string) => void;
+    // setSecret: (secret: string) => void;
+    setClientCredentials: (clientId: string, secret: string) => void;
 }
 
 type State = {
@@ -103,8 +104,9 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
     }
 
     onContinue = () => {
-        this.props.setClientId(this.state.clientId!)
-        this.props.setSecret(this.state.secret!)
+        // this.props.setClientId(this.state.clientId!)
+        // this.props.setSecret(this.state.secret!)
+        this.props.setClientCredentials(this.state.clientId!, this.state.secret!);
     }
 
     render(): React.ReactNode {
@@ -142,7 +144,7 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
             }}>
                 <Button 
                     variant="outlined"
-                    // onClick={this.createAccessToken}
+                    onClick={this.onContinue}
                     color="primary"
                     disabled={!this.isContinueButtonEnabled()}
                     // sx={{marginTop: '8px'}}

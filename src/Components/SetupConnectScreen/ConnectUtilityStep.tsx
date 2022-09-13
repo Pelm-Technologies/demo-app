@@ -41,6 +41,8 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
+    clientId: string;
+    secret: string;
     // setAccessToken: (accessToken: string) => void;
     connectToken?: string;
     authorizationCode?: string;
@@ -67,8 +69,8 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
 
     headers(): Headers {
         const headers = new Headers();
-        headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        headers.set('Pelm-Secret', PELM_SECRET);
+        headers.set('Pelm-Client-Id', this.props.clientId);
+        headers.set('Pelm-Secret', this.props.secret);
         headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return headers;
     }
