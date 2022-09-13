@@ -27,11 +27,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Endpoint } from 'src/Components/Endpoint'
 
 import fetchToCurl from 'fetch-to-curl';
+import { FetchHelper } from "src/FetchHelper";
 
 
 type Props = {
-    accessToken: string;
-
+    fetchHelper: FetchHelper;
     selectedAccount?: any;
 }
 
@@ -65,38 +65,15 @@ export class BillsInfo extends React.Component<Props, State> {
         }
     }
 
-    requestUrl() {
-        const params = {
-            ...(this.state.accountId && { account_id: this.state.accountId })
-        }
-
-        return 'https://api.pelm.com/bills?' + new URLSearchParams(params);
-    }
-
-    requestOptions(isExample: boolean) {
-        const headers = requestHeaders(isExample, this.props.accessToken)
-
-        return {
-            method: 'GET',
-            headers
-        };
-    }
-
-    getData = async () => {
-        this.setState({isLoading: true});
-
-        const response = await fetch(this.requestUrl(), this.requestOptions(false));
-
-        const data = await response.json();
-
-        this.setState({
-            isLoading: false,
-            responseData: data
-        });
-    }
-
-    getCurl() {
-        return fetchToCurl(this.requestUrl(), this.requestOptions(true));
+    getBills = () => {
+        this.setState({ isLoading: true })
+        this.props.fetchHelper.getBills(this.state.accountId)
+            .then(response_body => {
+                this.setState({
+                    isLoading: false,
+                    responseData: response_body
+                });
+            })
     }
 
     renderPrettyView() {
@@ -155,6 +132,9 @@ export class BillsInfo extends React.Component<Props, State> {
                         sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                         >
                             <CardContent sx={{ flexGrow: 1 }}>
+                                <Typography>
+                                    id: {bill['id']}
+                                </Typography>
                                 <Typography>
                                     Start date: {bill['start_date'] ? new Date(parseInt(bill['start_date']) * 1000).toISOString().substr(0,10) : 'Unknown'}
                                 </Typography>
@@ -258,10 +238,10 @@ export class BillsInfo extends React.Component<Props, State> {
         return <Endpoint
             isLoading={this.state.isLoading}
             title={'GET /bills'}
-            curl={this.getCurl()}
+            curl={this.props.fetchHelper.getBillsCurl()}
             requestInfoChild={this.renderRequestInfoChild()}
             responseInfoChild={this.renderResponseInfoChild()}
-            onSendRequestClick={this.getData}
+            onSendRequestClick={this.getBills}
             data={data}
             prettyViewChild={prettyViewChild}
         />

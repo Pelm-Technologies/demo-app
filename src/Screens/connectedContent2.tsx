@@ -101,7 +101,7 @@ export class ConnectedContent extends React.Component<Props, State> {
                     />
                     <br/><br/>
                     <BillsInfo
-                        accessToken={this.props.accessToken} 
+                        fetchHelper={this.props.fetchHelper}
                         selectedAccount={this.state.selectedAccount}
                     />
                     <br/><br/>

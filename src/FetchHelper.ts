@@ -190,7 +190,6 @@ export class FetchHelper {
     async getAccounts(): Promise<any> {
         const url = this.getAccountsRequestUrl()
         const requestOptions = this.getAccountsRequestOptions()
-        // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
         return fetch(url, requestOptions)
             .then(response => {
                 return response.json()
@@ -205,9 +204,6 @@ export class FetchHelper {
             ...(startDate && { start_date: startDate }),
             ...(endDate && { end_date: endDate })
         }
-
-        // return 'https://api.pelm.com/intervals?' + new URLSearchParams(params);
-
         return `${PELM_API_URL}/intervals?` + new URLSearchParams(params);
     }
 
@@ -226,7 +222,36 @@ export class FetchHelper {
     async getIntervals(accountId: string, type: string, startDate?: string, endDate?: string): Promise<any> {
         const url = this.getIntervalsRequestUrl(accountId, type, startDate, endDate)
         const requestOptions = this.getIntervalsRequestOptions()
-        // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
+        return fetch(url, requestOptions)
+            .then(response => {
+                return response.json()
+            })
+    }
+
+    // GET /bills
+    getBillsRequestUrl(accountId?: string) {
+        const params = {
+            ...(accountId && { account_id: accountId })
+        }
+
+        return `${PELM_API_URL}/bills?` + new URLSearchParams(params);
+    }
+
+    getBillsRequestOptions(isExample?: boolean) {
+        const headers = this.headersWithAuthorization(isExample)
+        return {
+            method: 'GET',
+            headers
+        };
+    }
+
+    getBillsCurl(accountId?: string) {
+        return fetchToCurl(this.getBillsRequestUrl(accountId), this.getBillsRequestOptions(this.shouldUseExampleCurls));
+    }
+
+    async getBills(accountId?: string): Promise<any> {
+        const url = this.getBillsRequestUrl(accountId)
+        const requestOptions = this.getBillsRequestOptions()
         return fetch(url, requestOptions)
             .then(response => {
                 return response.json()
