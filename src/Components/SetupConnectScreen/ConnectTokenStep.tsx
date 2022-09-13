@@ -86,76 +86,22 @@ export class ConnectTokenStep extends React.Component<Props, State> {
         })
     }
 
-    headers(): Headers {
-        const headers = new Headers();
-        // headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        // headers.set('Pelm-Secret', PELM_SECRET);
-        // headers.set('Pelm-Client-Id', this.props.clientId);
-        // headers.set('Pelm-Secret', this.props.secret);
-        headers.set('Pelm-Client-Id', this.props.fetchHelper.clientId);
-        headers.set('Pelm-Secret', this.props.fetchHelper.secret);
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
-        return headers;
-    }
-
-    createConnectTokenRequestUrl() {
-        return PELM_API_URL + '/auth/connect-token';
-    }
-
-    createConnectTokenRequestOptions() {
-        const headers = this.headers();
-        const data = new URLSearchParams({
-            user_id: this.state.userId
-        }).toString();
-        const requestOptions = {
-            method: 'POST',
-            headers,
-            body: data,
-        };
-        return requestOptions;
-    }
-
-    createConnectTokenCurl() {
-        const curl = fetchToCurl(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions());
-        console.log("curl: " + curl)
-
-        return curl
-    }
-
-    /*
-        We're requeseting the connect_token here for simplicity.
-        In an ideal world, you would make this request from your server and then pass the token to your client.
-    */
-    // generateConnectToken(userId: string) {
     createConnectToken = () => {
         this.setState({ isLoading: true })
-        fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
+        this.props.fetchHelper.createConnectToken(this.state.userId)
+            .then(response_json => {
+                this.setState({ isLoading: false})
+
+                if (response_json.hasOwnProperty('connect_token')) {
+                    this.props.setConnectToken(response_json['connect_token'])
+                }
+
+                if (response_json.hasOwnProperty('error_code')) {
+                    // TODO: display errors in snippet thing
+                    console.log("error")
+                    console.log(response_json)
                 }
             })
-            .then((data) => {
-                this.setState({
-                    isLoading: false,
-                    // connectToken: data['connect_token']
-                })
-                this.props.setConnectToken(data['connect_token'])
-            })
-            .catch((error: Error) => {
-                try {
-                    this.setState({
-                        isLoading: false,
-                        error: error.message
-                    })
-                    const errorObject = JSON.parse(error.message);
-                    console.log(errorObject)
-                } catch(e) {
-                    console.log("an error occurred")
-                }
-            });
     }
 
     render(): React.ReactNode {
@@ -203,7 +149,8 @@ export class ConnectTokenStep extends React.Component<Props, State> {
         return <SetupStep
             title="1. Create Connect Token"
             description={description}
-            request={this.createConnectTokenCurl()}
+            // request={this.createConnectTokenCurl()}
+            request={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
             response={response}
             children={children}
         />
