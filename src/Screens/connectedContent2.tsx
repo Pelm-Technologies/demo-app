@@ -86,10 +86,10 @@ export class ConnectedContent extends React.Component<Props, State> {
             <Outer>
                 <Container>
                     <br/>
-                    <Box>
+                    {/* <Box>
                         {"[placeholder] access_token info"}
                     </Box>
-                    <br/><br/>
+                    <br/><br/> */}
                     <AccountsInfo 
                         fetchHelper={this.props.fetchHelper}
                         onSelectAccount={this.onSelectAccount}
@@ -104,10 +104,10 @@ export class ConnectedContent extends React.Component<Props, State> {
                         fetchHelper={this.props.fetchHelper}
                         selectedAccount={this.state.selectedAccount}
                     />
-                    <br/><br/>
+                    {/* <br/><br/>
                     <Box>
                         {"[placeholder] more info and link to guides"}
-                    </Box>
+                    </Box> */}
 
                     {/* <br />
                     <br />

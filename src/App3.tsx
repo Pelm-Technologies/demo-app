@@ -93,6 +93,7 @@ export class App extends React.Component<{}, State> {
             clientId: PELM_CLIENT_ID,
             secret: PELM_SECRET,
 
+            // currentStep: 'welcome',
             currentStep: 'request_data',
 
 
