@@ -196,6 +196,7 @@ export class App extends React.Component<{}, State> {
 
         if (currentStep === 'welcome') {
             children = <WelcomeScreen 
+                fetchHelper={this.state.fetchHelper}
                 onContinueToSetupConnectScreen={this.onContinueToSetupConnectScreen}
                 onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
             />
