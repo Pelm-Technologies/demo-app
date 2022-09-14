@@ -34,6 +34,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
+import { Endpoint } from "src/Components/Endpoint2";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -49,6 +50,7 @@ type Props = {
 type State = {
     isLoading: boolean;
     error?: string;
+    responseBody?: any;
 }
 
 export class AccessTokenStep extends React.Component<Props, State> {
@@ -66,19 +68,38 @@ export class AccessTokenStep extends React.Component<Props, State> {
     createAccessToken = () => {
         this.setState({ isLoading: true })
         this.props.fetchHelper.createAccessToken(this.props.authorizationCode!)
-            .then(response_body => {
-                this.setState({ isLoading: false})
+            .then(responseBody => {
+                this.setState({ 
+                    isLoading: false,
+                    responseBody
+                })
 
-                if (response_body.hasOwnProperty('access_token')) {
-                    this.props.setAccessToken(response_body['access_token'])
-                }
-
-                if (response_body.hasOwnProperty('error_code')) {
-                    // TODO: display errors in snippet thing
-                    console.log("error")
-                    console.log(response_body)
+                if (responseBody.hasOwnProperty('access_token')) {
+                    this.props.setAccessToken(responseBody['access_token'])
                 }
             })
+    }
+
+    requestChild() {
+        return <CopyBlock
+            text={this.props.fetchHelper.createAccessTokenCurl(this.props.authorizationCode)}
+            language="curl"
+            showLineNumbers={false}
+            theme={dracula}
+            wrapLines
+        />
+    }
+
+    responseChild() {
+        if (this.state.responseBody) {
+            return <CopyBlock
+                text={JSON.stringify(this.state.responseBody, null, '\t')}
+                language="json"
+                showLineNumbers={true}
+                theme={dracula}
+                // wrapLines
+            />
+        }
     }
 
     render(): React.ReactNode {
@@ -106,6 +127,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
                 loading={this.state.isLoading}
                 color="primary"
                 sx={{marginTop: '8px'}}
+                disabled={!this.props.authorizationCode}
             >
                 Create access_token
             </LoadingButton>
@@ -115,11 +137,20 @@ export class AccessTokenStep extends React.Component<Props, State> {
             ? this.props.accessToken
             : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
 
-        return <SetupStep
+        // return <SetupStep
+        //     title="3. Create Access Token"
+        //     description={description}
+        //     request={this.props.fetchHelper.createAccessTokenCurl(this.props.authorizationCode)}
+        //     response={response}
+        //     children={children}
+        // />
+
+        return <Endpoint 
             title="3. Create Access Token"
             description={description}
-            request={this.props.fetchHelper.createAccessTokenCurl(this.props.authorizationCode)}
-            response={response}
+            // request={this.createConnectTokenCurl()}
+            request={this.requestChild()}
+            response={this.responseChild()}
             children={children}
         />
     }

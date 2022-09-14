@@ -42,6 +42,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
+import { Endpoint } from "src/Components/Endpoint2";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -167,11 +168,18 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
             </Box>
         </Box>
 
-        return <SetupStep
+        // return <SetupStep
+        //     title="0. Input Client Credentials (optional)"
+        //     description={description}
+        //     request={''}
+        //     response={''}
+        //     children={children}
+        // />
+
+        return <Endpoint 
             title="0. Input Client Credentials (optional)"
             description={description}
             request={''}
-            response={''}
             children={children}
         />
     }

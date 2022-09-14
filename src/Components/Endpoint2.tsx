@@ -158,7 +158,9 @@ export class Endpoint extends React.Component<Props, State> {
                 wrapLines
             />
 
-        return <Box>
+        return <Box sx={{
+            width: '1000px',
+        }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 {this.props.title}
             </Typography>
@@ -166,7 +168,7 @@ export class Endpoint extends React.Component<Props, State> {
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                width: '1000px',
+                // width: '1000px',
                 minHeight: '500px',
                 marginTop: '25px'
             }}>

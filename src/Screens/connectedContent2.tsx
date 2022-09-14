@@ -21,6 +21,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// import Container from '@mui/material/Container';
+
+
 import { AccountsInfo } from 'src/Components/RequestDataScreen/AccountsInfo'
 import { IntervalsInfo } from 'src/Components/RequestDataScreen/IntervalsInfo'
 import { BillsInfo } from 'src/Components/RequestDataScreen/BillsInfo'
@@ -49,7 +52,6 @@ type State = {
 const Outer = styled.div`
     display: flex;
     justify-content: center;
-
 `
 
 const Container = styled.div`

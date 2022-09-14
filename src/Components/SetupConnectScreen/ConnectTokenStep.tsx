@@ -42,6 +42,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
+import { Endpoint } from "src/Components/Endpoint2";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -60,6 +61,7 @@ type State = {
     userId: string;
     isLoading: boolean;
     error?: string;
+    responseBody?: any;
 }
 
 const theme = createTheme();
@@ -89,19 +91,47 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     createConnectToken = () => {
         this.setState({ isLoading: true })
         this.props.fetchHelper.createConnectToken(this.state.userId)
-            .then(response_json => {
-                this.setState({ isLoading: false})
+            .then(responseBody => {
+                this.setState({ 
+                    isLoading: false,
+                    responseBody
+                })
 
-                if (response_json.hasOwnProperty('connect_token')) {
-                    this.props.setConnectToken(response_json['connect_token'])
+                if (responseBody.hasOwnProperty('connect_token')) {
+                    this.props.setConnectToken(responseBody['connect_token'])
+                    // this.setState({
+                    //     responseBody: responseBody
+                    // });
                 }
 
-                if (response_json.hasOwnProperty('error_code')) {
-                    // TODO: display errors in snippet thing
-                    console.log("error")
-                    console.log(response_json)
-                }
+                // if (responseBody.hasOwnProperty('error_code')) {
+                //     // TODO: display errors in snippet thing
+                //     console.log("error")
+                //     console.log(responseBody)
+                // }
             })
+    }
+
+    requestChild() {
+        return <CopyBlock
+            text={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
+            language="curl"
+            showLineNumbers={false}
+            theme={dracula}
+            wrapLines
+        />
+    }
+
+    responseChild() {
+        if (this.state.responseBody) {
+            return <CopyBlock
+                text={JSON.stringify(this.state.responseBody, null, '\t')}
+                language="json"
+                showLineNumbers={true}
+                theme={dracula}
+                // wrapLines
+            />
+        }
     }
 
     render(): React.ReactNode {
@@ -109,16 +139,18 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             ? this.props.connectToken
             : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
 
-        const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            The first step of initializing Connect is creating a <code>connect_token</code>. 
-            We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
-            <br/>
-            <br/>
-            The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
-            We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
-            <br/>
-            <br/>
-        </Typography>
+        const description = <Box>
+            <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
+                The first step of initializing Connect is creating a <code>connect_token</code>. 
+                We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
+                <br/>
+                <br/>
+                The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
+                We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
+                <br/>
+                <br/>
+            </Typography>
+        </Box>
 
         const children = <Box>
             <TextField 
@@ -146,12 +178,21 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             
         </Box>
 
-        return <SetupStep
+        // return <SetupStep
+        //     title="1. Create Connect Token"
+        //     description={description}
+        //     // request={this.createConnectTokenCurl()}
+        //     request={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
+        //     response={response}
+        //     children={children}
+        // />
+
+        return <Endpoint 
             title="1. Create Connect Token"
             description={description}
             // request={this.createConnectTokenCurl()}
-            request={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
-            response={response}
+            request={this.requestChild()}
+            response={this.responseChild()}
             children={children}
         />
     }
