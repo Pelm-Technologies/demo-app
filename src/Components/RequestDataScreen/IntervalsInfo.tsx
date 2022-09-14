@@ -28,6 +28,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
+
 // import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -318,7 +320,30 @@ export class IntervalsInfo extends React.Component<Props, State> {
                 Send request
             </LoadingButton>
         </Box>
+    }
 
+    request() {
+        return <CopyBlock
+            text={this.props.fetchHelper.getIntervalsCurl(
+                this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
+            )}
+            language="curl"
+            showLineNumbers={false}
+            theme={dracula}
+            wrapLines
+        />
+    }
+
+    response() {
+        if (this.state.responseData) {
+            return <CopyBlock
+                text={JSON.stringify(this.state.responseData, null, '\t')}
+                language="json"
+                showLineNumbers={true}
+                theme={dracula}
+                wrapLines
+            />
+        }
     }
 
     render() {
@@ -351,10 +376,8 @@ export class IntervalsInfo extends React.Component<Props, State> {
         return <Endpoint
             title={'GET /intervals'}
             description={this.renderRequestInfoChild()}
-            request={this.props.fetchHelper.getIntervalsCurl(
-                this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
-            )}
-            response={response}
+            request={this.request()}
+            response={this.response()}
             // requestInfoChild={this.renderRequestInfoChild()}
             // responseInfoChild={this.renderResponseInfoChild()}
             // onSendRequestClick={this.getIntervals}

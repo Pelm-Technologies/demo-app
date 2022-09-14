@@ -63,7 +63,7 @@ type Props = {
     // responseInfoChild: React.ReactChild;
 
     request: React.ReactChild;
-    response: React.ReactChild;
+    response?: React.ReactChild;
     prettyViewChild?: React.ReactChild;
 
     // data?: any;
@@ -94,6 +94,9 @@ export class Endpoint extends React.Component<Props, State> {
             //     this.setState({view: 'pretty'})
             // }
         } else if (prevProps.response !== this.props.response && this.props.response) {
+            console.log("asshole")
+            console.log(prevProps.response)
+            console.log(this.props.response)
             this.setState({view: 'response'})
         }
     }
@@ -181,13 +184,24 @@ export class Endpoint extends React.Component<Props, State> {
                         onChange={this.onViewChange}
                         aria-label="text alignment"
                     >
-                        <ToggleButton value="request" aria-label="centered">
+                        <ToggleButton 
+                            value="request" 
+                            aria-label="centered"
+                        >
                             Request
                         </ToggleButton>
-                        <ToggleButton value="response" aria-label="centered">
+                        <ToggleButton 
+                            value="response" 
+                            aria-label="centered"
+                            disabled={!this.props.response}
+                        >
                             Response
                         </ToggleButton>
-                        <ToggleButton value="pretty" aria-label="centered">
+                        <ToggleButton 
+                            value="pretty" 
+                            aria-label="centered"
+                            disabled={!this.props.prettyViewChild}
+                        >
                             Pretty
                         </ToggleButton>
                     </ToggleButtonGroup>

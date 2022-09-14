@@ -23,7 +23,7 @@ import Typography from '@mui/material/Typography';
 
 import { Endpoint } from 'src/Components/Endpoint2'
 
-import { CopyBlock, dracula } from "react-code-blocks";
+import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
@@ -179,17 +179,9 @@ export class AccountsInfo extends React.Component<Props, State> {
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
-                // wrapLines
+                wrapLines
             />
         }
-
-        return <CopyBlock
-            text='Click the "SEND REQUEST" button to view response.'
-            // language="json"
-            // showLineNumbers={true}
-            theme={dracula}
-            // wrapLines
-        />
     }
 
     request() {

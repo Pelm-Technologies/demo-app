@@ -26,6 +26,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
+
 import { Endpoint } from 'src/Components/Endpoint2'
 
 import fetchToCurl from 'fetch-to-curl';
@@ -265,6 +267,28 @@ export class BillsInfo extends React.Component<Props, State> {
 
     }
 
+    request() {
+        return <CopyBlock
+            text={this.props.fetchHelper.getBillsCurl(this.state.accountId)}
+            language="curl"
+            showLineNumbers={false}
+            theme={dracula}
+            wrapLines
+        />
+    }
+
+    response() {
+        if (this.state.responseData) {
+            return <CopyBlock
+                text={JSON.stringify(this.state.responseData, null, '\t')}
+                language="json"
+                showLineNumbers={true}
+                theme={dracula}
+                wrapLines
+            />
+        }
+    }
+
     render() {
         let data;
         let prettyViewChild;
@@ -292,8 +316,8 @@ export class BillsInfo extends React.Component<Props, State> {
         return <Endpoint
             title={'GET /bills'}
             description={this.renderRequestInfoChild()}
-            request={this.props.fetchHelper.getBillsCurl()}
-            response={response}
+            request={this.request()}
+            response={this.response()}
             prettyViewChild={prettyViewChild}
             children={this.renderForm()}
         />
