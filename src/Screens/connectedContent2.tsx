@@ -61,6 +61,8 @@ export class ConnectedContent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
+
+            // selectedAccount: { "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" },
             
             // selected
             // accountsData: undefined,

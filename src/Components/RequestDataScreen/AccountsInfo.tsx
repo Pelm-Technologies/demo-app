@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../../constants'
 import { requestHeaders } from "../../Helpers/FetchHelpers";
 
+import LoadingButton from '@mui/lab/LoadingButton';
+
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -19,7 +21,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { Endpoint } from 'src/Components/Endpoint'
+import { Endpoint } from 'src/Components/Endpoint2'
 
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
@@ -167,6 +169,27 @@ export class AccountsInfo extends React.Component<Props, State> {
 
     }
 
+    children() {
+        return <Box>
+            <LoadingButton 
+                variant="contained"
+                onClick={this.getAccounts}
+                loading={this.state.isLoading}
+                color="primary"
+                sx={{marginTop: '8px'}}
+            >
+                Send request
+            </LoadingButton>
+            
+        </Box>
+    }
+
+    response() {
+        return this.state.accountsData
+            ? JSON.stringify(this.state.accountsData)
+            : "No"
+    }
+
     render() {
         // return this.renderAccountsEndpoint()
         let data;
@@ -178,17 +201,27 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
-            isLoading={this.state.isLoading}
-            title={'GET /accounts'}
+            // isLoading={this.state.isLoading}
+            // title={'GET /accounts'}
+            // description={'blah blah blah description'}
             // curl={this.getCurl()}
-            curl={this.props.fetchHelper.getAccountsCurl()}
-            requestInfoChild={this.renderRequestInfoChild()}
-            responseInfoChild={this.renderResponseInfoChild()}
-            // onSendRequestClick={this.getData}
-            onSendRequestClick={this.getAccounts}
-            data={data}
+            // curl={this.props.fetchHelper.getAccountsCurl()}
+            // requestInfoChild={this.renderRequestInfoChild()}
+            // responseInfoChild={this.renderResponseInfoChild()}
+            // // onSendRequestClick={this.getData}
+            // onSendRequestClick={this.getAccounts}
+            // data={data}
+            // prettyViewChild={prettyViewChild}
+            // defaultExpanded={true}
+
+            title={'GET /accounts'}
+            description={this.renderRequestInfoChild()}
+            request={this.props.fetchHelper.getAccountsCurl()}
+            response={this.response()}
+            children={this.children()}
             prettyViewChild={prettyViewChild}
-            defaultExpanded={true}
+
+
         />
     }
 

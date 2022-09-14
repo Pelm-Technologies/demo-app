@@ -6,6 +6,8 @@ import { LineChart, Line, Label } from 'recharts';
 
 import { requestHeaders } from "src/Helpers/FetchHelpers";
 
+import LoadingButton from '@mui/lab/LoadingButton';
+
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -32,7 +34,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { Endpoint } from 'src/Components/Endpoint'
+import { Endpoint } from 'src/Components/Endpoint2'
 
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
@@ -186,10 +188,10 @@ export class IntervalsInfo extends React.Component<Props, State> {
 
     renderRequestInfoChild() {
         return <Box>
-            {this.renderInputs()}
+            {/* {this.renderInputs()} */}
 
             <Box>
-                <br/>
+                {/* <br/> */}
                 Input values into the required fields and then click the "SEND REQUEST" button to make a GET request to <code>/intervals</code>
                 <br/>
                 <br/>
@@ -200,8 +202,65 @@ export class IntervalsInfo extends React.Component<Props, State> {
         </Box>
     }
 
-    renderInputs() {
+    // renderInputs() {
+    //     return <Box>
+    //         <TextField 
+    //             required
+    //             label="account_id"
+    //             variant="outlined"  
+    //             value={this.state.accountId}
+    //             onChange={this.onAccountIdInputChange}
+    //             placeholder="Enter Account Id"
+    //         />
+    //         <TextField 
+    //             label="start_date"
+    //             variant="outlined"  
+    //             value={this.state.startDate}
+    //             onChange={this.onStartDateInputChange}
+    //             placeholder="Enter Start Date"
+    //             sx={{marginLeft: '4px'}}
+    //         />
+    //         <TextField 
+    //             label="end_date"
+    //             variant="outlined"  
+    //             value={this.state.endDate}
+    //             onChange={this.onEndDateInputChange}
+    //             placeholder="Enter End Date"
+    //             sx={{marginLeft: '4px'}}
+    //         />
+    //         <FormControl 
+    //             sx={{marginLeft: '4px'}}
+    //         >
+    //             <InputLabel id="demo-simple-select-label">type</InputLabel>
+    //             <Select
+    //                 labelId="demo-simple-select-label"
+    //                 id="demo-simple-select"
+    //                 value={this.state.type}
+    //                 label="type"
+    //                 onChange={this.onTypeInputChange}
+    //             >
+    //             <MenuItem value="ELECTRIC">ELECTRIC</MenuItem>
+    //             <MenuItem value="GAS">GAS</MenuItem>
+    //             </Select>
+    //         </FormControl>
+    //     </Box>
+    // }
+
+    renderResponseInfoChild() {
         return <Box>
+            You've successfully fetched the specified Account's usage intervals!
+            <br/>
+            <br/>
+            <a href="https://docs.pelm.com/reference/get_intervals" target="blank">View docs</a>
+        </Box>
+    }
+
+    renderForm() {
+
+        return <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <TextField 
                 required
                 label="account_id"
@@ -210,24 +269,32 @@ export class IntervalsInfo extends React.Component<Props, State> {
                 onChange={this.onAccountIdInputChange}
                 placeholder="Enter Account Id"
             />
-            <TextField 
-                label="start_date"
-                variant="outlined"  
-                value={this.state.startDate}
-                onChange={this.onStartDateInputChange}
-                placeholder="Enter Start Date"
-                sx={{marginLeft: '4px'}}
-            />
-            <TextField 
-                label="end_date"
-                variant="outlined"  
-                value={this.state.endDate}
-                onChange={this.onEndDateInputChange}
-                placeholder="Enter End Date"
-                sx={{marginLeft: '4px'}}
-            />
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: '8px'
+            }}>
+                <TextField 
+                    label="start_date"
+                    variant="outlined"  
+                    value={this.state.startDate}
+                    onChange={this.onStartDateInputChange}
+                    placeholder="Enter Start Date"
+                    // sx={{marginTop: '8px'}}
+                />
+                <TextField 
+                    label="end_date"
+                    variant="outlined"  
+                    value={this.state.endDate}
+                    onChange={this.onEndDateInputChange}
+                    placeholder="Enter End Date"
+                    sx={{marginLeft: '8px'}}
+                />
+
+            </Box>
+            
             <FormControl 
-                sx={{marginLeft: '4px'}}
+                sx={{marginTop: '8px'}}
             >
                 <InputLabel id="demo-simple-select-label">type</InputLabel>
                 <Select
@@ -241,16 +308,17 @@ export class IntervalsInfo extends React.Component<Props, State> {
                 <MenuItem value="GAS">GAS</MenuItem>
                 </Select>
             </FormControl>
+            <LoadingButton 
+                variant="contained"
+                onClick={this.getIntervals}
+                loading={this.state.isLoading}
+                color="primary"
+                sx={{marginTop: '8px'}}
+            >
+                Send request
+            </LoadingButton>
         </Box>
-    }
 
-    renderResponseInfoChild() {
-        return <Box>
-            You've successfully fetched the specified Account's usage intervals!
-            <br/>
-            <br/>
-            <a href="https://docs.pelm.com/reference/get_intervals" target="blank">View docs</a>
-        </Box>
     }
 
     render() {
@@ -262,18 +330,37 @@ export class IntervalsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
+        const response = this.state.responseData
+            ? JSON.stringify(this.state.responseData)
+            : "No"
+
+        // return <Endpoint
+        //     isLoading={this.state.isLoading}
+        //     title={'GET /intervals'}
+        //     // curl={this.getCurl()}
+        //     curl={this.props.fetchHelper.getIntervalsCurl(
+        //         this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
+        //     )}
+        //     requestInfoChild={this.renderRequestInfoChild()}
+        //     responseInfoChild={this.renderResponseInfoChild()}
+        //     onSendRequestClick={this.getIntervals}
+        //     data={data}
+        //     prettyViewChild={prettyViewChild}
+        // />
+
         return <Endpoint
-            isLoading={this.state.isLoading}
             title={'GET /intervals'}
-            // curl={this.getCurl()}
-            curl={this.props.fetchHelper.getIntervalsCurl(
+            description={this.renderRequestInfoChild()}
+            request={this.props.fetchHelper.getIntervalsCurl(
                 this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
             )}
-            requestInfoChild={this.renderRequestInfoChild()}
-            responseInfoChild={this.renderResponseInfoChild()}
-            onSendRequestClick={this.getIntervals}
-            data={data}
+            response={response}
+            // requestInfoChild={this.renderRequestInfoChild()}
+            // responseInfoChild={this.renderResponseInfoChild()}
+            // onSendRequestClick={this.getIntervals}
+            // data={data}
             prettyViewChild={prettyViewChild}
+            children={this.renderForm()}
         />
     }
 
