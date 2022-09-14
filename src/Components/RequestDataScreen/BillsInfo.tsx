@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import { requestHeaders } from "src/Helpers/FetchHelpers";
 
+import LoadingButton from '@mui/lab/LoadingButton';
+
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -24,7 +26,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import { Endpoint } from 'src/Components/Endpoint'
+import { Endpoint } from 'src/Components/Endpoint2'
 
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
@@ -190,10 +192,10 @@ export class BillsInfo extends React.Component<Props, State> {
 
     renderRequestInfoChild() {
         return <Box>
-            {this.renderInputs()}
+            {/* {this.renderInputs()} */}
 
             <Box>
-                <br/>
+                {/* <br/> */}
                 Input values into the required fields and then click the "SEND REQUEST" button to make a GET request to <code>/intervals</code>
                 <br/>
                 <br/>
@@ -204,17 +206,17 @@ export class BillsInfo extends React.Component<Props, State> {
         </Box>
     }
 
-    renderInputs() {
-        return <Box>
-            <TextField 
-                label="account_id"
-                variant="outlined"  
-                value={this.state.accountId}
-                onChange={this.onAccountIdInputChange}
-                placeholder="Enter Account Id"
-            />
-        </Box>
-    }
+    // renderInputs() {
+    //     return <Box>
+    //         <TextField 
+    //             label="account_id"
+    //             variant="outlined"  
+    //             value={this.state.accountId}
+    //             onChange={this.onAccountIdInputChange}
+    //             placeholder="Enter Account Id"
+    //         />
+    //     </Box>
+    // }
 
     renderResponseInfoChild() {
         return <Box>
@@ -226,6 +228,43 @@ export class BillsInfo extends React.Component<Props, State> {
         </Box>
     }
 
+    renderForm() {
+
+        return <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+            <TextField 
+                label="account_id"
+                variant="outlined"  
+                value={this.state.accountId}
+                onChange={this.onAccountIdInputChange}
+                placeholder="Enter Account Id"
+            />
+            <LoadingButton 
+                variant="contained"
+                onClick={this.getBills}
+                loading={this.state.isLoading}
+                color="primary"
+                sx={{marginTop: '8px'}}
+            >
+                Send request
+            </LoadingButton>
+        </Box>
+
+
+        // return <Box>
+        //     <TextField 
+        //         label="account_id"
+        //         variant="outlined"  
+        //         value={this.state.accountId}
+        //         onChange={this.onAccountIdInputChange}
+        //         placeholder="Enter Account Id"
+        //     />
+        // </Box>
+
+    }
+
     render() {
         let data;
         let prettyViewChild;
@@ -235,15 +274,28 @@ export class BillsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
+        const response = this.state.responseData
+            ? JSON.stringify(this.state.responseData)
+            : "No"
+
+        // return <Endpoint
+        //     isLoading={this.state.isLoading}
+        //     title={'GET /bills'}
+        //     curl={this.props.fetchHelper.getBillsCurl()}
+        //     requestInfoChild={this.renderRequestInfoChild()}
+        //     responseInfoChild={this.renderResponseInfoChild()}
+        //     onSendRequestClick={this.getBills}
+        //     data={data}
+        //     prettyViewChild={prettyViewChild}
+        // />
+
         return <Endpoint
-            isLoading={this.state.isLoading}
             title={'GET /bills'}
-            curl={this.props.fetchHelper.getBillsCurl()}
-            requestInfoChild={this.renderRequestInfoChild()}
-            responseInfoChild={this.renderResponseInfoChild()}
-            onSendRequestClick={this.getBills}
-            data={data}
+            description={this.renderRequestInfoChild()}
+            request={this.props.fetchHelper.getBillsCurl()}
+            response={response}
             prettyViewChild={prettyViewChild}
+            children={this.renderForm()}
         />
     }
 
