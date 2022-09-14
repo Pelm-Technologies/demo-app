@@ -48,8 +48,12 @@ type Props = {
     description?: React.ReactChild;
 
     // TODO: make this an element
-    request: string;
-    response: string;
+    // request: string;
+    // response: string;
+
+    // requestChild: 
+
+
 
     // curl?: string;
 
@@ -58,6 +62,8 @@ type Props = {
     // requestInfoChild: React.ReactChild;
     // responseInfoChild: React.ReactChild;
 
+    request: React.ReactChild;
+    response: React.ReactChild;
     prettyViewChild?: React.ReactChild;
 
     // data?: any;
@@ -78,6 +84,20 @@ export class Endpoint extends React.Component<Props, State> {
         }
     }
 
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.prettyViewChild !== this.props.prettyViewChild && this.props.prettyViewChild) {
+            this.setState({view: 'pretty'})
+            // console.log("asshole")
+
+            // if (!this.props.prettyViewChild) {
+            //     console.log("gorilla!")
+            //     this.setState({view: 'pretty'})
+            // }
+        } else if (prevProps.response !== this.props.response && this.props.response) {
+            this.setState({view: 'response'})
+        }
+    }
+
     onViewChange = (event: any, view: View) => {
         if (view !== null) {
             this.setState({view});
@@ -85,22 +105,30 @@ export class Endpoint extends React.Component<Props, State> {
     }
 
     renderDataContent() {
+        // if (this.state.view == 'request') {
+        //     return <CopyBlock
+        //         text={this.props.request}
+        //         language="curl"
+        //         showLineNumbers={false}
+        //         theme={dracula}
+        //         wrapLines
+        //     />
+        // } else if (this.state.view == 'response') {
+        //     return <CopyBlock
+        //         text={this.props.response}
+        //         language="json"
+        //         showLineNumbers={true}
+        //         theme={dracula}
+        //         wrapLines
+        //     />
+        // } else {
+        //     return this.props.prettyViewChild
+        // }
+
         if (this.state.view == 'request') {
-            return <CopyBlock
-                text={this.props.request}
-                language="curl"
-                showLineNumbers={false}
-                theme={dracula}
-                wrapLines
-            />
+            return this.props.request
         } else if (this.state.view == 'response') {
-            return <CopyBlock
-                text={this.props.response}
-                language="json"
-                showLineNumbers={true}
-                theme={dracula}
-                wrapLines
-            />
+            return this.props.response
         } else {
             return this.props.prettyViewChild
         }
@@ -136,7 +164,8 @@ export class Endpoint extends React.Component<Props, State> {
                 display: 'flex',
                 justifyContent: 'space-between',
                 width: '1000px',
-                minHeight: '500px'
+                minHeight: '500px',
+                marginTop: '25px'
             }}>
                 <Box sx={{
                     width: 325,
@@ -164,7 +193,7 @@ export class Endpoint extends React.Component<Props, State> {
                     </ToggleButtonGroup>
                     <Box sx={{
                         width: 625,
-                        // height: 500,
+                        height: 500,
                         overflowY: 'scroll'
                     }}>
                         {/* <CopyBlock

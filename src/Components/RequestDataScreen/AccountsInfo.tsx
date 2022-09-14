@@ -23,6 +23,8 @@ import Typography from '@mui/material/Typography';
 
 import { Endpoint } from 'src/Components/Endpoint2'
 
+import { CopyBlock, dracula } from "react-code-blocks";
+
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
 
@@ -73,22 +75,10 @@ export class AccountsInfo extends React.Component<Props, State> {
         this.setState({ isLoading: true })
         this.props.fetchHelper.getAccounts()
             .then(response_body => {
-                this.setState({ isLoading: false})
-
-                // if (response_body.hasOwnProperty('access_token')) {
-                //     this.props.setAccessToken(response_body['access_token'])
-                // }
-
-                if (response_body.hasOwnProperty('error_code')) {
-                    // TODO: display errors in snippet thing
-                    console.log("error")
-                    console.log(response_body)
-                } else {
-                    this.setState({
-                        isLoading: false,
-                        accountsData: response_body
-                    });
-                }
+                this.setState({
+                    isLoading: false,
+                    accountsData: response_body
+                });
             })
     }
 
@@ -165,18 +155,16 @@ export class AccountsInfo extends React.Component<Props, State> {
         </Box>
     }
 
-    renderCurl() {
-
-    }
-
     children() {
-        return <Box>
+        return <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <LoadingButton 
                 variant="contained"
                 onClick={this.getAccounts}
                 loading={this.state.isLoading}
                 color="primary"
-                sx={{marginTop: '8px'}}
             >
                 Send request
             </LoadingButton>
@@ -185,9 +173,33 @@ export class AccountsInfo extends React.Component<Props, State> {
     }
 
     response() {
-        return this.state.accountsData
-            ? JSON.stringify(this.state.accountsData)
-            : "No"
+        if (this.state.accountsData) {
+            return <CopyBlock
+                text={JSON.stringify(this.state.accountsData, null, '\t')}
+                language="json"
+                showLineNumbers={true}
+                theme={dracula}
+                // wrapLines
+            />
+        }
+
+        return <CopyBlock
+            text='Click the "SEND REQUEST" button to view response.'
+            // language="json"
+            // showLineNumbers={true}
+            theme={dracula}
+            // wrapLines
+        />
+    }
+
+    request() {
+        return <CopyBlock
+            text={this.props.fetchHelper.getAccountsCurl()}
+            language="curl"
+            showLineNumbers={false}
+            theme={dracula}
+            wrapLines
+        />
     }
 
     render() {
@@ -216,12 +228,10 @@ export class AccountsInfo extends React.Component<Props, State> {
 
             title={'GET /accounts'}
             description={this.renderRequestInfoChild()}
-            request={this.props.fetchHelper.getAccountsCurl()}
+            request={this.request()}
             response={this.response()}
             children={this.children()}
             prettyViewChild={prettyViewChild}
-
-
         />
     }
 

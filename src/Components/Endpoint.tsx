@@ -81,7 +81,7 @@ export class Endpoint extends React.Component<Props, State> {
                 this.setState({dataView: 'data'})
             }
         }
-      }
+    }
 
     onViewChange = (event: any, view: View) => {
         if (view !== null) {
