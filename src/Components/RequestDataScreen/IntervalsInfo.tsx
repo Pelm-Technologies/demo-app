@@ -182,83 +182,27 @@ export class IntervalsInfo extends React.Component<Props, State> {
         </Card>
     }
 
-    renderDataView() {
-        return <div>
-            {JSON.stringify(this.state.responseData)}
-        </div>;
-    }
-
-    renderRequestInfoChild() {
+    renderDescription() {
         return <Box>
             {/* {this.renderInputs()} */}
 
             <Box>
                 {/* <br/> */}
-                Input values into the required fields and then click the "SEND REQUEST" button to make a GET request to <code>/intervals</code>
-                <br/>
+                Query an Account's electricity or gas usage intervals, down to a fifteen-minute granularity.
+                <br/><br/>
+                Fill out the below fields and then click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_intervals' target='_blank'>GET /intervals</a>.
+                &nbsp;<code>account_id</code> is the only required parameter; this field is returned in the <code>GET /accounts</code> response.
+                &nbsp;<code>start_date</code> and <code>end_date</code> are optional fields that accept UNIX timestamps, which you can generate <a href='https://www.epochconverter.com/' target='_blank'>here</a>.
+                {/* <br/>
                 <br/>
                 The <code>account_id</code> field is the only required field. This field specifies the Account object to return intervals for. The <code>account_id</code> is returned in the <code>/accounts</code> response.
                 <br/>
-                <br/>
+                <br/> */}
             </Box>
         </Box>
     }
 
-    // renderInputs() {
-    //     return <Box>
-    //         <TextField 
-    //             required
-    //             label="account_id"
-    //             variant="outlined"  
-    //             value={this.state.accountId}
-    //             onChange={this.onAccountIdInputChange}
-    //             placeholder="Enter Account Id"
-    //         />
-    //         <TextField 
-    //             label="start_date"
-    //             variant="outlined"  
-    //             value={this.state.startDate}
-    //             onChange={this.onStartDateInputChange}
-    //             placeholder="Enter Start Date"
-    //             sx={{marginLeft: '4px'}}
-    //         />
-    //         <TextField 
-    //             label="end_date"
-    //             variant="outlined"  
-    //             value={this.state.endDate}
-    //             onChange={this.onEndDateInputChange}
-    //             placeholder="Enter End Date"
-    //             sx={{marginLeft: '4px'}}
-    //         />
-    //         <FormControl 
-    //             sx={{marginLeft: '4px'}}
-    //         >
-    //             <InputLabel id="demo-simple-select-label">type</InputLabel>
-    //             <Select
-    //                 labelId="demo-simple-select-label"
-    //                 id="demo-simple-select"
-    //                 value={this.state.type}
-    //                 label="type"
-    //                 onChange={this.onTypeInputChange}
-    //             >
-    //             <MenuItem value="ELECTRIC">ELECTRIC</MenuItem>
-    //             <MenuItem value="GAS">GAS</MenuItem>
-    //             </Select>
-    //         </FormControl>
-    //     </Box>
-    // }
-
-    renderResponseInfoChild() {
-        return <Box>
-            You've successfully fetched the specified Account's usage intervals!
-            <br/>
-            <br/>
-            <a href="https://docs.pelm.com/reference/get_intervals" target="blank">View docs</a>
-        </Box>
-    }
-
     renderForm() {
-
         return <Box sx={{
             display: 'flex',
             flexDirection: 'column'
@@ -322,7 +266,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
         </Box>
     }
 
-    request() {
+    requestChild() {
         return <CopyBlock
             text={this.props.fetchHelper.getIntervalsCurl(
                 this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
@@ -334,13 +278,14 @@ export class IntervalsInfo extends React.Component<Props, State> {
         />
     }
 
-    response() {
+    responseChild() {
         if (this.state.responseData) {
             return <CopyBlock
                 text={JSON.stringify(this.state.responseData, null, '\t')}
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
+                codeBlock
                 wrapLines
             />
         }
@@ -355,33 +300,11 @@ export class IntervalsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
-        const response = this.state.responseData
-            ? JSON.stringify(this.state.responseData)
-            : "No"
-
-        // return <Endpoint
-        //     isLoading={this.state.isLoading}
-        //     title={'GET /intervals'}
-        //     // curl={this.getCurl()}
-        //     curl={this.props.fetchHelper.getIntervalsCurl(
-        //         this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
-        //     )}
-        //     requestInfoChild={this.renderRequestInfoChild()}
-        //     responseInfoChild={this.renderResponseInfoChild()}
-        //     onSendRequestClick={this.getIntervals}
-        //     data={data}
-        //     prettyViewChild={prettyViewChild}
-        // />
-
         return <Endpoint
-            title={'GET /intervals'}
-            description={this.renderRequestInfoChild()}
-            request={this.request()}
-            response={this.response()}
-            // requestInfoChild={this.renderRequestInfoChild()}
-            // responseInfoChild={this.renderResponseInfoChild()}
-            // onSendRequestClick={this.getIntervals}
-            // data={data}
+            title={'Get Intervals'}
+            description={this.renderDescription()}
+            request={this.requestChild()}
+            response={this.responseChild()}
             prettyViewChild={prettyViewChild}
             children={this.renderForm()}
         />
