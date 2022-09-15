@@ -5,18 +5,7 @@ import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 's
 
 import { v4 as uuidv4 } from 'uuid';
 
-// import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
-// import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -25,14 +14,6 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import TextField from '@mui/material/TextField';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { ConnectButton } from 'src/connectButton'
-import { Config, useConnect } from "react-pelm-connect";
 
 import { CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
@@ -63,9 +44,6 @@ type State = {
     error?: string;
     responseBody?: any;
 }
-
-const theme = createTheme();
-const userId = uuidv4();
 
 export class ConnectTokenStep extends React.Component<Props, State> {
 
@@ -99,16 +77,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
 
                 if (responseBody.hasOwnProperty('connect_token')) {
                     this.props.setConnectToken(responseBody['connect_token'])
-                    // this.setState({
-                    //     responseBody: responseBody
-                    // });
                 }
-
-                // if (responseBody.hasOwnProperty('error_code')) {
-                //     // TODO: display errors in snippet thing
-                //     console.log("error")
-                //     console.log(responseBody)
-                // }
             })
     }
 
@@ -118,7 +87,6 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             language="curl"
             showLineNumbers={false}
             theme={dracula}
-            wrapLines
         />
     }
 
@@ -129,7 +97,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
-                // wrapLines
+                codeBlock
             />
         }
     }
@@ -141,18 +109,21 @@ export class ConnectTokenStep extends React.Component<Props, State> {
 
         const description = <Box>
             <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-                The first step of initializing Connect is creating a <code>connect_token</code>. 
+                The first step to initialize Connect is creating a <code>connect_token</code> via <a href='https://docs.pelm.com/reference/post_auth-connect-token' target='_blank'>POST /auth/connect-token</a>. 
                 We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
                 <br/>
                 <br/>
-                The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you for identifying the User.
+                The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you to identify the User; most clients set this as their own database id for the User.
                 We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
                 <br/>
                 <br/>
             </Typography>
         </Box>
 
-        const children = <Box>
+        const children = <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <TextField 
                 label="user_id"
                 variant="outlined"  

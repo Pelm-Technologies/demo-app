@@ -61,28 +61,27 @@ export class ConnectSuccessfulStep extends React.Component<Props, State> {
 
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            You've successfully created an access_token, which allows you to fetch data for the User you just created.
-            <br/>
-            <br/>
-            Click the "CONTINUE" button below to continue to the next page, where you can begin making requests.
+            Congrats! You've successfully created an <code>access_token</code>, which allows you to fetch data for the User you just created.
+            <br/><br/>
+            Click "CONTINUE" to move onto the next screen, where you can view this User's data in rendered format or JSON.
         </Typography>
 
-        const children = <Box>
+        const children = <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <Button 
                 variant="contained"
                 onClick={this.props.onContinue}
                 color="primary"
+                disabled={!this.props.accessToken}
             >
                 Continue
             </Button>
         </Box>
 
-        // const response = this.state.accessToken
-        //     ? this.state.accessToken
-        //     : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
-
         return <Endpoint
-            title="4. Start making requests"
+            title="4. Request Data"
             description={description}
             request={''}
             response={''}

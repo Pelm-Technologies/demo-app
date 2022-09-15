@@ -3,35 +3,14 @@ import styled from 'styled-components';
 
 import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 'src/constants'
 
-import { v4 as uuidv4 } from 'uuid';
-
-// import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-// import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import TextField from '@mui/material/TextField';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
+
+import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 
 
 import {FlowStep} from "src/Components/FlowStep"
@@ -42,46 +21,67 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
 
 type Props = {
-    clientId: string;
-    secret: string;
-    // setAccessToken: (accessToken: string) => void;
     connectToken?: string;
     authorizationCode?: string;
     setAuthorizationCode: (authorizationCode: string) => void;
 }
 
 type State = {
-    isLoading: boolean;
-    error?: string;
+    responseBody?: any;
 }
 
 export class ConnectUtilityStep extends React.Component<Props, State> {
 
     constructor(props: Props) {
-        // super()
         super(props)
 
-        this.state = {
-            isLoading: true,
-            error: undefined,
-        }
-    }
-
-
-    headers(): Headers {
-        const headers = new Headers();
-        headers.set('Pelm-Client-Id', this.props.clientId);
-        headers.set('Pelm-Secret', this.props.secret);
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
-        return headers;
+        this.state = {}
     }
 
     onSuccess = (authorizationCode: string) => {
+        const log = 
+        `onSuccess called with argument:
+            - authorizationCode = ${authorizationCode}`
+        console.log(log)
+        this.setState({
+            responseBody: log
+        })
         this.props.setAuthorizationCode(authorizationCode)
     }
 
-    onExit = () => {
-        console.log("exit")
+    onExit = (status: string, metadata: any) => {
+        const log = 
+        `onExit called with arguments:
+            - status = ${status}
+            - metadata = ${JSON.stringify(metadata)}`
+        console.log(log)
+        this.setState({
+            responseBody: log
+        })
+    }
+
+    requestChild() {
+        return <CopyBlock
+            text={codeSnippet}
+            language="javascript"
+            showLineNumbers={true}
+            theme={dracula}
+            // wrapLines
+            codeBlock
+        />
+    }
+
+    responseChild() {
+        if (this.state.responseBody) {
+            return <CodeBlock
+                text={this.state.responseBody}
+                // text={JSON.stringify(this.state.responseBody, null, '\t')}
+                // language="text"
+                showLineNumbers={true}
+                theme={dracula}
+                // codeBlock
+            />
+        }
     }
 
     render(): React.ReactNode {
@@ -92,13 +92,20 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             environment: ENVIRONMENT,
         }
 
-        // TODO: show curl
-
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            Now that you've generated a connect_token, you can initialize Connect to connect your Utility credentials. Click the "CONNECT YOUR UTILITY" button below to open the Connect flow.
+            Now that you've generated a connect_token, you can initialize Connect to connect your Utility credentials. 
+            You've also need to pass <code>onSuccess</code> and <code>onExit</code> callbacks, which are described in more detail <a href='https://github.com/Pelm-Technologies/react-pelm-connect' target='_blank'>here</a>.
+            <br/><br/>
+            Click "CONNECT YOUR UTILITY" to open the Connect flow.
+            You can use real credentials for any one of our <a href='https://docs.pelm.com/reference/utilities' target='_blank'>supported utilities</a>.
+            <br/><br/>
+            Alternatively, you can connect our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank">Sandbox User</a>.
+            Select the utility "Pacific Gas and Electric", and use the following credentials:
             <br/>
+            username: <code>user@pelm.com</code>
             <br/>
-            If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
+            password: <code>password</code>
+            {/* Alternatively, you can use the credentials for our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
             <br/>
             <br/>
             Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
@@ -107,13 +114,16 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             <br/>
             password: <code>password</code>
             <br/>
-            <br/>
+            <br/> */}
             {/* Or you can click "SKIP CONNECT FLOW" button to simulate going through the Connect Flow as the Sandbox User.
             <br/>
             <br/> */}
         </Typography>
 
-        const children = <Box>
+        const children = <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <ConnectButton config={config} />
         </Box>
 
@@ -121,20 +131,38 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             ? this.props.authorizationCode
             : 'Please connect your Utility to view authorizationCode'
 
-        // return <SetupStep
-        //     title="2. Connect your Utility"
-        //     description={description}
-        //     request={'TODO: add react code / javascript code for creating initializing Connect'}
-        //     response={response}
-        //     children={children}
-        // />
-
         return <Endpoint
             title="2. Connect your Utility"
             description={description}
-            request={'TODO: add react code / javascript code for creating initializing Connect'}
-            response={response}
+            request={this.requestChild()}
+            response={this.responseChild()}
             children={children}
         />
     }
 }
+
+const codeSnippet = 
+`import { useConnect, Config } from 'react-pelm-connect';
+
+const Connect = (props: Props) => {
+    const config: Config = {
+        connectToken: '<connect_token from previous step>',
+        onSuccess: (authorizationCode: string) => {
+            // exchange authorizationCode for accessToken here
+        },
+        onExit: (status: string, metadata: any) => {...}
+    };
+
+    const { open, ready, error } = useConnect(config);
+
+    return <button
+        type="button"
+        className="button"
+        onClick={() => open()}
+        disabled={!ready}
+    >
+        Connect your utility
+    </button>
+}
+
+export default Connect`

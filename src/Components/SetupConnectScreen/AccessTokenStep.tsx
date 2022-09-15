@@ -40,16 +40,12 @@ import { FetchHelper } from 'src/FetchHelper'
 
 type Props = {
     fetchHelper: FetchHelper;
-    clientId: string;
-    secret: string;
     authorizationCode?: string;
-    accessToken?: string;
     setAccessToken: (accessToken: string) => void;
 }
 
 type State = {
     isLoading: boolean;
-    error?: string;
     responseBody?: any;
 }
 
@@ -61,7 +57,6 @@ export class AccessTokenStep extends React.Component<Props, State> {
 
         this.state = {
             isLoading: false,
-            error: undefined
         }
     }
 
@@ -86,7 +81,6 @@ export class AccessTokenStep extends React.Component<Props, State> {
             language="curl"
             showLineNumbers={false}
             theme={dracula}
-            wrapLines
         />
     }
 
@@ -97,18 +91,25 @@ export class AccessTokenStep extends React.Component<Props, State> {
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
-                // wrapLines
+                codeBlock
             />
         }
     }
 
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            Upon successfully completing the Connect flow, you're onSuccess callback is called with the generated <code>authorization_code</code>.
-            This code can be used to generate an <code>access_token</code> via <a href='https://docs.pelm.com/reference/post_auth-token-1' target='_blank'>POST /auth/token</a>.
+            Once your User successfully completes the Connect flow, your onSuccess callback is called with an <code>authorizationCode</code>.
+            The next step is exchanging this <code>authorizationCode</code> for an <code>access_token</code> via <a href='https://docs.pelm.com/reference/post_auth-token-1' target='_blank'>POST /auth/token</a>.
+            We recommend making this request in your backend to avoid exposing the access_token to your frontend.
+            <br/><br/>
+            We've pre-populated the field below with the authorizationCode generated in the previous step. Click "CREATE ACCESS TOKEN" to continue.
+            
         </Typography>
 
-        const children = <Box>
+        const children = <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <TextField 
                 label="authorization_code"
                 variant="outlined"  
@@ -129,26 +130,13 @@ export class AccessTokenStep extends React.Component<Props, State> {
                 sx={{marginTop: '8px'}}
                 disabled={!this.props.authorizationCode}
             >
-                Create access_token
+                Create access token
             </LoadingButton>
         </Box>
-
-        const response = this.props.accessToken
-            ? this.props.accessToken
-            : 'Please click the "CREATE ACCESS TOKEN" button to view response.'
-
-        // return <SetupStep
-        //     title="3. Create Access Token"
-        //     description={description}
-        //     request={this.props.fetchHelper.createAccessTokenCurl(this.props.authorizationCode)}
-        //     response={response}
-        //     children={children}
-        // />
 
         return <Endpoint 
             title="3. Create Access Token"
             description={description}
-            // request={this.createConnectTokenCurl()}
             request={this.requestChild()}
             response={this.responseChild()}
             children={children}

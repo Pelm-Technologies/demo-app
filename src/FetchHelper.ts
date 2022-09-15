@@ -155,7 +155,7 @@ export class FetchHelper {
     createAccessTokenCurl(authorizationCode?: string) {
         const code = authorizationCode
             ? authorizationCode
-            : '<AUTHORIZATION_CODE>'
+            : 'AUTHORIZATION_CODE'
 
         return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions(code, this.shouldUseExampleCurls));
     }

@@ -156,8 +156,8 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     Welcome to the Pelm Demo App
                 </Typography>
                 <Typography variant="subtitle1" component="p" gutterBottom>
-                    This app allows you to quickly connect a utility account and start viewing live data.
-                    Click the "CONNECT YOUR UTILITY" button to get started.
+                    This app allows you to quickly connect a utility account and pull real data.
+                    Click "CONNECT YOUR UTILITY" get started.
                     <br/><br/>
                     If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
                     Select the utility "Pacific Gas and Electric", and use the following credentials:

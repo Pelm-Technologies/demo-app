@@ -205,19 +205,6 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
-            // isLoading={this.state.isLoading}
-            // title={'GET /accounts'}
-            // description={'blah blah blah description'}
-            // curl={this.getCurl()}
-            // curl={this.props.fetchHelper.getAccountsCurl()}
-            // requestInfoChild={this.renderRequestInfoChild()}
-            // responseInfoChild={this.renderResponseInfoChild()}
-            // // onSendRequestClick={this.getData}
-            // onSendRequestClick={this.getAccounts}
-            // data={data}
-            // prettyViewChild={prettyViewChild}
-            // defaultExpanded={true}
-
             title={'GET /accounts'}
             description={this.renderRequestInfoChild()}
             request={this.request()}
