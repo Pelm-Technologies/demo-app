@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { WelcomeScreen } from "src/Screens/WelcomeScreen";
-import { ConnectedContent } from "src/Screens/connectedContent2";
+import { RequestDataScreen } from "src/Screens/RequestDataScreen";
 import { SetupConnectScreen } from "src/Screens/SetupConnectScreen";
 
 import { FetchHelper } from "src/FetchHelper";
@@ -29,7 +29,7 @@ export class App extends React.Component<{}, State> {
             fetchHelper: new FetchHelper(),
 
             currentStep: 'welcome',
-            // currentStep: 'setup_connect',
+            // currentStep: 'request_data',
         }
     }
 
@@ -80,7 +80,7 @@ export class App extends React.Component<{}, State> {
                 setClientCredentials={this.setClientCredentials}
             />
         } else {
-            children = <ConnectedContent 
+            children = <RequestDataScreen 
                 fetchHelper={this.state.fetchHelper}
             />
         }

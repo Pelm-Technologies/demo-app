@@ -1,40 +1,12 @@
 import * as React from "react";
-import styled from 'styled-components';
 
-import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 'src/constants'
-
-import { v4 as uuidv4 } from 'uuid';
-
-// import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
-// import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import TextField from '@mui/material/TextField';
 
 import { CopyBlock, dracula } from "react-code-blocks";
-import fetchToCurl from 'fetch-to-curl';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import {FlowStep} from "src/Components/FlowStep"
-import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
-import { Endpoint } from "src/Components/Endpoint2";
+import { FlowStep } from "src/Components/FlowStep";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -134,7 +106,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
             </LoadingButton>
         </Box>
 
-        return <Endpoint 
+        return <FlowStep 
             title="3. Create Access Token"
             description={description}
             requestChild={this.requestChild()}

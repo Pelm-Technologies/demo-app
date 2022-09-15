@@ -2,27 +2,18 @@ import * as React from "react";
 import styled from 'styled-components';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-
-// import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 // import CameraIcon from '@mui/icons-material/PhotoCamera';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { Endpoint } from 'src/Components/Endpoint2'
-
+import { FlowStep } from 'src/Components/FlowStep'
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
-
-import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
 
 type Props = {
@@ -157,7 +148,7 @@ export class AccountsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
-        return <Endpoint
+        return <FlowStep
             title={'Get Accounts'}
             description={this.renderDescription()}
             requestChild={this.request()}

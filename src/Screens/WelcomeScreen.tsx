@@ -8,14 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-// import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -25,49 +17,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { FetchHelper } from "src/FetchHelper";
 
-import TextField from '@mui/material/TextField';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
-
-import { CopyBlock, dracula } from "react-code-blocks";
-import fetchToCurl from 'fetch-to-curl';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-
-type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
-type ToggleButtonView = 'request' | 'response'
 
 type Props = {
     fetchHelper: FetchHelper;
     onContinueToSetupConnectScreen: () => void;
     onContinueToRequestDataScreen: (accessToken: string) => void;
-    // setAccessToken: (accessToken: string) => void;
 }
 
 type State = {
-    // pelmClientId: string;
-    // pelmSecret: string;
-    expandedPanel: PanelName;
-    toggleButtonView: ToggleButtonView;
-
     userId: string;
-
-    pelmClientIdInputValue?: string;
-    pelmSecretInputValue?: string;
-
-    isLoading: boolean;
-    error?: string;
     connectToken?: string;
-    authorizationCode?: string;
-    accessToken?: string;
 }
 
 const theme = createTheme();
@@ -81,15 +42,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
         super(props)
 
         this.state = {
-            toggleButtonView: 'request',
-            expandedPanel: 'CONNECT_TOKEN',
-            userId: uuidv4(),
-
-            isLoading: true,
-            error: undefined,
-            connectToken: undefined,
-            // accessToken: undefined,
-            accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
+            userId: uuidv4()
         }
     }
 
@@ -100,8 +53,6 @@ export class WelcomeScreen extends React.Component<Props, State> {
     createConnectToken = () => {
         this.props.fetchHelper.createConnectToken(this.state.userId)
             .then(response_json => {
-                this.setState({ isLoading: false})
-
                 if (response_json.hasOwnProperty('connect_token')) {
                     this.setState({
                         connectToken: response_json['connect_token']
@@ -119,8 +70,6 @@ export class WelcomeScreen extends React.Component<Props, State> {
     createAccessToken = (authorizationCode: string) => {
         this.props.fetchHelper.createAccessToken(authorizationCode)
             .then(response_body => {
-                // this.setState({ isLoading: false})
-
                 if (response_body.hasOwnProperty('access_token')) {
                     this.props.onContinueToRequestDataScreen(response_body['access_token'])
                     // this.props.setAccessToken(response_body['access_token'])

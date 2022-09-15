@@ -1,21 +1,10 @@
 import * as React from "react";
-import styled from 'styled-components';
-
-import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 'src/constants'
 
 import { v4 as uuidv4 } from 'uuid';
 
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
-// import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,24 +14,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import TextField from '@mui/material/TextField';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { ConnectButton } from 'src/connectButton'
-import { Config, useConnect } from "react-pelm-connect";
-
-import { CopyBlock, dracula } from "react-code-blocks";
-import fetchToCurl from 'fetch-to-curl';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import {FlowStep} from "src/Components/FlowStep"
-import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
-import { Endpoint } from "src/Components/Endpoint2";
+import { FlowStep } from "src/Components/FlowStep";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -163,7 +135,7 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
             </Box>
         </Box>
 
-        return <Endpoint 
+        return <FlowStep 
             title="0. Input Client Credentials (optional)"
             description={description}
             // requestChild={''}

@@ -10,15 +10,11 @@ export class FetchHelper {
     accessToken?: string;
 
     constructor() {
-        // TODO: this
-        // this.shouldUsePlaceholderValues = true;
-        this.shouldUsePlaceholderValues = false;
-        
+        this.shouldUsePlaceholderValues = true;
         this.clientId = PELM_CLIENT_ID
         this.secret = PELM_SECRET
 
-
-        this.accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
+        // this.accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhdXRoLXNlcnZlciIsImNyZWF0ZWRfYXQiOjE2NTkzODE0NTguMDE5NzY5MiwidXNlciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImNsaWVudF9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.mYv4h4e6CNNz8YeDinO6IgmVXwgQ1KIssa5Y3yWq7M2nMAJ_-ZbRS6QCvFV8glhDYJ_zhlSM54QC9LWgMeRKAqebcj-McyYAxjsZZI6DlWjv-CxIkPnG0lODwOZW_8-IMDZMULyJkBmHDi3UoaCB-qYv0PIR94KbCGOA6ej3Srgy5vRV__S0D-oRYdysYZszuiCf276VGYnIjFyYEYaLptBAYfPYXRfmf3EszBilL7yRGoqil0yUpiEg64tFo8QlSwfDNi7MSpUkgQy6YXxJRSdQIJszqvZjEqMfROBe3ncalOjIX8n8-THGpvIol914Uo9nJxJnYw7FL3syzhXUZQ'
     }
 
     // We must clone this object whenever we need to update any fields so that we trigger a re-render.
@@ -42,17 +38,6 @@ export class FetchHelper {
 
     baseHeaders(isExample?: boolean): Headers {
         const headers = new Headers();
-        // headers.set('Pelm-Client-Id', PELM_CLIENT_ID);
-        // headers.set('Pelm-Secret', PELM_SECRET);
-        // headers.set('Pelm-Client-Id', this.props.clientId);
-        // headers.set('Pelm-Secret', this.props.secret);
-        // headers.set('Pelm-Client-Id', this.props.fetchHelper.clientId);
-        // headers.set('Pelm-Secret', this.props.fetchHelper.secret);
-
-
-        // headers.set('Pelm-Client-Id', this.clientId);
-        // headers.set('Pelm-Secret', this.secret);
-
         if (isExample) {
             headers.set('Pelm-Client-Id', '<YOUR_CLIENT_ID>');
             headers.set('Pelm-Secret', '<YOUR_SECRET>');
@@ -60,8 +45,6 @@ export class FetchHelper {
             headers.set('Pelm-Client-Id', this.clientId);
             headers.set('Pelm-Secret', this.secret);
         }
-
-        // headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return headers;
     }
 
@@ -74,6 +57,7 @@ export class FetchHelper {
         return headers
     }
 
+    // POST /auth/connect-token
     createConnectTokenRequestUrl() {
         return PELM_API_URL + '/auth/connect-token';
     }
@@ -102,39 +86,13 @@ export class FetchHelper {
     async createConnectToken(userId: string): Promise<any> {
         const url = this.createConnectTokenRequestUrl()
         const requestOptions = this.createConnectTokenRequestOptions(userId)
-        // fetch(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions())
         return fetch(url, requestOptions)
             .then(response => {
                 return response.json()
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => { throw new Error(text) })
-                }
             })
-            // .then((data) => {
-            //     this.setState({
-            //         isLoading: false,
-            //         // connectToken: data['connect_token']
-            //     })
-            //     this.props.setConnectToken(data['connect_token'])
-            // })
-            // .catch((error: Error) => {
-            //     try {
-            //         this.setState({
-            //             isLoading: false,
-            //             error: error.message
-            //         })
-            //         const errorObject = JSON.parse(error.message);
-            //         console.log(errorObject)
-            //     } catch(e) {
-            //         console.log("an error occurred")
-            //     }
-
-        // return {}
-
     }
 
+    // POST /auth/token
     createAccessTokenRequestUrl() {
         return PELM_API_URL + '/auth/token';
     }

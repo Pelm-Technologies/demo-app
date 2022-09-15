@@ -13,12 +13,7 @@ import { Config, useConnect } from "react-pelm-connect";
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 
 
-import {FlowStep} from "src/Components/FlowStep"
-import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
-import { Endpoint } from "src/Components/Endpoint2";
-
-type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
-type ToggleButtonView = 'request' | 'response'
+import { FlowStep } from "src/Components/FlowStep";
 
 type Props = {
     connectToken?: string;
@@ -131,7 +126,7 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             ? this.props.authorizationCode
             : 'Please connect your Utility to view authorizationCode'
 
-        return <Endpoint
+        return <FlowStep
             title="2. Connect your Utility"
             description={description}
             requestChild={this.requestChild()}
