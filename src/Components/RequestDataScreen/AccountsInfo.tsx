@@ -1,9 +1,6 @@
 import * as React from "react";
 import styled from 'styled-components';
 
-import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../../constants'
-import { requestHeaders } from "../../Helpers/FetchHelpers";
-
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // import * as React from 'react';

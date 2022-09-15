@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';
 
-import { requestHeaders } from "src/Helpers/FetchHelpers";
-
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // import * as React from 'react';
