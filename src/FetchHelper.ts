@@ -2,7 +2,7 @@ import {PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT} from 's
 import fetchToCurl from 'fetch-to-curl';
 
 export class FetchHelper {
-    shouldUseExampleCurls: boolean;
+    shouldUsePlaceholderValues: boolean;
     clientId: string;
     secret: string;
     connectToken?: string;
@@ -10,7 +10,10 @@ export class FetchHelper {
     accessToken?: string;
 
     constructor() {
-        this.shouldUseExampleCurls = true;
+        // TODO: this
+        // this.shouldUsePlaceholderValues = true;
+        this.shouldUsePlaceholderValues = false;
+        
         this.clientId = PELM_CLIENT_ID
         this.secret = PELM_SECRET
 
@@ -28,7 +31,7 @@ export class FetchHelper {
     }
 
     setClientCredentials(clientId: string, secret: string) {
-        this.shouldUseExampleCurls = false;
+        this.shouldUsePlaceholderValues = false;
         this.clientId = clientId
         this.secret = secret
     }
@@ -90,7 +93,7 @@ export class FetchHelper {
     }
 
     createConnectTokenCurl(userId: string) {
-        const curl = fetchToCurl(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions(userId, this.shouldUseExampleCurls));
+        const curl = fetchToCurl(this.createConnectTokenRequestUrl(), this.createConnectTokenRequestOptions(userId, this.shouldUsePlaceholderValues));
         console.log("curl: " + curl)
 
         return curl
@@ -157,7 +160,7 @@ export class FetchHelper {
             ? authorizationCode
             : 'AUTHORIZATION_CODE'
 
-        return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions(code, this.shouldUseExampleCurls));
+        return fetchToCurl(this.createAccessTokenRequestUrl(), this.createAccessTokenRequestOptions(code, this.shouldUsePlaceholderValues));
     }
 
     async createAccessToken(authorizationCode: string): Promise<any> {
@@ -184,7 +187,7 @@ export class FetchHelper {
     }
 
     getAccountsCurl() {
-        return fetchToCurl(this.getAccountsRequestUrl(), this.getAccountsRequestOptions(this.shouldUseExampleCurls));
+        return fetchToCurl(this.getAccountsRequestUrl(), this.getAccountsRequestOptions(this.shouldUsePlaceholderValues));
     }
 
     async getAccounts(): Promise<any> {
@@ -216,7 +219,7 @@ export class FetchHelper {
     }
 
     getIntervalsCurl(accountId: string, type: string, startDate?: string, endDate?: string) {
-        return fetchToCurl(this.getIntervalsRequestUrl(accountId, type, startDate, endDate), this.getIntervalsRequestOptions(this.shouldUseExampleCurls));
+        return fetchToCurl(this.getIntervalsRequestUrl(accountId, type, startDate, endDate), this.getIntervalsRequestOptions(this.shouldUsePlaceholderValues));
     }
 
     async getIntervals(accountId: string, type: string, startDate?: string, endDate?: string): Promise<any> {
@@ -246,7 +249,7 @@ export class FetchHelper {
     }
 
     getBillsCurl(accountId?: string) {
-        return fetchToCurl(this.getBillsRequestUrl(accountId), this.getBillsRequestOptions(this.shouldUseExampleCurls));
+        return fetchToCurl(this.getBillsRequestUrl(accountId), this.getBillsRequestOptions(this.shouldUsePlaceholderValues));
     }
 
     async getBills(accountId?: string): Promise<any> {

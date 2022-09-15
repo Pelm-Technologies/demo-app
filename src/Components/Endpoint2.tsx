@@ -160,6 +160,7 @@ export class Endpoint extends React.Component<Props, State> {
 
         return <Box sx={{
             width: '1000px',
+            marginBottom: '200px'
         }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 {this.props.title}
@@ -169,7 +170,8 @@ export class Endpoint extends React.Component<Props, State> {
                 display: 'flex',
                 justifyContent: 'space-between',
                 // width: '1000px',
-                minHeight: '500px',
+                // minHeight: '500px',
+                maxHeight: '500px',
                 marginTop: '25px'
             }}>
                 <Box sx={{
@@ -209,7 +211,8 @@ export class Endpoint extends React.Component<Props, State> {
                     </ToggleButtonGroup>
                     <Box sx={{
                         width: 625,
-                        height: 500,
+                        // height: 500,
+                        maxHeight: 500,
                         overflowY: 'scroll'
                     }}>
                         {/* <CopyBlock

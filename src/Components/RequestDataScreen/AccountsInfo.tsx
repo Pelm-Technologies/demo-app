@@ -28,8 +28,6 @@ import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
 
-type View = 'pretty' | 'data'
-
 type Props = {
     fetchHelper: FetchHelper;
     onSelectAccount: (account: any) => void;
@@ -40,16 +38,6 @@ type State = {
     accountsData?: any;
 }
 
-const Outer = styled.div`
-    display: flex;
-    justify-content: center;
-`
-
-const Container = styled.div`
-    width: 800px;
-`
-
-
 export class AccountsInfo extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
@@ -59,13 +47,6 @@ export class AccountsInfo extends React.Component<Props, State> {
             // accountsData: [{ "id": "ea100000-0000-0000-0000-000000000000", "account_number": "1077345636", "address": "1 WARRIORS WAY SAN FRANCISCO CA 94158", "available_meter_types": ["GAS", "ELECTRIC"], "usage_unit": "kwh", "gas_usage_unit": "therm", "ghg_emissions_unit": "kg_co2e" }, { "id": "ea200000-0000-0000-0000-000000000000", "account_number": "2077345636", "address": "1 FERRY BUILDING SAN FRANCISCO CA 94105", "available_meter_types": ["ELECTRIC"], "usage_unit": "kwh", "ghg_emissions_unit": "kg_co2e" }],
         }
     }
-
-    // onSelectAccount = (event: { target: any; }) => {
-    //     const target = event.target;
-    //     const value = target.value;
-
-    //     this.props.onSelectAccount(value);
-    // }
 
     onSelectAccount = (account: any) => () => {
         this.props.onSelectAccount(account)
@@ -119,40 +100,15 @@ export class AccountsInfo extends React.Component<Props, State> {
         </Grid>;
     }
 
-    renderDataView() {
+    renderDescription() {
         return <div>
-            {JSON.stringify(this.state.accountsData)}
-        </div>;
-    }
-
-    renderRequestInfoChild() {
-        // return <div>Click this button to make a GET request to <code>/accounts</code></div>;
-
-        return <div>
-            Click the "Send Request" button to make a GET request to <code>/accounts</code>.
-
-            <br/>
-            <br/>
-            The Account object corresponds to an account under a utility login. If a user has a residential home, an investment home, and a vacation home all managed under the same utility login, these would correspond to three different Pelm Account objects.
-
-
-
+            An Account is the core datamodel object that usage intervals and bills are associated with. If a User has a residential home and a vacation home both managed under the same utility credentials, these would correspond to two different Pelm Account objects.
+            <br/><br/>
+            Click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_accounts' target='_blank'>GET /accounts</a>, which returns all the Accounts for a given User.
+            <br/><br/>
+            Note the <code>id</code> field in the response, which you'll need to query usage intervals or bills. 
+            Clicking the "SELECT" button in pretty view will pre-populate the selected Account's <code>id</code> in the <code>account_id</code> field for other requests.
         </div>
-    }
-
-    renderResponseInfoChild() {
-        return this.renderSuccessResponseInfoChild()
-    }
-
-    renderSuccessResponseInfoChild() {
-        return <Box>
-            You've successfully fetched this User's Accounts!
-            <br/><br/>
-            You can now query usage intervals or bills for a specific account by specifying the <code>account_id</code> in requests. 
-            Clicking the "SELECT" button in the pretty view will pre-populate that Account's id in other requests.
-            <br/><br/>
-            <a href="https://docs.pelm.com/reference/get_accounts" target="blank">View docs</a>
-        </Box>
     }
 
     children() {
@@ -168,17 +124,17 @@ export class AccountsInfo extends React.Component<Props, State> {
             >
                 Send request
             </LoadingButton>
-            
         </Box>
     }
 
-    response() {
+    responseChild() {
         if (this.state.accountsData) {
             return <CopyBlock
                 text={JSON.stringify(this.state.accountsData, null, '\t')}
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
+                codeBlock
                 wrapLines
             />
         }
@@ -190,7 +146,7 @@ export class AccountsInfo extends React.Component<Props, State> {
             language="curl"
             showLineNumbers={false}
             theme={dracula}
-            wrapLines
+            wrapLongLines
         />
     }
 
@@ -205,10 +161,10 @@ export class AccountsInfo extends React.Component<Props, State> {
         }
 
         return <Endpoint
-            title={'GET /accounts'}
-            description={this.renderRequestInfoChild()}
+            title={'Get Accounts'}
+            description={this.renderDescription()}
             request={this.request()}
-            response={this.response()}
+            response={this.responseChild()}
             children={this.children()}
             prettyViewChild={prettyViewChild}
         />
