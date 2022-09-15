@@ -85,7 +85,6 @@ export class App extends React.Component<{}, State> {
             />
         }
 
-        
         return <ThemeProvider theme={theme}>
             <CssBaseline />
             <AppBar position="relative">
