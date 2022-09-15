@@ -184,21 +184,11 @@ export class IntervalsInfo extends React.Component<Props, State> {
 
     renderDescription() {
         return <Box>
-            {/* {this.renderInputs()} */}
-
-            <Box>
-                {/* <br/> */}
-                Query an Account's electricity or gas usage intervals, down to a fifteen-minute granularity.
-                <br/><br/>
-                Fill out the below fields and then click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_intervals' target='_blank'>GET /intervals</a>.
-                &nbsp;<code>account_id</code> is the only required parameter; this field is returned in the <code>GET /accounts</code> response.
-                &nbsp;<code>start_date</code> and <code>end_date</code> are optional fields that accept UNIX timestamps, which you can generate <a href='https://www.epochconverter.com/' target='_blank'>here</a>.
-                {/* <br/>
-                <br/>
-                The <code>account_id</code> field is the only required field. This field specifies the Account object to return intervals for. The <code>account_id</code> is returned in the <code>/accounts</code> response.
-                <br/>
-                <br/> */}
-            </Box>
+            Query an Account's electricity or gas usage intervals, down to a fifteen-minute granularity.
+            <br/><br/>
+            Fill out the below fields and then click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_intervals' target='_blank'>GET /intervals</a>.
+            &nbsp;<code>account_id</code> is the only required parameter; this field is returned in the <code>GET /accounts</code> response.
+            &nbsp;<code>start_date</code> and <code>end_date</code> are optional fields that accept UNIX timestamps, which you can generate <a href='https://www.epochconverter.com/' target='_blank'>here</a>.
         </Box>
     }
 
