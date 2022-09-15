@@ -56,9 +56,6 @@ type State = {
 
     currentStep: Step;
 
-    clientId: string;
-    secret: string;
-
     // pelmClientId: string;
     // pelmSecret: string;
     expandedPanel: PanelName;
@@ -89,9 +86,6 @@ export class App extends React.Component<{}, State> {
 
         this.state = {
             fetchHelper: new FetchHelper(),
-
-            clientId: PELM_CLIENT_ID,
-            secret: PELM_SECRET,
 
             // currentStep: 'welcome',
             currentStep: 'setup_connect',
@@ -130,14 +124,6 @@ export class App extends React.Component<{}, State> {
 
     expandPanel = (expandedPanel: PanelName) => () => {
         this.setState({expandedPanel})
-    }
-
-    setClientId = (clientId: string) => {
-        this.setState({clientId})
-    }
-
-    setSecret = (secret: string) => {
-        this.setState({secret})
     }
 
     setClientCredentials = (clientId: string, secret: string) => {
@@ -205,8 +191,6 @@ export class App extends React.Component<{}, State> {
             // TODO: instead of passing clientId, secret, token, maybe pass headers or a requestHelper
             children = <SetupConnectScreen 
                 fetchHelper={this.state.fetchHelper}
-                clientId={this.state.clientId}
-                secret={this.state.secret}
                 // setAccessToken={this.setAccessToken}
                 onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
                 // setClientId={this.setClientId}

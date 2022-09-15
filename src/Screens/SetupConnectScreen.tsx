@@ -54,26 +54,17 @@ type ToggleButtonView = 'request' | 'response'
 
 type Props = {
     fetchHelper: FetchHelper;
-    clientId: string;
-    secret: string;
 
     // setAccessToken: (accessToken: string) => void;
     onContinueToRequestDataScreen: (accessToken: string) => void;
-    // setClientId: (clientId: string) => void;
-    // setSecret: (secret: string) => void;
     setClientCredentials: (clientId: string, secret: string) => void;
 }
 
 type State = {
-    // pelmClientId: string;
-    // pelmSecret: string;
     expandedPanel: PanelName;
     toggleButtonView: ToggleButtonView;
 
     userId: string;
-
-    // pelmClientIdInputValue?: string;
-    // pelmSecretInputValue?: string;
 
     isLoading: boolean;
     error?: string;
@@ -213,14 +204,10 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                 <div>
                     <ClientCredentialsStep 
                         fetchHelper={this.props.fetchHelper}
-                        // setClientId={this.props.setClientId}
-                        // setSecret={this.props.setSecret}
                         setClientCredentials={this.props.setClientCredentials}
                     />
                     <ConnectTokenStep 
                         fetchHelper={this.props.fetchHelper}
-                        clientId={this.props.clientId}
-                        secret={this.props.secret}
                         connectToken={this.state.connectToken} 
                         setConnectToken={this.setConnectToken}
                     />

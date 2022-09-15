@@ -32,8 +32,6 @@ type ToggleButtonView = 'request' | 'response'
 
 type Props = {
     fetchHelper: FetchHelper;
-    clientId: string;
-    secret: string;
     connectToken?: string;
     setConnectToken: (connectToken: string) => void;
 }
@@ -41,7 +39,6 @@ type Props = {
 type State = {
     userId: string;
     isLoading: boolean;
-    error?: string;
     responseBody?: any;
 }
 
@@ -54,7 +51,6 @@ export class ConnectTokenStep extends React.Component<Props, State> {
         this.state = {
             userId: uuidv4(),
             isLoading: false,
-            error: undefined,
         }
     }
 
@@ -103,10 +99,6 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     }
 
     render(): React.ReactNode {
-        const response = this.props.connectToken
-            ? this.props.connectToken
-            : 'Please click the "CREATE CONNECT TOKEN" button to view response.'
-
         const description = <Box>
             <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
                 The first step to initialize Connect is creating a <code>connect_token</code> via <a href='https://docs.pelm.com/reference/post_auth-connect-token' target='_blank'>POST /auth/connect-token</a>. 
@@ -129,30 +121,23 @@ export class ConnectTokenStep extends React.Component<Props, State> {
                 variant="outlined"  
                 value={this.state.userId}
                 onChange={this.onUserIdInputChange}
-                // placeholder="Enter Pelm-Client-Id"
-                // sx={{marginLeft: '4px'}}
                 fullWidth
             />
-            
             <LoadingButton 
                 variant="contained"
                 onClick={this.createConnectToken}
                 loading={this.state.isLoading}
-                // loadingPosition="start"
                 color="primary"
                 sx={{marginTop: '8px'}}
             >
                 Create connect token
             </LoadingButton>
-            {/* <br/>
-            <br/> */}
             
         </Box>
 
         return <Endpoint 
             title="1. Create Connect Token"
             description={description}
-            // request={this.createConnectTokenCurl()}
             request={this.requestChild()}
             response={this.responseChild()}
             children={children}
