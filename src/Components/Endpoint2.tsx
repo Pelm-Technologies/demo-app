@@ -160,7 +160,7 @@ export class Endpoint extends React.Component<Props, State> {
 
         return <Box sx={{
             width: '1000px',
-            marginBottom: '200px'
+            // marginBottom: '200px'
         }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 {this.props.title}

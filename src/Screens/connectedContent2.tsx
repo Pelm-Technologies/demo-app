@@ -3,6 +3,10 @@ import styled from 'styled-components';
 
 import { PELM_API_URL, PELM_CLIENT_ID, PELM_SECRET, USER_ID, ENVIRONMENT } from '../constants'
 
+// import Divider from '@mui/material/Divider';
+
+import { DividerWithMargins } from "src/Components/DividerWithMargins";
+
 // import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -90,35 +94,21 @@ export class ConnectedContent extends React.Component<Props, State> {
             <Outer>
                 <Container>
                     <br/>
-                    {/* <Box>
-                        {"[placeholder] access_token info"}
-                    </Box>
-                    <br/><br/> */}
                     <AccountsInfo 
                         fetchHelper={this.props.fetchHelper}
                         onSelectAccount={this.onSelectAccount}
                     />
-                    <br/><br/>
+                    <DividerWithMargins/>
                     <IntervalsInfo 
                         fetchHelper={this.props.fetchHelper}
                         selectedAccount={this.state.selectedAccount}
                     />
-                    <br/><br/>
+                    <DividerWithMargins/>
                     <BillsInfo
                         fetchHelper={this.props.fetchHelper}
                         selectedAccount={this.state.selectedAccount}
                     />
-                    {/* <br/><br/>
-                    <Box>
-                        {"[placeholder] more info and link to guides"}
-                    </Box> */}
-
-                    {/* <br />
-                    <br />
-                    {this.renderAccountBillsEndpoint()}
-                    <br />
-                    <br />
-                    {this.renderBillDetailsEndpoint()} */}
+                    <Box sx={{height: '200px'}}/>
                 </Container>
             </Outer>
         )

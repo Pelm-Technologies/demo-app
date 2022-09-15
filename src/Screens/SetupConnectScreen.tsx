@@ -39,6 +39,7 @@ import { ConnectUtilityStep } from "src/Components/SetupConnectScreen/ConnectUti
 import { AccessTokenStep } from "src/Components/SetupConnectScreen/AccessTokenStep";
 import { ConnectSuccessfulStep } from "src/Components/SetupConnectScreen/ConnectSuccessfulStep";
 
+import { DividerWithMargins } from "src/Components/DividerWithMargins";
 import { FetchHelper } from "src/FetchHelper";
 
 import { CopyBlock, dracula } from "react-code-blocks";
@@ -206,25 +207,30 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                         fetchHelper={this.props.fetchHelper}
                         setClientCredentials={this.props.setClientCredentials}
                     />
+                    <DividerWithMargins/>
                     <ConnectTokenStep 
                         fetchHelper={this.props.fetchHelper}
                         connectToken={this.state.connectToken} 
                         setConnectToken={this.setConnectToken}
                     />
+                    <DividerWithMargins/>
                     <ConnectUtilityStep 
                         connectToken={this.state.connectToken!}  
                         authorizationCode={this.state.authorizationCode}
                         setAuthorizationCode={this.setAuthorizationCode}
                     />
+                    <DividerWithMargins/>
                     <AccessTokenStep 
                         fetchHelper={this.props.fetchHelper}
                         authorizationCode={this.state.authorizationCode}
                         setAccessToken={this.setAccessToken}
                     />
+                    <DividerWithMargins/>
                     <ConnectSuccessfulStep
                         accessToken={this.state.accessToken}
                         onContinue={this.onContinue}
                     />
+                    <Box sx={{height: '200px'}}/>
                 </div>
             </Box>
         </Box>
