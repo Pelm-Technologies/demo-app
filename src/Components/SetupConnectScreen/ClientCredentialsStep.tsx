@@ -166,8 +166,9 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
         return <Endpoint 
             title="0. Input Client Credentials (optional)"
             description={description}
-            request={''}
+            // requestChild={''}
             children={children}
+            shouldHidePrettyView
         />
     }
 }

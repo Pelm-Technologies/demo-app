@@ -138,9 +138,10 @@ export class ConnectTokenStep extends React.Component<Props, State> {
         return <Endpoint 
             title="1. Create Connect Token"
             description={description}
-            request={this.requestChild()}
-            response={this.responseChild()}
+            requestChild={this.requestChild()}
+            responseChild={this.responseChild()}
             children={children}
+            shouldHidePrettyView
         />
     }
 }

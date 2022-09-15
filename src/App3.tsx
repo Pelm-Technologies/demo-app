@@ -88,7 +88,7 @@ export class App extends React.Component<{}, State> {
             fetchHelper: new FetchHelper(),
 
             // currentStep: 'welcome',
-            currentStep: 'request_data',
+            currentStep: 'setup_connect',
 
 
             toggleButtonView: 'request',

@@ -41,33 +41,13 @@ type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type View = 'request' | 'response' | 'pretty'
 
 type Props = {
-    // isLoading: boolean;
-    // error?: string;
-
     title: string;
     description?: React.ReactChild;
-
-    // TODO: make this an element
-    // request: string;
-    // response: string;
-
-    // requestChild: 
-
-
-
-    // curl?: string;
-
-    // onSendRequestClick: () => void;
-
-    // requestInfoChild: React.ReactChild;
-    // responseInfoChild: React.ReactChild;
-
-    request: React.ReactChild;
-    response?: React.ReactChild;
+    requestChild?: React.ReactChild;
+    responseChild?: React.ReactChild;
     prettyViewChild?: React.ReactChild;
 
-    // data?: any;
-    // defaultExpanded?: boolean;
+    shouldHidePrettyView?: boolean;
 }
 
 type State = {
@@ -93,10 +73,10 @@ export class Endpoint extends React.Component<Props, State> {
             //     console.log("gorilla!")
             //     this.setState({view: 'pretty'})
             // }
-        } else if (prevProps.response !== this.props.response && this.props.response) {
+        } else if (prevProps.responseChild !== this.props.responseChild && this.props.responseChild) {
             console.log("asshole")
-            console.log(prevProps.response)
-            console.log(this.props.response)
+            console.log(prevProps.responseChild)
+            console.log(this.props.responseChild)
             this.setState({view: 'response'})
         }
     }
@@ -107,34 +87,67 @@ export class Endpoint extends React.Component<Props, State> {
         }
     }
 
-    renderDataContent() {
-        // if (this.state.view == 'request') {
-        //     return <CopyBlock
-        //         text={this.props.request}
-        //         language="curl"
-        //         showLineNumbers={false}
-        //         theme={dracula}
-        //         wrapLines
-        //     />
-        // } else if (this.state.view == 'response') {
-        //     return <CopyBlock
-        //         text={this.props.response}
-        //         language="json"
-        //         showLineNumbers={true}
-        //         theme={dracula}
-        //         wrapLines
-        //     />
-        // } else {
-        //     return this.props.prettyViewChild
-        // }
+    renderToggleButtonGroup() {
+        const prettyViewChild = this.props.shouldHidePrettyView
+            ? null
+            : <ToggleButton 
+                value="pretty" 
+                aria-label="centered"
+                disabled={!this.props.prettyViewChild}
+            >
+                Pretty
+            </ToggleButton>
 
-        if (this.state.view == 'request') {
-            return this.props.request
-        } else if (this.state.view == 'response') {
-            return this.props.response
-        } else {
-            return this.props.prettyViewChild
+        return <ToggleButtonGroup
+            value={this.state.view}
+            size="small"
+            exclusive
+            onChange={this.onViewChange}
+            aria-label="text alignment"
+        >
+            <ToggleButton 
+                value="request" 
+                aria-label="centered"
+            >
+                Request
+            </ToggleButton>
+            <ToggleButton 
+                value="response" 
+                aria-label="centered"
+                disabled={!this.props.responseChild}
+            >
+                Response
+            </ToggleButton>
+            {prettyViewChild}
+        </ToggleButtonGroup>
+    }
+
+    renderDataContent() {
+        if (!this.props.requestChild) {
+            return
         }
+
+        let child: React.ReactChild;
+        if (this.state.view == 'request') {
+            child = this.props.requestChild
+        } else if (this.state.view == 'response') {
+            child = this.props.responseChild!
+        } else {
+            child = this.props.prettyViewChild!
+        }
+
+        return <Box>
+            {this.renderToggleButtonGroup()}
+            <Box sx={{
+                width: 625,
+                // height: 500,
+                maxHeight: 500,
+                overflowY: 'scroll'
+            }}>
+                {child}
+            </Box>
+        </Box>
+
     }
 
     render() {
@@ -144,14 +157,14 @@ export class Endpoint extends React.Component<Props, State> {
 
         const codeBlock = this.state.view == 'request'
             ? <CopyBlock
-                text={this.props.request}
+                text={this.props.requestChild}
                 language="curl"
                 showLineNumbers={false}
                 theme={dracula}
                 wrapLines
             />
             : <CopyBlock
-                text={this.props.response}
+                text={this.props.responseChild}
                 language="json"
                 showLineNumbers={true}
                 theme={dracula}
@@ -179,52 +192,8 @@ export class Endpoint extends React.Component<Props, State> {
                 }}>
                     {this.props.children}
                 </Box>
-                
-                <Box>
-                    <ToggleButtonGroup
-                        value={this.state.view}
-                        size="small"
-                        exclusive
-                        onChange={this.onViewChange}
-                        aria-label="text alignment"
-                    >
-                        <ToggleButton 
-                            value="request" 
-                            aria-label="centered"
-                        >
-                            Request
-                        </ToggleButton>
-                        <ToggleButton 
-                            value="response" 
-                            aria-label="centered"
-                            disabled={!this.props.response}
-                        >
-                            Response
-                        </ToggleButton>
-                        <ToggleButton 
-                            value="pretty" 
-                            aria-label="centered"
-                            disabled={!this.props.prettyViewChild}
-                        >
-                            Pretty
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                    <Box sx={{
-                        width: 625,
-                        // height: 500,
-                        maxHeight: 500,
-                        overflowY: 'scroll'
-                    }}>
-                        {/* <CopyBlock
-                            text={codeBlockText}
-                            language="curl"
-                            showLineNumbers={false}
-                            theme={dracula}
-                            wrapLines
-                        /> */}
-                        {this.renderDataContent()}
-                    </Box>
-                </Box>
+
+                {this.renderDataContent()}
             </Box>
         </Box>
     }

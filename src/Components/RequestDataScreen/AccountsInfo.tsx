@@ -163,8 +163,8 @@ export class AccountsInfo extends React.Component<Props, State> {
         return <Endpoint
             title={'Get Accounts'}
             description={this.renderDescription()}
-            request={this.request()}
-            response={this.responseChild()}
+            requestChild={this.request()}
+            responseChild={this.responseChild()}
             children={this.children()}
             prettyViewChild={prettyViewChild}
         />

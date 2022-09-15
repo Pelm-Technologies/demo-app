@@ -293,8 +293,8 @@ export class IntervalsInfo extends React.Component<Props, State> {
         return <Endpoint
             title={'Get Intervals'}
             description={this.renderDescription()}
-            request={this.requestChild()}
-            response={this.responseChild()}
+            requestChild={this.requestChild()}
+            responseChild={this.responseChild()}
             prettyViewChild={prettyViewChild}
             children={this.renderForm()}
         />

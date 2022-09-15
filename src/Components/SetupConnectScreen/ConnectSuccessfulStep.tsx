@@ -83,8 +83,8 @@ export class ConnectSuccessfulStep extends React.Component<Props, State> {
         return <Endpoint
             title="4. Request Data"
             description={description}
-            request={''}
-            response={''}
+            requestChild={''}
+            responseChild={''}
             children={children}
         />
     }

@@ -134,9 +134,10 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
         return <Endpoint
             title="2. Connect your Utility"
             description={description}
-            request={this.requestChild()}
-            response={this.responseChild()}
+            requestChild={this.requestChild()}
+            responseChild={this.responseChild()}
             children={children}
+            shouldHidePrettyView
         />
     }
 }

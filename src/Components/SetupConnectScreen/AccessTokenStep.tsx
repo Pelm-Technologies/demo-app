@@ -137,9 +137,10 @@ export class AccessTokenStep extends React.Component<Props, State> {
         return <Endpoint 
             title="3. Create Access Token"
             description={description}
-            request={this.requestChild()}
-            response={this.responseChild()}
+            requestChild={this.requestChild()}
+            responseChild={this.responseChild()}
             children={children}
+            shouldHidePrettyView
         />
     }
 }
