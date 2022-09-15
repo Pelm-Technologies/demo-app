@@ -36,6 +36,7 @@ import { Config, useConnect } from "react-pelm-connect";
 
 import {FlowStep} from "src/Components/FlowStep"
 import {SetupStep} from "src/Components/SetupConnectScreen/SetupStep"
+import { Endpoint } from "src/Components/Endpoint2";
 
 type PanelName = 'NONE' | 'CONNECT_TOKEN' | 'CONNECT_UTILITY' | 'ACCESS_TOKEN'
 type ToggleButtonView = 'request' | 'response'
@@ -120,7 +121,15 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             ? this.props.authorizationCode
             : 'Please connect your Utility to view authorizationCode'
 
-        return <SetupStep
+        // return <SetupStep
+        //     title="2. Connect your Utility"
+        //     description={description}
+        //     request={'TODO: add react code / javascript code for creating initializing Connect'}
+        //     response={response}
+        //     children={children}
+        // />
+
+        return <Endpoint
             title="2. Connect your Utility"
             description={description}
             request={'TODO: add react code / javascript code for creating initializing Connect'}

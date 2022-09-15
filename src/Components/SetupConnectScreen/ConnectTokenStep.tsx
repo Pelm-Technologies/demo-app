@@ -178,15 +178,6 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             
         </Box>
 
-        // return <SetupStep
-        //     title="1. Create Connect Token"
-        //     description={description}
-        //     // request={this.createConnectTokenCurl()}
-        //     request={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
-        //     response={response}
-        //     children={children}
-        // />
-
         return <Endpoint 
             title="1. Create Connect Token"
             description={description}
