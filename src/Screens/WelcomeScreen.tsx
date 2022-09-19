@@ -102,7 +102,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
         return <Container maxWidth="sm">
             <Box sx={{ my: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    sdiofj  dfsf Testdfs test test test wefwef - Welcome to the Pelm Demo App
+                    sdiofj  dfsf Tesdfsftdfs test test test wefwef - Welcome to the Pelm Demo App
                 </Typography>
                 <Typography variant="subtitle1" component="p" gutterBottom>
                     This app allows you to quickly connect a utility account and pull real data.
