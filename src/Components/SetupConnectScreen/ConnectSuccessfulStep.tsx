@@ -32,7 +32,7 @@ export class ConnectSuccessfulStep extends React.Component<Props, State> {
 
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            After generating an <code>access_token</code>, you can now fetch data for the User you created.
+            Now that you've generated an <code>access_token</code>, you can fetch data for the User you created.
             <br/><br/>
             Click "CONTINUE" to move onto the next screen, where you can view this User's data in rendered format or JSON.
         </Typography>

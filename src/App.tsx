@@ -90,7 +90,7 @@ export class App extends React.Component<{}, State> {
             <AppBar position="relative">
                 <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
-                    Pelm Connect Demo
+                    Pelm Demo
                 </Typography>
                 </Toolbar>
             </AppBar>
