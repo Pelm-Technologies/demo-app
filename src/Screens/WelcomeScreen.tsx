@@ -102,7 +102,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
         return <Container maxWidth="sm">
             <Box sx={{ my: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Welcome to the Pelm Demo App
+                    Pelm Demo
                 </Typography>
                 <Typography variant="subtitle1" component="p" gutterBottom>
                     This app allows you to quickly connect a utility account and pull real data.
@@ -115,8 +115,8 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     <br/>
                     &emsp;password: <code>password</code>
                     <br/><br/>
-                    We've also provided an extended flow that walks you through the setup of Connect. 
-                    This might be useful if you're a developer integrating Pelm - click the the "SETUP CONNECT" button to get started.
+                    We've also provided a walkthrough demonstrating how to set up Connect. 
+                    This is useful if you're a developer integrating with Pelm - click the the "SETUP CONNECT" button to get started.
                     <br/><br/>
                      {/* TODO: sandbox user instructions */}
                     {/* <br/><br/>

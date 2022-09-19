@@ -90,12 +90,12 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     render(): React.ReactNode {
         const description = <Box>
             <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-                The first step to initialize Connect is creating a <code>connect_token</code> via <a href='https://docs.pelm.com/reference/post_auth-connect-token' target='_blank'>POST /auth/connect-token</a>. 
-                We recommend creating this token in your server to abstract away sensitive information like your <code>Pelm-Secret</code> from your frontend.
+                The first step in initializing Connect is creating a <code>connect_token</code> via <a href='https://docs.pelm.com/reference/post_auth-connect-token' target='_blank'>POST /auth/connect-token</a>. 
+                We recommend creating this token on the backend to hide sensitive information like your <code>Pelm-Secret</code> from the frontend.
                 <br/>
                 <br/>
-                The <code>connect_token</code> must be initialized with a <code>user_id</code>. This is a value specified by you to identify the User; most clients set this as their own database id for the User.
-                We've generated a random <code>user_id</code> in the input field, but feel free to replace it with a different value.
+                The <code>connect_token</code> must be created with a <code>user_id</code>. This is a unique id specified by you to identify the User. Most people set this to match their database id for the User.
+                We've generated a random <code>user_id</code> in the input field but feel free to replace it with a different value.
                 <br/>
                 <br/>
             </Typography>

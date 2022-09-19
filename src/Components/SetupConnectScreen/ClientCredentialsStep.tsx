@@ -80,9 +80,9 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
 
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="p" gutterBottom sx={{marginTop: '8px'}}>
-            This Demo App provides relevant code snippets to facilitate the integration process. Input your client credentials to generate code snippets that work straight out the box. Your credentials can be found in your initial registration email.
+            This app provides relevant code snippets to facilitate the Connect integration process. Input your client credentials to generate code snippets that work out of the box. Your credentials can be found in the initial registration email.
             <br/><br/>
-            Or click "SKIP", and we'll generate code snippets with placeholder values.
+            You can also click "SKIP", and we'll generate code snippets with placeholder client credentials.
         </Typography>
 
         const children = <Box sx={{
