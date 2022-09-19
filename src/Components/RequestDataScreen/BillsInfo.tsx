@@ -132,8 +132,8 @@ export class BillsInfo extends React.Component<Props, State> {
         return <Box>
             Query an Account's bill data.
             <br/><br/>
-            Fill out the below fields and then click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_bills' target='_blank'>GET /bills</a>.
-            &nbsp;<code>account_id</code> is optional; if omitted, Bills for all accounts will be returned.
+            Fill out the fields below and click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_bills' target='_blank'>GET /bills</a>.
+            &nbsp;The <code>account_id</code> parameter is optional; if omitted, Bills for all accounts associated with the User will be returned.
             <br/><br/>
             You can view a Bill's pdf via <a href='https://docs.pelm.com/reference/get_bills-bill-id-pdf' target='_blank'>GET /bills/&lt;bill_id&gt;/pdf</a>.
         </Box>

@@ -35,8 +35,10 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
 
     onSuccess = (authorizationCode: string) => {
         const log = 
-        `onSuccess called with argument:
-            - authorizationCode = ${authorizationCode}`
+        `onSuccess called with arguments:
+        {
+            'authorizationCode': ${authorizationCode}
+        }`
         console.log(log)
         this.setState({
             responseBody: log
@@ -47,8 +49,10 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
     onExit = (status: string, metadata: any) => {
         const log = 
         `onExit called with arguments:
-            - status = ${status}
-            - metadata = ${JSON.stringify(metadata)}`
+        {
+            'status': ${status}
+            'metadata': ${JSON.stringify(metadata)}
+        }`
         console.log(log)
         this.setState({
             responseBody: log
@@ -88,15 +92,13 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
         }
 
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-            Now that you've generated a connect_token, you can initialize Connect to connect your Utility credentials. 
-            You've also need to pass <code>onSuccess</code> and <code>onExit</code> callbacks, which are described in more detail <a href='https://github.com/Pelm-Technologies/react-pelm-connect' target='_blank'>here</a>.
+            Now that you've generated a <code>connect_token</code>, you can utilize Connect on your frontend to have your user input utility credentials. 
+            You'll need to pass <code>onSuccess</code> and <code>onExit</code> callbacks, which are described in more detail <a href='https://github.com/Pelm-Technologies/react-pelm-connect' target='_blank'>here</a>.
             <br/><br/>
-            Click "CONNECT YOUR UTILITY" to open the Connect flow.
-            You can use real credentials for any one of our <a href='https://docs.pelm.com/reference/utilities' target='_blank'>supported utilities</a>.
+            Click "CONNECT YOUR UTILITY" to simulate your user opening the Connect flow and entering credentials.
+            You can use real credentials for any one of our <a href='https://docs.pelm.com/reference/utilities' target='_blank'>supported utilities</a>. Alternatively, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank">Sandbox User</a>.
+            Select the utility "Pacific Gas and Electric" and use the following credentials:
             <br/><br/>
-            Alternatively, you can connect our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank">Sandbox User</a>.
-            Select the utility "Pacific Gas and Electric", and use the following credentials:
-            <br/>
             username: <code>user@pelm.com</code>
             <br/>
             password: <code>password</code>
@@ -127,7 +129,7 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             : 'Please connect your Utility to view authorizationCode'
 
         return <FlowStep
-            title="2. Connect your Utility"
+            title="2. Enter Credentials"
             description={description}
             requestChild={this.requestChild()}
             responseChild={this.responseChild()}
