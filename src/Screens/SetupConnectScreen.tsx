@@ -34,13 +34,8 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         super(props)
 
         this.state = {
-
             accessToken: this.props.fetchHelper.accessToken
-
         }
-        
-
-        // this.myRef = React.createRef()  
     }
 
     setConnectToken = (connectToken: string) => {
