@@ -241,6 +241,9 @@ export class IntervalsInfo extends React.Component<Props, State> {
             showLineNumbers={false}
             theme={dracula}
             wrapLines
+            customStyle={{
+                padding: '10px'
+            }}
         />
     }
 

@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from 'styled-components';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import Button from '@mui/material/Button';
@@ -135,6 +134,9 @@ export class AccountsInfo extends React.Component<Props, State> {
             showLineNumbers={false}
             theme={dracula}
             wrapLongLines
+            customStyle={{
+                padding: '10px'
+            }}
         />
     }
 

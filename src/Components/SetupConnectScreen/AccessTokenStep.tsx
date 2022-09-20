@@ -53,6 +53,9 @@ export class AccessTokenStep extends React.Component<Props, State> {
             language="curl"
             showLineNumbers={false}
             theme={dracula}
+            customStyle={{
+                padding: '10px'
+            }}
         />
     }
 

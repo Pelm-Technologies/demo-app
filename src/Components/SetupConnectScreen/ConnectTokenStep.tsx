@@ -72,6 +72,9 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             language="curl"
             showLineNumbers={false}
             theme={dracula}
+            customStyle={{
+                padding: '10px'
+            }}
         />
     }
 
