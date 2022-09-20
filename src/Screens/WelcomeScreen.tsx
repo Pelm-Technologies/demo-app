@@ -18,11 +18,16 @@ import { FetchHelper } from "src/FetchHelper";
 
 import { ConnectButton } from 'src/connectButton'
 import { Config, useConnect } from "react-pelm-connect";
+import { ScreenStructure } from "src/Components/ScreenStructure";
+
+import {FlowType} from 'src/types'
+
 
 type Props = {
     fetchHelper: FetchHelper;
-    onContinueToSetupConnectScreen: () => void;
-    onContinueToRequestDataScreen: (accessToken: string) => void;
+    setFlowType: (flowType: FlowType) => void;
+    setAccessToken: (accessToken: string) => void;
+    onContinue: () => void;
 }
 
 type State = {
@@ -30,14 +35,9 @@ type State = {
     connectToken?: string;
 }
 
-const theme = createTheme();
-const userId = uuidv4();
-
-
 export class WelcomeScreen extends React.Component<Props, State> {
 
     constructor(props: Props) {
-        // super()
         super(props)
 
         this.state = {
@@ -70,8 +70,9 @@ export class WelcomeScreen extends React.Component<Props, State> {
         this.props.fetchHelper.createAccessToken(authorizationCode)
             .then(response_body => {
                 if (response_body.hasOwnProperty('access_token')) {
-                    this.props.onContinueToRequestDataScreen(response_body['access_token'])
-                    // this.props.setAccessToken(response_body['access_token'])
+                    this.props.setFlowType('default')
+                    this.props.setAccessToken(response_body['access_token'])
+                    this.props.onContinue()
                 }
 
                 if (response_body.hasOwnProperty('error_code')) {
@@ -90,6 +91,11 @@ export class WelcomeScreen extends React.Component<Props, State> {
         console.log("exit")
     }
 
+    onContinueToSetupConnectScreen = () => {
+        this.props.setFlowType('setup_connect')
+        this.props.onContinue()
+    }
+
     render(): React.ReactNode {
         const config: Config = {
             connectToken: this.state.connectToken!,
@@ -98,7 +104,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
             environment: ENVIRONMENT,
         }
 
-        return <Container maxWidth="sm">
+        const children = <Container maxWidth="sm">
             <Box sx={{ my: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     Pelm Demo
@@ -130,7 +136,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
                 <ConnectButton config={config} />
                 <Button 
                     variant="outlined"
-                    onClick={this.props.onContinueToSetupConnectScreen}
+                    onClick={this.onContinueToSetupConnectScreen}
                     color="secondary"
                     sx={{
                         marginLeft: '8px'
@@ -141,5 +147,10 @@ export class WelcomeScreen extends React.Component<Props, State> {
                 
             </Box>
         </Container>
+
+        return <ScreenStructure 
+            title="Pelm Demo"
+            children={children}
+        />
     }
 }

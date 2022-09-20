@@ -8,8 +8,10 @@ import { IntervalsInfo } from 'src/Components/RequestDataScreen/IntervalsInfo'
 import { BillsInfo } from 'src/Components/RequestDataScreen/BillsInfo'
 
 import { FetchHelper } from "src/FetchHelper";
+import { ScreenStructure } from "src/Components/ScreenStructure";
 
 type Props = {
+    onBack: () => void;
     fetchHelper: FetchHelper;
 }
 
@@ -39,7 +41,7 @@ export class RequestDataScreen extends React.Component<Props, State> {
     }
 
     render() {
-        return <Box sx={{
+        const children = <Box sx={{
             display: 'flex',
             justifyContent: 'center'
         }}>
@@ -63,6 +65,11 @@ export class RequestDataScreen extends React.Component<Props, State> {
                 <Box sx={{height: '200px'}}/>
             </Box>
         </Box>
+        return <ScreenStructure 
+            title="Request Data"
+            children={children}
+            onBack={this.props.onBack}
+        />
     }
 
 }

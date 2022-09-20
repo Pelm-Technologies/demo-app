@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 
 import { CopyBlock, dracula } from "react-code-blocks";
 
-import { FlowStep } from "src/Components/FlowStep";
+import { SetupStep } from "src/Components/SetupStep";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -128,7 +128,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
             
         </Box>
 
-        return <FlowStep 
+        return <SetupStep 
             title="1. Create Connect Token"
             description={description}
             requestChild={this.requestChild()}

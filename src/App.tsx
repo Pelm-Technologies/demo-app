@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { WelcomeScreen } from "src/Screens/WelcomeScreen";
@@ -13,9 +9,13 @@ import { SetupConnectScreen } from "src/Screens/SetupConnectScreen";
 
 import { FetchHelper } from "src/FetchHelper";
 
+import {FlowType} from 'src/types'
+
 type Step = 'welcome' | 'setup_connect' | 'request_data'
 
 type State = {
+    currentStepNumber: number;
+    flowType: FlowType;
     fetchHelper: FetchHelper;
     currentStep: Step;
 }
@@ -23,35 +23,35 @@ type State = {
 const theme = createTheme();
 
 export class App extends React.Component<{}, State> {
-    topBarRef: React.RefObject<HTMLDivElement> = React.createRef();
-
     constructor() {
         super({})
 
         this.state = {
+            currentStepNumber: 0,
+            flowType: 'default',
             fetchHelper: new FetchHelper(),
-
             currentStep: 'welcome',
             // currentStep: 'setup_connect',
         }
     }
 
     scrollToTop = () => {
-        if (this.topBarRef && this.topBarRef.current) {
-            this.topBarRef.current.scrollIntoView();
-        }
+        window.scrollTo(0, 0)
     }
 
-    onContinueToSetupConnectScreen = () => {
+    setFlowType = (flowType: FlowType) => {
+        this.setState({flowType})
+    }
+
+    onContinue = () => {
         this.setState({
-            currentStep: 'setup_connect'
+            currentStepNumber: this.state.currentStepNumber + 1
         }, this.scrollToTop)
     }
 
-    onContinueToRequestDataScreen = (accessToken: string) => {
-        this.setAccessToken(accessToken)
+    onBack = () => {
         this.setState({
-            currentStep: 'request_data'
+            currentStepNumber: this.state.currentStepNumber - 1
         }, this.scrollToTop)
     }
 
@@ -71,41 +71,46 @@ export class App extends React.Component<{}, State> {
         })
     }
 
+    private flowSteps() {
+        return [
+            this.renderWelcomeScreen(),
+            ...this.maybeRenderSetupConnectScreen(),
+            this.renderRequestDataScreen()
+        ]
+    }
+
+    private renderWelcomeScreen() {
+        return <WelcomeScreen 
+            fetchHelper={this.state.fetchHelper}
+            setFlowType={this.setFlowType}
+            setAccessToken={this.setAccessToken}
+            onContinue={this.onContinue}
+        />
+    }
+
+    private maybeRenderSetupConnectScreen() {
+        return this.state.flowType === 'setup_connect'
+            ? [<SetupConnectScreen 
+                    fetchHelper={this.state.fetchHelper}
+                    setClientCredentials={this.setClientCredentials}
+                    setAccessToken={this.setAccessToken}
+                    onContinue={this.onContinue}
+                    onBack={this.onBack}
+                />]
+            : []
+    }
+
+    private renderRequestDataScreen() {
+        return <RequestDataScreen 
+            fetchHelper={this.state.fetchHelper}
+            onBack={this.onBack}
+        />
+    }
+
     render(): React.ReactNode {
-        let children: React.ReactChild;
-
-        const currentStep = this.state.currentStep;
-
-        if (currentStep === 'welcome') {
-            children = <WelcomeScreen 
-                fetchHelper={this.state.fetchHelper}
-                onContinueToSetupConnectScreen={this.onContinueToSetupConnectScreen}
-                onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
-            />
-        } else if (currentStep === 'setup_connect') {
-            children = <SetupConnectScreen 
-                fetchHelper={this.state.fetchHelper}
-                onContinueToRequestDataScreen={this.onContinueToRequestDataScreen}
-                setClientCredentials={this.setClientCredentials}
-            />
-        } else {
-            children = <RequestDataScreen 
-                fetchHelper={this.state.fetchHelper}
-            />
-        }
-
         return <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="relative" ref={this.topBarRef}>
-                <Toolbar>
-                <Typography variant="h6" color="inherit" noWrap>
-                    Pelm Demo
-                </Typography>
-                </Toolbar>
-            </AppBar>
-            <Box>
-                {children}
-            </Box>
+            {this.flowSteps()[this.state.currentStepNumber]}
         </ThemeProvider>
     }
 }

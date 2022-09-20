@@ -10,17 +10,20 @@ import { ConnectSuccessfulStep } from "src/Components/SetupConnectScreen/Connect
 
 import { DividerWithMargins } from "src/Components/DividerWithMargins";
 import { FetchHelper } from "src/FetchHelper";
+import { ScreenStructure } from "src/Components/ScreenStructure";
 
 type Props = {
     fetchHelper: FetchHelper;
-    onContinueToRequestDataScreen: (accessToken: string) => void;
     setClientCredentials: (clientId: string, secret: string) => void;
+    
+    setAccessToken: (accessToken: string) => void;
+    onContinue: () => void;
+    onBack: () => void;
 }
 
 type State = {
     connectToken?: string;
     authorizationCode?: string;
-    accessToken?: string;
 }
 
 export class SetupConnectScreen extends React.Component<Props, State> {
@@ -30,12 +33,9 @@ export class SetupConnectScreen extends React.Component<Props, State> {
     connectSuccessfulStepStart: React.RefObject<HTMLDivElement> = React.createRef();
 
     constructor(props: Props) {
-        // super()
         super(props)
 
-        this.state = {
-            accessToken: this.props.fetchHelper.accessToken
-        }
+        this.state = {}
     }
 
     setConnectToken = (connectToken: string) => {
@@ -46,14 +46,6 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         this.setState({authorizationCode})
     }
 
-    setAccessToken = (accessToken: string) => {
-        this.setState({accessToken})
-    }
-
-    onContinue = () => {
-        this.props.onContinueToRequestDataScreen(this.state.accessToken!)
-    }
-
     executeScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
         if (ref && ref.current) {
             ref.current.scrollIntoView({behavior: 'smooth'})
@@ -61,7 +53,7 @@ export class SetupConnectScreen extends React.Component<Props, State> {
     }
 
     render(): React.ReactNode {
-        return <Box sx={{
+        const children = <Box sx={{
             display: 'flex',
             justifyContent: 'center'
         }}>
@@ -95,18 +87,24 @@ export class SetupConnectScreen extends React.Component<Props, State> {
                 <AccessTokenStep 
                     fetchHelper={this.props.fetchHelper}
                     authorizationCode={this.state.authorizationCode}
-                    setAccessToken={this.setAccessToken}
+                    setAccessToken={this.props.setAccessToken}
                     onContinue={this.executeScroll(this.connectSuccessfulStepStart)}
                 />
                 <Box ref={this.connectSuccessfulStepStart}>
                     <DividerWithMargins/>
                 </Box>
                 <ConnectSuccessfulStep
-                    accessToken={this.state.accessToken}
-                    onContinue={this.onContinue}
+                    fetchHelper={this.props.fetchHelper}
+                    onContinue={this.props.onContinue}
                 />
                 <Box sx={{height: '200px'}}/>
             </Box>
         </Box>
+
+        return <ScreenStructure 
+            title="Setup Connect"
+            children={children}
+            onBack={this.props.onBack}
+        />
     }
 }

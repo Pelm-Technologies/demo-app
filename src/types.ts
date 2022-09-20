@@ -12,3 +12,5 @@ export type UsageInterval = {
     end: string;
     value: number;
 }
+
+export type FlowType = 'default' | 'setup_connect'
