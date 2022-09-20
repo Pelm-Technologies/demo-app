@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from 'styled-components';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from 'recharts';
 import { LineChart, Line, Label } from 'recharts';

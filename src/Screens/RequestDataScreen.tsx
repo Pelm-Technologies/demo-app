@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from 'styled-components';
 
 import { DividerWithMargins } from "src/Components/DividerWithMargins";
 
@@ -20,6 +19,8 @@ type State = {
 }
 
 export class RequestDataScreen extends React.Component<Props, State> {
+    intervalsStepStart: React.RefObject<HTMLDivElement> = React.createRef();
+
     constructor(props: Props) {
         super(props)
         this.state = {
@@ -28,7 +29,13 @@ export class RequestDataScreen extends React.Component<Props, State> {
     }
 
     onSelectAccount = (account: any) => {
-        this.setState({selectedAccount: account})
+        this.setState({selectedAccount: account}, this.executeScroll(this.intervalsStepStart))
+    }
+
+    executeScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
+        if (ref && ref.current) {
+            ref.current.scrollIntoView({behavior: 'smooth'})
+        }
     }
 
     render() {
@@ -41,7 +48,9 @@ export class RequestDataScreen extends React.Component<Props, State> {
                     fetchHelper={this.props.fetchHelper}
                     onSelectAccount={this.onSelectAccount}
                 />
-                <DividerWithMargins/>
+                <Box ref={this.intervalsStepStart}>
+                    <DividerWithMargins/>
+                </Box>
                 <IntervalsInfo 
                     fetchHelper={this.props.fetchHelper}
                     selectedAccount={this.state.selectedAccount}

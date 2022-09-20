@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,6 +23,8 @@ type State = {
 const theme = createTheme();
 
 export class App extends React.Component<{}, State> {
+    topBarRef: React.RefObject<HTMLDivElement> = React.createRef();
+
     constructor() {
         super({})
 
@@ -29,21 +32,27 @@ export class App extends React.Component<{}, State> {
             fetchHelper: new FetchHelper(),
 
             currentStep: 'welcome',
-            // currentStep: 'request_data',
+            // currentStep: 'setup_connect',
+        }
+    }
+
+    scrollToTop = () => {
+        if (this.topBarRef && this.topBarRef.current) {
+            this.topBarRef.current.scrollIntoView();
         }
     }
 
     onContinueToSetupConnectScreen = () => {
         this.setState({
             currentStep: 'setup_connect'
-        })
+        }, this.scrollToTop)
     }
 
     onContinueToRequestDataScreen = (accessToken: string) => {
         this.setAccessToken(accessToken)
         this.setState({
             currentStep: 'request_data'
-        })
+        }, this.scrollToTop)
     }
 
     setClientCredentials = (clientId: string, secret: string) => {
@@ -87,16 +96,16 @@ export class App extends React.Component<{}, State> {
 
         return <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="relative">
+            <AppBar position="relative" ref={this.topBarRef}>
                 <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
                     Pelm Demo
                 </Typography>
                 </Toolbar>
             </AppBar>
-            <main>
+            <Box>
                 {children}
-            </main>
+            </Box>
         </ThemeProvider>
     }
 }

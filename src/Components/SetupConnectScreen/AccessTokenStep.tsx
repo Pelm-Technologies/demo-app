@@ -14,6 +14,7 @@ type Props = {
     fetchHelper: FetchHelper;
     authorizationCode?: string;
     setAccessToken: (accessToken: string) => void;
+    onContinue: () => void;
 }
 
 type State = {
@@ -43,6 +44,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
 
                 if (responseBody.hasOwnProperty('access_token')) {
                     this.props.setAccessToken(responseBody['access_token'])
+                    this.props.onContinue()
                 }
             })
     }

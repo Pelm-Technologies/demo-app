@@ -18,6 +18,7 @@ type Props = {
     connectToken?: string;
     authorizationCode?: string;
     setAuthorizationCode: (authorizationCode: string) => void;
+    onContinue: () => void;
 }
 
 type State = {
@@ -43,6 +44,7 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             responseBody: log
         })
         this.props.setAuthorizationCode(authorizationCode)
+        this.props.onContinue()
     }
 
     onExit = (status: string, metadata: any) => {
