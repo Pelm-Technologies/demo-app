@@ -38,7 +38,6 @@ type State = {
 export class WelcomeScreen extends React.Component<Props, State> {
 
     constructor(props: Props) {
-        // super()
         super(props)
 
         this.state = {
@@ -71,7 +70,6 @@ export class WelcomeScreen extends React.Component<Props, State> {
         this.props.fetchHelper.createAccessToken(authorizationCode)
             .then(response_body => {
                 if (response_body.hasOwnProperty('access_token')) {
-                    // this.props.onContinueToRequestDataScreen(response_body['access_token'])
                     this.props.setFlowType('default')
                     this.props.setAccessToken(response_body['access_token'])
                     this.props.onContinue()

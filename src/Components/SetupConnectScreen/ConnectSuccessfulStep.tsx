@@ -9,26 +9,14 @@ import { SetupStep } from "src/Components/SetupStep";
 import { FetchHelper } from 'src/FetchHelper'
 
 type Props = {
-    // accessToken?: string;
     fetchHelper: FetchHelper;
     onContinue: () => void;
 }
 
-type State = {
-    isLoading: boolean;
-    error?: string;
-}
-
-export class ConnectSuccessfulStep extends React.Component<Props, State> {
+export class ConnectSuccessfulStep extends React.Component<Props, {}> {
 
     constructor(props: Props) {
-        // super()
         super(props)
-
-        this.state = {
-            isLoading: false,
-            error: undefined
-        }
     }
 
 
