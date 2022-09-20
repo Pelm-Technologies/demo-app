@@ -12,7 +12,7 @@ import { Config, useConnect } from "react-pelm-connect";
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 
 
-import { FlowStep } from "src/Components/FlowStep";
+import { SetupStep } from "src/Components/SetupStep";
 
 type Props = {
     connectToken?: string;
@@ -129,7 +129,7 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             ? this.props.authorizationCode
             : 'Please connect your Utility to view authorizationCode'
 
-        return <FlowStep
+        return <SetupStep
             title="2. Enter Credentials"
             description={description}
             requestChild={this.requestChild()}

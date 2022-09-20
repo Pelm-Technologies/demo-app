@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from 'styled-components';
 
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -30,7 +29,7 @@ type State = {
     // shouldShouldCurl: boolean;
 }
 
-export class FlowStep extends React.Component<Props, State> {
+export class SetupStep extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {

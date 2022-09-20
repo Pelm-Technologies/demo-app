@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 import { CopyBlock, dracula } from "react-code-blocks";
-import { FlowStep } from "src/Components/FlowStep";
+import { SetupStep } from "src/Components/SetupStep";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -111,7 +111,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
             </LoadingButton>
         </Box>
 
-        return <FlowStep 
+        return <SetupStep 
             title="3. Create Access Token"
             description={description}
             requestChild={this.requestChild()}

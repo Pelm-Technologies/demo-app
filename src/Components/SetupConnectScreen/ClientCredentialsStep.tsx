@@ -14,7 +14,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import TextField from '@mui/material/TextField';
-import { FlowStep } from "src/Components/FlowStep";
+import { SetupStep } from "src/Components/SetupStep";
 
 import { FetchHelper } from 'src/FetchHelper'
 
@@ -135,7 +135,7 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
             </Box>
         </Box>
 
-        return <FlowStep 
+        return <SetupStep 
             title="0. Input Client Credentials (optional)"
             description={description}
             // requestChild={''}

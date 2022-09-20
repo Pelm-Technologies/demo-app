@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
-import { FlowStep } from 'src/Components/FlowStep'
+import { SetupStep } from 'src/Components/SetupStep'
 import { FetchHelper } from "src/FetchHelper";
 
 
@@ -268,7 +268,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
-        return <FlowStep
+        return <SetupStep
             title={'Get Intervals'}
             description={this.renderDescription()}
             requestChild={this.requestChild()}

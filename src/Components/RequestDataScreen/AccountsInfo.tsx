@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { FlowStep } from 'src/Components/FlowStep'
+import { SetupStep } from 'src/Components/SetupStep'
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 import { FetchHelper } from "src/FetchHelper";
 
@@ -150,7 +150,7 @@ export class AccountsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
-        return <FlowStep
+        return <SetupStep
             title={'Get Accounts'}
             description={this.renderDescription()}
             requestChild={this.request()}

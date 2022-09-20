@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { CodeBlock, CopyBlock, dracula } from "react-code-blocks";
 
-import { FlowStep } from 'src/Components/FlowStep'
+import { SetupStep } from 'src/Components/SetupStep'
 
 import fetchToCurl from 'fetch-to-curl';
 import { FetchHelper } from "src/FetchHelper";
@@ -198,7 +198,7 @@ export class BillsInfo extends React.Component<Props, State> {
             prettyViewChild = this.renderPrettyView()
         }
 
-        return <FlowStep
+        return <SetupStep
             title={'Get Bills'}
             description={this.renderDescription()}
             requestChild={this.requestChild()}

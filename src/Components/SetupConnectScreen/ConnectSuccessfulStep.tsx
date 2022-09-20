@@ -5,10 +5,12 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { FlowStep } from "src/Components/FlowStep";
+import { SetupStep } from "src/Components/SetupStep";
+import { FetchHelper } from 'src/FetchHelper'
 
 type Props = {
-    accessToken?: string;
+    // accessToken?: string;
+    fetchHelper: FetchHelper;
     onContinue: () => void;
 }
 
@@ -45,13 +47,13 @@ export class ConnectSuccessfulStep extends React.Component<Props, State> {
                 variant="contained"
                 onClick={this.props.onContinue}
                 color="primary"
-                disabled={!this.props.accessToken}
+                disabled={!this.props.fetchHelper.accessToken}
             >
                 Continue
             </Button>
         </Box>
 
-        return <FlowStep
+        return <SetupStep
             title="4. Request Data"
             description={description}
             requestChild={''}
