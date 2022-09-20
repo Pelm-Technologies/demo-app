@@ -24,12 +24,23 @@ type State = {
 }
 
 export class SetupConnectScreen extends React.Component<Props, State> {
+    connectTokenStepStart: React.RefObject<HTMLDivElement> = React.createRef();
+    connectUtilityStepStart: React.RefObject<HTMLDivElement> = React.createRef();
+    accessTokenStepStart: React.RefObject<HTMLDivElement> = React.createRef();
+    connectSuccessfulStepStart: React.RefObject<HTMLDivElement> = React.createRef();
 
     constructor(props: Props) {
         // super()
         super(props)
 
-        this.state = {}
+        this.state = {
+
+            accessToken: this.props.fetchHelper.accessToken
+
+        }
+        
+
+        // this.myRef = React.createRef()  
     }
 
     setConnectToken = (connectToken: string) => {
@@ -48,40 +59,58 @@ export class SetupConnectScreen extends React.Component<Props, State> {
         this.props.onContinueToRequestDataScreen(this.state.accessToken!)
     }
 
+    executeScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
+        if (ref && ref.current) {
+            ref.current.scrollIntoView({behavior: 'smooth'})
+        }
+    }
+
     render(): React.ReactNode {
         return <Box sx={{
             display: 'flex',
             justifyContent: 'center'
         }}>
             <Box sx={{ my: 4 }}>
-                    <ClientCredentialsStep 
-                        fetchHelper={this.props.fetchHelper}
-                        setClientCredentials={this.props.setClientCredentials}
-                    />
+                <ClientCredentialsStep 
+                    fetchHelper={this.props.fetchHelper}
+                    setClientCredentials={this.props.setClientCredentials}
+                    onContinue={this.executeScroll(this.connectTokenStepStart)}
+                />
+                <Box ref={this.connectTokenStepStart}>
                     <DividerWithMargins/>
-                    <ConnectTokenStep 
-                        fetchHelper={this.props.fetchHelper}
-                        connectToken={this.state.connectToken} 
-                        setConnectToken={this.setConnectToken}
-                    />
+                </Box>
+                <ConnectTokenStep 
+                    fetchHelper={this.props.fetchHelper}
+                    connectToken={this.state.connectToken} 
+                    setConnectToken={this.setConnectToken}
+                    onContinue={this.executeScroll(this.connectUtilityStepStart)}
+                />
+                <Box ref={this.connectUtilityStepStart}>
                     <DividerWithMargins/>
-                    <ConnectUtilityStep 
-                        connectToken={this.state.connectToken!}  
-                        authorizationCode={this.state.authorizationCode}
-                        setAuthorizationCode={this.setAuthorizationCode}
-                    />
+                </Box>
+                <ConnectUtilityStep 
+                    connectToken={this.state.connectToken!}  
+                    authorizationCode={this.state.authorizationCode}
+                    setAuthorizationCode={this.setAuthorizationCode}
+                    onContinue={this.executeScroll(this.accessTokenStepStart)}
+                />
+                <Box ref={this.accessTokenStepStart}>
                     <DividerWithMargins/>
-                    <AccessTokenStep 
-                        fetchHelper={this.props.fetchHelper}
-                        authorizationCode={this.state.authorizationCode}
-                        setAccessToken={this.setAccessToken}
-                    />
+                </Box>
+                <AccessTokenStep 
+                    fetchHelper={this.props.fetchHelper}
+                    authorizationCode={this.state.authorizationCode}
+                    setAccessToken={this.setAccessToken}
+                    onContinue={this.executeScroll(this.connectSuccessfulStepStart)}
+                />
+                <Box ref={this.connectSuccessfulStepStart}>
                     <DividerWithMargins/>
-                    <ConnectSuccessfulStep
-                        accessToken={this.state.accessToken}
-                        onContinue={this.onContinue}
-                    />
-                    <Box sx={{height: '200px'}}/>
+                </Box>
+                <ConnectSuccessfulStep
+                    accessToken={this.state.accessToken}
+                    onContinue={this.onContinue}
+                />
+                <Box sx={{height: '200px'}}/>
             </Box>
         </Box>
     }

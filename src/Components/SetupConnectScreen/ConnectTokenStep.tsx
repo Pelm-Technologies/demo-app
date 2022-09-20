@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from 'styled-components';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +22,7 @@ type Props = {
     fetchHelper: FetchHelper;
     connectToken?: string;
     setConnectToken: (connectToken: string) => void;
+    onContinue: () => void;
 }
 
 type State = {
@@ -62,6 +62,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
 
                 if (responseBody.hasOwnProperty('connect_token')) {
                     this.props.setConnectToken(responseBody['connect_token'])
+                    this.props.onContinue()
                 }
             })
     }
