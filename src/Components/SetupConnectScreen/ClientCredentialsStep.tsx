@@ -24,6 +24,7 @@ type ToggleButtonView = 'request' | 'response'
 type Props = {
     fetchHelper: FetchHelper;
     setClientCredentials: (clientId: string, secret: string) => void;
+    onContinue: () => void;
 }
 
 type State = {
@@ -71,11 +72,9 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
         this.setState({secret: value})
     }
 
-    onContinue = () => {
-        // this.props.setClientId(this.state.clientId!)
-        // this.props.setSecret(this.state.secret!)
+    onSubmit = () => {
         this.props.setClientCredentials(this.state.clientId!, this.state.secret!);
-        // this.props.fetchHelper.setClientCredentials(this.state.clientId!, this.state.secret!);
+        this.props.onContinue();
     }
 
     render(): React.ReactNode {
@@ -111,7 +110,7 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
             }}>
                 <Button 
                     variant="contained"
-                    onClick={this.onContinue}
+                    onClick={this.onSubmit}
                     color="primary"
                     disabled={!this.isContinueButtonEnabled()}
                     sx={{
@@ -119,11 +118,12 @@ export class ClientCredentialsStep extends React.Component<Props, State> {
                         flexGrow: 1
                     }}
                 >
-                    Continue
+                    Submit
                 </Button>
                 <Button 
                     variant="outlined"
                     color="secondary"
+                    onClick={this.props.onContinue}
                     sx={{
                         marginLeft: '4px',
                         width: 0,
