@@ -10,7 +10,7 @@
 
 
 // TODO: set this to 'prod' if you want to work with real data. Keep this as 'sandbox' if you want to work with sandbox data.
-export const ENVIRONMENT = 'prod'
+export const ENVIRONMENT = 'production'
 
 // TODO: fill in your client_id and client_secret here
 // prod
