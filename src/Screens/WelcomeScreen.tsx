@@ -120,12 +120,12 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     <br/>
                     &emsp;password: <code>password</code>
                     <br/><br/>
-                    We've also provided a walkthrough demonstrating how to set up Connect. 
+                    We've also provided a walkthrough demonstrating how to set up Connect.
                     This is useful if you're a developer integrating with Pelm - click the the "SETUP CONNECT" button to get started.
                     <br/><br/>
                 </Typography>
                 <ConnectButton config={config} />
-                <Button 
+                <Button
                     variant="outlined"
                     onClick={this.onContinueToSetupConnectScreen}
                     color="secondary"
@@ -135,11 +135,11 @@ export class WelcomeScreen extends React.Component<Props, State> {
                 >
                     Setup Connect
                 </Button>
-                
+
             </Box>
         </Container>
 
-        return <ScreenStructure 
+        return <ScreenStructure
             title="Pelm Demo"
             children={children}
         />

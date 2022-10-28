@@ -20,7 +20,13 @@ type State = {
     currentStep: Step;
 }
 
-const theme = createTheme();
+const theme = createTheme({
+    typography: {
+      fontFamily: [
+        'Open Sans'
+      ].join(','),
+    }
+  });;
 
 export class App extends React.Component<{}, State> {
     constructor() {
@@ -80,7 +86,7 @@ export class App extends React.Component<{}, State> {
     }
 
     private renderWelcomeScreen() {
-        return <WelcomeScreen 
+        return <WelcomeScreen
             fetchHelper={this.state.fetchHelper}
             setFlowType={this.setFlowType}
             setAccessToken={this.setAccessToken}
@@ -90,7 +96,7 @@ export class App extends React.Component<{}, State> {
 
     private maybeRenderSetupConnectScreen() {
         return this.state.flowType === 'setup_connect'
-            ? [<SetupConnectScreen 
+            ? [<SetupConnectScreen
                     fetchHelper={this.state.fetchHelper}
                     setClientCredentials={this.setClientCredentials}
                     setAccessToken={this.setAccessToken}
@@ -101,7 +107,7 @@ export class App extends React.Component<{}, State> {
     }
 
     private renderRequestDataScreen() {
-        return <RequestDataScreen 
+        return <RequestDataScreen
             fetchHelper={this.state.fetchHelper}
             onBack={this.onBack}
         />
