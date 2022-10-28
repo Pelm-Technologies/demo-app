@@ -94,7 +94,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     render(): React.ReactNode {
         const description = <Box>
             <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
-                The first step in initializing Connect is creating a <code>connect_token</code> via <a href='https://docs.pelm.com/reference/post_auth-connect-token' target='_blank'>POST /auth/connect-token</a>. 
+                The first step in initializing Connect is creating a <code>connect_token</code> via <a href='https://pelm.com/docs/api-reference/auth/create-connect-token' target='_blank'>POST /auth/connect-token</a>. 
                 We recommend creating this token on the backend to hide sensitive information like your <code>Pelm-Secret</code> from the frontend.
                 <br/>
                 <br/>

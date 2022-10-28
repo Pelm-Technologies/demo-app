@@ -97,25 +97,12 @@ export class ConnectUtilityStep extends React.Component<Props, State> {
             You'll need to pass <code>onSuccess</code> and <code>onExit</code> callbacks, which are described in more detail <a href='https://github.com/Pelm-Technologies/react-pelm-connect' target='_blank'>here</a>.
             <br/><br/>
             Click "CONNECT YOUR UTILITY" to simulate your user opening the Connect flow and entering credentials.
-            You can use real credentials for any one of our <a href='https://docs.pelm.com/reference/utilities' target='_blank'>supported utilities</a>. Alternatively, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank">Sandbox User</a>.
+            You can use real credentials for any one of our <a href='https://pelm.com/docs/reference/utilities' target='_blank'>supported utilities</a>. Alternatively, you can use our <a href="https://pelm.com/docs/reference/sandbox-user" target="_blank">Sandbox User</a>.
             Select the utility "Pacific Gas and Electric" and use the following credentials:
             <br/><br/>
             username: <code>user@pelm.com</code>
             <br/>
             password: <code>password</code>
-            {/* Alternatively, you can use the credentials for our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
-            <br/>
-            <br/>
-            Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
-            <br/>
-            username: <code>user@pelm.com</code>
-            <br/>
-            password: <code>password</code>
-            <br/>
-            <br/> */}
-            {/* Or you can click "SKIP CONNECT FLOW" button to simulate going through the Connect Flow as the Sandbox User.
-            <br/>
-            <br/> */}
         </Typography>
 
         const children = <Box sx={{

@@ -113,7 +113,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     This app allows you to quickly connect a utility account and pull real data.
                     Click "CONNECT YOUR UTILITY" get started.
                     <br/><br/>
-                    If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
+                    If you don't want to use real utility credentials, you can use our <a href="https://pelm.com/docs/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
                     Select the utility "Pacific Gas and Electric", and use the following credentials:
                     <br/>
                     &emsp;username: <code>user@pelm.com</code>
@@ -123,15 +123,6 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     We've also provided a walkthrough demonstrating how to set up Connect. 
                     This is useful if you're a developer integrating with Pelm - click the the "SETUP CONNECT" button to get started.
                     <br/><br/>
-                     {/* TODO: sandbox user instructions */}
-                    {/* <br/><br/>
-                    If you don't want to use real utility credentials, you can use our <a href="https://pelm.readme.io/reference/sandbox-user" target="_blank"  >Sandbox User</a>.
-                    <br/><br/>
-                    Select the utility "Pacific Gas and Electric". On the credentials screen, enter the following credentials:
-                    <br/>
-                    &emsp;username: <code>user@pelm.com</code>
-                    <br/>
-                    &emsp;password: <code>password</code> */}
                 </Typography>
                 <ConnectButton config={config} />
                 <Button 

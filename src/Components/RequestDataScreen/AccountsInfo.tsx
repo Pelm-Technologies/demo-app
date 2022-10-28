@@ -91,7 +91,7 @@ export class AccountsInfo extends React.Component<Props, State> {
         return <div>
             An Account is the core data model with which usage intervals and bills are associated. If a User has two homes managed under the same utility login, each will correspond to two different Pelm Account objects.
             <br/><br/>
-            Click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_accounts' target='_blank'>GET /accounts</a>, which returns all the Accounts for a given User.
+            Click "SEND REQUEST" to make a request to <a href='https://pelm.com/docs/api-reference/accounts/get-accounts' target='_blank'>GET /accounts</a>, which returns all the Accounts for a given User.
             <br/><br/>
             Note the <code>id</code> field in the response. You'll need this to query usage intervals or bills. 
             Clicking the "SELECT" button in pretty view will pre-populate the selected Account's <code>id</code> in the <code>account_id</code> field for the below requests.

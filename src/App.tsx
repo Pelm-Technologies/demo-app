@@ -29,6 +29,10 @@ export class App extends React.Component<{}, State> {
         this.state = {
             currentStepNumber: 0,
             flowType: 'default',
+
+            // currentStepNumber: 1,
+            // flowType: 'setup_connect',
+
             fetchHelper: new FetchHelper(),
             currentStep: 'welcome',
             // currentStep: 'setup_connect',

@@ -76,7 +76,7 @@ export class AccessTokenStep extends React.Component<Props, State> {
     render(): React.ReactNode {
         const description = <Typography variant="subtitle1" component="h1" gutterBottom sx={{marginTop: '8px'}}>
             After the User successfully enters their credentials, the <code>onSuccess</code> callback is called with an <code>authorization_code</code>.
-            The next step is exchanging this <code>authorization_code</code> for an <code>access_token</code> via <a href='https://docs.pelm.com/reference/post_auth-token-1' target='_blank'>POST /auth/token</a>.
+            The next step is exchanging this <code>authorization_code</code> for an <code>access_token</code> via <a href='https://pelm.com/docs/api-reference/auth/create-access-token' target='_blank'>POST /auth/token</a>.
             We recommend making this request on the backend to avoid exposing the <code>access_token</code> on the frontend.
             <br/><br/>
             We've pre-populated the field below with the <code>authorization_code</code> generated in the previous step. Click "CREATE ACCESS TOKEN" to continue.

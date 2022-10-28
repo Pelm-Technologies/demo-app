@@ -161,7 +161,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
         return <Box>
             Query an Account's electricity or gas usage intervals, down to fifteen minute granularity.
             <br/><br/>
-            Fill out the fields below and click "SEND REQUEST" to make a request to <a href='https://docs.pelm.com/reference/get_intervals' target='_blank'>GET /intervals</a>.
+            Fill out the fields below and click "SEND REQUEST" to make a request to <a href='https://pelm.com/docs/api-reference/usage/get-usage-intervals' target='_blank'>GET /intervals</a>.
             &nbsp;The <code>account_id</code> is the only required parameter; this field is the <code>id</code> returned in the <code>GET /accounts</code> response.
             &nbsp;<code>The start_date</code> and <code>end_date</code> parameters are optional and accept UNIX timestamps, which you can generate <a href='https://www.epochconverter.com/' target='_blank'>here</a>.
         </Box>

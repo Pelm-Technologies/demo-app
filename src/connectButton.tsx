@@ -14,6 +14,9 @@ type Props = {
 export const ConnectButton = (props: Props) => {
     const { open, ready, error } = useConnect(props.config);
 
+    console.log("connectIsReady: ", ready);
+    console.log("error", error)
+
     return (
             <Button
                 variant="contained"
