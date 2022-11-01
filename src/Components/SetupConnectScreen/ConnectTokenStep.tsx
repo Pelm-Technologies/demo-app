@@ -70,7 +70,7 @@ export class ConnectTokenStep extends React.Component<Props, State> {
     requestChild() {
         return <CopyBlock
             text={this.props.fetchHelper.createConnectTokenCurl(this.state.userId)}
-            language="curl"
+            language="bash"
             showLineNumbers={false}
             theme={dracula}
             customStyle={{

@@ -53,38 +53,43 @@ export class AccountsInfo extends React.Component<Props, State> {
     renderPrettyView() {
         console.log(this.state.accountsData)
 
-        return <Grid container spacing={1}>
-            {this.state.accountsData.map((account: any) => (
-                <Grid item key={account.id} xs={12}>
-                    <Card
-                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                    >
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                {account.address}
-                            </Typography>
-                            <Typography>
-                                Pelm id: {account.id}
-                            </Typography>
-                            <Typography>
-                                Account number: {account.account_number}
-                            </Typography>
-                            <Typography>
-                                Avalailable meter types: {account.available_meter_types.join(", ")}
-                            </Typography>
-                            <Button 
-                                variant="outlined"
-                                onClick={this.onSelectAccount(account)}
-                                value={account}
-                                sx={{marginTop: '8px'}}
-                            >
-                                SELECT
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            ))}
-        </Grid>;
+        try {
+            return <Grid container spacing={1}>
+                {this.state.accountsData.map((account: any) => (
+                    <Grid item key={account.id} xs={12}>
+                        <Card
+                            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                        >
+                            <CardContent sx={{ flexGrow: 1 }}>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {account.address}
+                                </Typography>
+                                <Typography>
+                                    Pelm id: {account.id}
+                                </Typography>
+                                <Typography>
+                                    Account number: {account.account_number}
+                                </Typography>
+                                <Typography>
+                                    Avalailable meter types: {account.available_meter_types.join(", ")}
+                                </Typography>
+                                <Button 
+                                    variant="outlined"
+                                    onClick={this.onSelectAccount(account)}
+                                    value={account}
+                                    sx={{marginTop: '8px'}}
+                                >
+                                    SELECT
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>;
+        } catch(e) {
+            return;
+        }
+        
     }
 
     renderDescription() {
@@ -130,7 +135,7 @@ export class AccountsInfo extends React.Component<Props, State> {
     request() {
         return <CopyBlock
             text={this.props.fetchHelper.getAccountsCurl()}
-            language="curl"
+            language="bash"
             showLineNumbers={false}
             theme={dracula}
             wrapLongLines

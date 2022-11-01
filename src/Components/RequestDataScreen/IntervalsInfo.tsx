@@ -236,7 +236,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
             text={this.props.fetchHelper.getIntervalsCurl(
                 this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
             )}
-            language="curl"
+            language="bash"
             showLineNumbers={false}
             theme={dracula}
             wrapLines
