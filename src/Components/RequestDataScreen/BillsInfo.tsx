@@ -166,7 +166,7 @@ export class BillsInfo extends React.Component<Props, State> {
     requestChild() {
         return <CopyBlock
             text={this.props.fetchHelper.getBillsCurl(this.state.accountId)}
-            language="curl"
+            language="bash"
             showLineNumbers={false}
             theme={dracula}
             wrapLines

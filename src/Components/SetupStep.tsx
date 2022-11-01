@@ -132,7 +132,7 @@ export class SetupStep extends React.Component<Props, State> {
         const codeBlock = this.state.view == 'request'
             ? <CopyBlock
                 text={this.props.requestChild}
-                language="curl"
+                language="bash"
                 showLineNumbers={false}
                 theme={dracula}
                 wrapLines
