@@ -159,9 +159,10 @@ export class FetchHelper {
     }
 
     // GET /intervals
-    getIntervalsRequestUrl(accountId: string, type: string, startDate?: string, endDate?: string) {
+    getIntervalsRequestUrl(accountId: string, meterId: string, type: string, startDate?: string, endDate?: string) {
         const params = {
             account_id: accountId,
+            meter_id: meterId,
             type: type,
             ...(startDate && { start_date: startDate }),
             ...(endDate && { end_date: endDate })
@@ -177,12 +178,12 @@ export class FetchHelper {
         };
     }
 
-    getIntervalsCurl(accountId: string, type: string, startDate?: string, endDate?: string) {
-        return fetchToCurl(this.getIntervalsRequestUrl(accountId, type, startDate, endDate), this.getIntervalsRequestOptions(this.shouldUsePlaceholderValues));
+    getIntervalsCurl(accountId: string, meterId: string, type: string, startDate?: string, endDate?: string) {
+        return fetchToCurl(this.getIntervalsRequestUrl(accountId, meterId, type, startDate, endDate), this.getIntervalsRequestOptions(this.shouldUsePlaceholderValues));
     }
 
-    async getIntervals(accountId: string, type: string, startDate?: string, endDate?: string): Promise<any> {
-        const url = this.getIntervalsRequestUrl(accountId, type, startDate, endDate)
+    async getIntervals(accountId: string, meterId:string, type: string, startDate?: string, endDate?: string): Promise<any> {
+        const url = this.getIntervalsRequestUrl(accountId, meterId, type, startDate, endDate)
         const requestOptions = this.getIntervalsRequestOptions()
         return fetch(url, requestOptions)
             .then(response => {

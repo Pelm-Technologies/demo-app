@@ -73,6 +73,9 @@ export class AccountsInfo extends React.Component<Props, State> {
                                 <Typography>
                                     Avalailable meter types: {account.available_meter_types.join(", ")}
                                 </Typography>
+                                <Typography>
+                                    Meter ids: {JSON.stringify(account.meters.map((meter: any) => [meter.id].join(" ")))}
+                                </Typography>
                                 <Button 
                                     variant="outlined"
                                     onClick={this.onSelectAccount(account)}

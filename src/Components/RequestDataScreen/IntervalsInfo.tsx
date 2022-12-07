@@ -28,6 +28,7 @@ type State = {
     errorCode?: string;
 
     accountId: string;
+    meterId: string;
     startDate?: string;
     endDate?: string;
     type: string;
@@ -42,8 +43,9 @@ export class IntervalsInfo extends React.Component<Props, State> {
             responseData: undefined,
             
             accountId: '',
+            meterId: '',
             // accountId: 'ea100000-0000-0000-0000-000000000000',
-            type: 'ELECTRIC'
+            type: ''
         }
     }
 
@@ -59,7 +61,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
     getIntervals = () => {
         this.setState({ isLoading: true })
         this.props.fetchHelper.getIntervals(
-            this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
+            this.state.accountId, this.state.meterId, this.state.type, this.state.startDate, this.state.endDate
         )
             .then(response_body => {
                 this.setState({
@@ -74,6 +76,14 @@ export class IntervalsInfo extends React.Component<Props, State> {
         const value = target.value;
         this.setState({
             accountId: value
+        })
+    }
+
+    onMeterIdInputChange = (event: { target: any; }) => {
+        const target = event.target;
+        const value = target.value;
+        this.setState({
+            meterId: value
         })
     }
 
@@ -162,7 +172,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
             Query an Account's electricity or gas usage intervals, down to fifteen minute granularity.
             <br/><br/>
             Fill out the fields below and click "SEND REQUEST" to make a request to <a href='https://pelm.com/docs/api-reference/usage/get-usage-intervals' target='_blank'>GET /intervals</a>.
-            &nbsp;The <code>account_id</code> is the only required parameter; this field is the <code>id</code> returned in the <code>GET /accounts</code> response.
+            &nbsp;Either the <code>account_id</code> and a specific meter type or a specific <code>meter_id</code> is required; both are returned in the <code>GET /accounts</code> response.
             &nbsp;<code>The start_date</code> and <code>end_date</code> parameters are optional and accept UNIX timestamps, which you can generate <a href='https://www.epochconverter.com/' target='_blank'>here</a>.
         </Box>
     }
@@ -173,12 +183,21 @@ export class IntervalsInfo extends React.Component<Props, State> {
             flexDirection: 'column'
         }}>
             <TextField 
-                required
                 label="account_id"
                 variant="outlined"  
                 value={this.state.accountId}
                 onChange={this.onAccountIdInputChange}
-                placeholder="Enter Account Id"
+                placeholder="Enter account_id"
+            />
+            <TextField 
+                label="meter_id"
+                variant="outlined"  
+                value={this.state.meterId}
+                onChange={this.onMeterIdInputChange}
+                placeholder="Enter meter_id"
+                sx={{
+                    marginTop: '8px'
+                }}
             />
             <Box sx={{
                 display: 'flex',
@@ -190,7 +209,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
                     variant="outlined"  
                     value={this.state.startDate}
                     onChange={this.onStartDateInputChange}
-                    placeholder="Enter Start Date"
+                    placeholder="Enter start_date"
                     // sx={{marginTop: '8px'}}
                 />
                 <TextField 
@@ -198,7 +217,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
                     variant="outlined"  
                     value={this.state.endDate}
                     onChange={this.onEndDateInputChange}
-                    placeholder="Enter End Date"
+                    placeholder="Enter end_date"
                     sx={{marginLeft: '8px'}}
                 />
 
@@ -215,6 +234,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
                     label="type"
                     onChange={this.onTypeInputChange}
                 >
+                <MenuItem value=""></MenuItem>
                 <MenuItem value="ELECTRIC">ELECTRIC</MenuItem>
                 <MenuItem value="GAS">GAS</MenuItem>
                 </Select>
@@ -234,7 +254,7 @@ export class IntervalsInfo extends React.Component<Props, State> {
     requestChild() {
         return <CopyBlock
             text={this.props.fetchHelper.getIntervalsCurl(
-                this.state.accountId, this.state.type, this.state.startDate, this.state.endDate
+                this.state.accountId, this.state.meterId, this.state.type, this.state.startDate, this.state.endDate
             )}
             language="bash"
             showLineNumbers={false}
