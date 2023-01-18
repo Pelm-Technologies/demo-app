@@ -68,9 +68,13 @@ export class BillsInfo extends React.Component<Props, State> {
     renderPrettyView() {
         const responseData = this.state.responseData!
 
+        if (responseData.error_code) {
+            return
+        }
+
         const children: React.ReactChild[] = [];
 
-        this.state.responseData!.map((accountBills: any) => {
+        responseData.map((accountBills: any) => {
             accountBills.bills.map((bill: any) => {
                 children.push(
                     <Grid item key={bill['id']} xs={12}>
